@@ -1,0 +1,12 @@
+package com.luong.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+
+/**
+ * Created by HP on 3/30/2017.
+ */
+@Controller
+public class QuestionController {
+
+}

@@ -1,0 +1,93 @@
+package com.luong.model;
+
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
+
+/**
+ * Created by HP on 3/30/2017.
+ */
+
+@Entity
+@Table(name = "users")
+public class User {
+
+    @Id
+    @Column(name = "id_users")
+    @GeneratedValue()
+    int id;
+
+    @Column(name = "name")
+    String name;
+
+    @Column(name = "password")
+    String password;
+
+    @Column(name = "email")
+    String email;
+
+    @Column(name = "image")
+    String image;
+
+    @Column(name = "is_admin")
+    int is_admin;
+
+    public User(){}
+    public User(int id,String name,String password,String email,String image,int is_admin){
+        this.id=id;
+        this.name=name;
+        this.password=password;
+        this.email=email;
+        this.image=image;
+        this.is_admin=is_admin;
+    }
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public int getIs_admin() {
+        return is_admin;
+    }
+
+    public void setIs_admin(int is_admin) {
+        this.is_admin = is_admin;
+    }
+}

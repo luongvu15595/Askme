@@ -1,0 +1,32 @@
+package com.luong.model;
+
+import javax.persistence.*;
+
+/**
+ * Created by HP on 3/30/2017.
+ */
+
+@Entity
+@Table
+public class Question {
+
+        @Id
+        @Column(name = "id_question")
+        @GeneratedValue()
+        int id_question;
+
+        @Column(name="title")
+        String title;
+
+        @Column(name = "content")
+        String content;
+
+        @Column(name = "image")
+        String image;
+
+
+
+
+
+
+}
