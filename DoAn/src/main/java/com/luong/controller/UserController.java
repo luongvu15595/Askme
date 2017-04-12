@@ -8,9 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
+
+import java.nio.file.attribute.UserPrincipal;
+import java.security.Principal;
 
 /**
  * Created by Luong-PC on 4/8/2017.
@@ -43,7 +44,7 @@ public class UserController {
 
         userService.save(userForm);
 
-       // securityService.autologin(userForm.getEmail(), userForm.getPasswordConfirm());
+        // securityService.autologin(userForm.getEmail(), userForm.getPasswordConfirm());
 
         return "login";
     }
@@ -59,8 +60,16 @@ public class UserController {
         return "login";
     }
 
-    @RequestMapping(value = {"/", "/welcome"}, method = RequestMethod.GET)
+    @RequestMapping(value =  "/welcome", method = RequestMethod.GET)
     public String welcome(Model model) {
         return "welcome";
+    }
+
+    @RequestMapping(value = "/account", method = RequestMethod.GET)
+
+    public String account(Model model, Principal principal) {
+        String name = principal.getName();
+        model.addAttribute(userService.findByEmail(name));
+        return "name";
     }
 }

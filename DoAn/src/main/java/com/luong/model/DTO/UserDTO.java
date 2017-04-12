@@ -6,10 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-
-/**
- * Created by Luong-PC on 3/31/2017.
- */
 public class UserDTO {
 
     private int id;
@@ -30,7 +26,7 @@ public class UserDTO {
         ud.password = u.getPassword();
         ud.email = u.getEmail();
         ud.image = u.getImage();
-        ud.roles= u.getRoles();
+        ud.roles = u.getRoles();
         return ud;
     }
 

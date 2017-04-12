@@ -8,9 +8,6 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
-/**
- * Created by Luong-PC on 4/8/2017.
- */
 @Component
 public class UserValidator implements Validator {
 
@@ -24,7 +21,7 @@ public class UserValidator implements Validator {
 
     @Override
     public void validate(Object o, Errors errors) {
-         User user = (User) o;
+        User user = (User) o;
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email", "NotEmpty");
         if (user.getEmail().length() < 6 || user.getEmail().length() > 32) {
             errors.rejectValue("email", "Size.userForm.email");

@@ -1,10 +1,12 @@
 package com.luong.service;
+
 import com.luong.dao.AnswerDAO;
 import com.luong.dao.QuestionDAO;
 import com.luong.dao.UserDAO;
 import com.luong.model.Answer;
 import com.luong.model.DTO.QuestionDTO;
 import com.luong.model.Question;
+import com.luong.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,11 +27,11 @@ public class AnswerServiceImpl implements AnswerService {
     UserDAO userDAO;
 
     @Override
-    public void add(Answer answer, int id) {
-        Question question =questionDAO.findById(id);
+    public void add(Answer answer, int id, User user) {
+        Question question = questionDAO.findById(id);
         answer.setTime(new Date());
         answer.setQuestion(question);
-        answer.setUser(userDAO.findById(4));
+        answer.setUser(user);
         answerDAO.add(answer);
     }
 
@@ -39,17 +41,16 @@ public class AnswerServiceImpl implements AnswerService {
     }
 
 
-
     @Override
-    public Map<QuestionDTO, Long> count() {
-        Map<QuestionDTO,Long> mapCountAnswer = new HashMap<>();
+    public Map<Integer, Long> count() {
+        Map<Integer, Long> mapCountAnswer = new HashMap<>();
         long c;
-        QuestionDTO q = new QuestionDTO();
+        QuestionDTO questionDTO = new QuestionDTO();
         List<QuestionDTO> lq = questionService.listQuestion();
-        for(int i=0; i<lq.size();i++){
-            q = lq.get(i);
-            c = (answerDAO.count( q.getId_question()));
-            mapCountAnswer.put(q,c);
+        for (int i = 0; i < lq.size(); i++) {
+            questionDTO = lq.get(i);
+            c = (answerDAO.count(questionDTO.getId_question()));
+            mapCountAnswer.put(questionDTO.getId_question(),c);
         }
         return mapCountAnswer;
     }

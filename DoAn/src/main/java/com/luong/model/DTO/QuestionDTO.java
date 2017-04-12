@@ -2,13 +2,10 @@ package com.luong.model.DTO;
 
 import com.luong.model.Question;
 import com.luong.model.User;
-import org.springframework.transaction.annotation.Transactional;
+
 
 import java.util.Date;
 
-/**
- * Created by Luong-PC on 3/31/2017.
- */
 public class QuestionDTO {
     private int id_question;
     private String title;
@@ -18,6 +15,7 @@ public class QuestionDTO {
     private User user;
 
     public QuestionDTO() {
+        super();
     }
 
     public static QuestionDTO convert(Question q) {
@@ -77,5 +75,31 @@ public class QuestionDTO {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        QuestionDTO that = (QuestionDTO) o;
+
+        if (getId_question() != that.getId_question()) return false;
+        if (!getTitle().equals(that.getTitle())) return false;
+        if (!getContent().equals(that.getContent())) return false;
+        if (!getImage().equals(that.getImage())) return false;
+        if (!getTime().equals(that.getTime())) return false;
+        return getUser().equals(that.getUser());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getId_question();
+        result = 31 * result + getTitle().hashCode();
+        result = 31 * result + getContent().hashCode();
+        result = 31 * result + getImage().hashCode();
+        result = 31 * result + getTime().hashCode();
+        result = 31 * result + getUser().hashCode();
+        return result;
     }
 }

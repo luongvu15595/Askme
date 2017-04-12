@@ -8,9 +8,6 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * Created by HP on 4/2/2017.
- */
 @Entity
 @Table(name = "topics")
 public class Topic {
@@ -27,16 +24,18 @@ public class Topic {
     @Cascade(CascadeType.ALL)
     private Set<Topic_Qestion> topic_qestions = new HashSet<Topic_Qestion>();
 
-    public Topic(){
+    public Topic() {
         super();
     }
+
     public Topic(int i) {
         super();
     }
-    public Topic(int id,String name){
+
+    public Topic(int id, String name) {
         super();
         this.id = id;
-        this.name =name;
+        this.name = name;
     }
 
     public int getId() {

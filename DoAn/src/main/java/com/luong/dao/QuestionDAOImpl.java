@@ -28,9 +28,8 @@ public class QuestionDAOImpl implements QuestionDAO {
 
     @Override
     public Question findById(int id) {
-        Question q = em.find(Question.class,id);
-        return  q;
-        //  return (Question) em.createQuery("select q from Question q where q.id_question= :id").setParameter("id",id).getSingleResult();
+        Question q = em.find(Question.class, id);
+        return q;
     }
 
 

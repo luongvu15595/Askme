@@ -11,10 +11,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Created by HP on 3/30/2017.
- */
-
 @Entity
 @Table(name = "users")
 public class User {
@@ -40,7 +36,7 @@ public class User {
     private String image;
     @JsonIgnore
     @ManyToMany
-    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"),inverseJoinColumns = @JoinColumn(name = "role_id") )
+    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private List<Role> roles;
 
 
@@ -54,6 +50,18 @@ public class User {
     @Cascade(CascadeType.ALL)
     private Set<Answer> answers = new HashSet<Answer>();
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    @Cascade(CascadeType.ALL)
+    private Set<Vote_Answer> vote_answers = new HashSet<Vote_Answer>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    @Cascade(CascadeType.ALL)
+    private Set<Vote_Question> vote_questions = new HashSet<Vote_Question>();
+
+
+
     public User() {
         super();
     }
@@ -63,7 +71,7 @@ public class User {
         this.id = id;
         this.name = name;
         this.password = password;
-        this.email=email;
+        this.email = email;
         this.image = image;
     }
 
@@ -141,18 +149,19 @@ public class User {
         this.roles = roles;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", password='" + password + '\'' +
-                ", passwordConfirm='" + passwordConfirm + '\'' +
-                ", email='" + email + '\'' +
-                ", image='" + image + '\'' +
-                ", roles=" + roles +
-                ", questions=" + questions +
-                ", answers=" + answers +
-                '}';
+    public Set<Vote_Answer> getVote_answers() {
+        return vote_answers;
+    }
+
+    public void setVote_answers(Set<Vote_Answer> vote_answers) {
+        this.vote_answers = vote_answers;
+    }
+
+    public Set<Vote_Question> getVote_questions() {
+        return vote_questions;
+    }
+
+    public void setVote_questions(Set<Vote_Question> vote_questions) {
+        this.vote_questions = vote_questions;
     }
 }

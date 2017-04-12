@@ -4,9 +4,6 @@ import com.sun.javafx.beans.IDProperty;
 
 import javax.persistence.*;
 
-/**
- * Created by HP on 4/2/2017.
- */
 @Entity
 @Table(name = "topic_question")
 public class Topic_Qestion {

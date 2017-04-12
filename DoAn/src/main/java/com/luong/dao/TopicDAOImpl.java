@@ -9,17 +9,15 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-/**
- * Created by Luong-PC on 4/4/2017.
- */
 @Repository
 @Transactional
 public class TopicDAOImpl implements TopicDAO {
     @PersistenceContext
     private EntityManager entityManager;
+
     @Override
     public Topic found(String name) {
-        return (Topic) entityManager.createQuery("select t from Topic t where t.name = :name").setParameter("name",name).getSingleResult();
+        return (Topic) entityManager.createQuery("select t from Topic t where t.name = :name").setParameter("name", name).getSingleResult();
     }
 
     @Override

@@ -1,4 +1,5 @@
 package com.luong.service;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class SecurityServiceImpl implements SecurityService {
     public String findLoggedInEmail() {
         Object userDetails = SecurityContextHolder.getContext().getAuthentication().getDetails();
         if (userDetails instanceof UserDetails) {
-            return ((UserDetails)userDetails).getUsername();
+            return ((UserDetails) userDetails).getUsername();
         }
 
         return null;
@@ -45,5 +46,5 @@ public class SecurityServiceImpl implements SecurityService {
             logger.debug(String.format("Auto login %s successfully!", email));
         }
     }
-    }
+}
 

@@ -2,18 +2,18 @@ package com.luong.controller;
 
 import com.luong.model.Answer;
 import com.luong.model.DTO.QuestionDTO;
+import com.luong.model.User;
 import com.luong.service.AnswerService;
 import com.luong.service.QuestionService;
+import com.luong.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by HP on 4/3/2017.
- */
 @Controller
 public class AnswerController {
 
@@ -21,10 +21,12 @@ public class AnswerController {
     QuestionService questionService;
     @Autowired
     AnswerService answerService;
+    @Autowired
+    UserService userService;
 
     @RequestMapping(value = "/getcount", method = RequestMethod.GET, headers = "Accept=Application/json")
     @ResponseBody
-    public Map<QuestionDTO,Long> getcount() {
+    public Map<Integer, Long> getcount() {
         return answerService.count();
 
     }
@@ -36,22 +38,22 @@ public class AnswerController {
 
     }
 
-    @RequestMapping(value = "/getAllAnswer/{id}", method= RequestMethod.GET)
+    @RequestMapping(value = "/getAllAnswer/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public List<Answer> answerForQuestion(@PathVariable(value="id") int  id) {
+    public List<Answer> answerForQuestion(@PathVariable(value = "id") int id) {
 
         return answerService.listAnswerOfQuestion(id);
 
     }
+
     @RequestMapping(value = "/createAnswer/{id}", method = RequestMethod.POST, headers = "Accept=Application/json")
-    public @ResponseBody Answer saveAnswer(@RequestBody Answer answer, @PathVariable(value="id") int  idquestion) {
-        System.out.println(answer.getContent());
-        System.out.print(idquestion);
-        answerService.add(answer,idquestion);
+    public @ResponseBody
+    Answer saveAnswer(@RequestBody Answer answer, @PathVariable(value = "id") int idquestion, Principal principal) {
+        String email = principal.getName();
+        User user = userService.findByEmail(email);
+        answerService.add(answer, idquestion,user);
         return answer;
     }
-
-
 }
 
 

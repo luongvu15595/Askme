@@ -7,21 +7,19 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-/**
- * Created by Luong-PC on 4/10/2017.
- */
 @Repository
 @Transactional
 public class UserDAOImpl implements UserDAO {
     @PersistenceContext
     private EntityManager em;
+
     @Override
     public User findByEmail(String email) {
         User user = new User();
         try {
             user = (User) em.createQuery("select u from User u where u.email = :email").setParameter("email", email).getSingleResult();
             return user;
-        }catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
 
@@ -29,8 +27,9 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public User findById(int id) {
-        return (User) em.createQuery("select u from User u where u.id = :id").setParameter("id", id).getSingleResult();
+        return (User) em.createQuery("select q from User q where q.id= :id").setParameter("id",id).getSingleResult();
     }
+
 
     @Override
     public void save(User user) {

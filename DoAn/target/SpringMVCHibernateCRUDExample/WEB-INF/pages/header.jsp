@@ -16,21 +16,19 @@
         <div class="navbar-header">
             <a class="navbar-brand" href="listOfQuestion">ASKME</a>
         </div>
-        <ul class="nav navbar-nav">
-            <li class="active"><a href="listOfQuestion">Home</a></li>
-            <li><a href="login">login</a></li>
-            <li><a href="createQuestion">Ask</a></li>
-            <li><a href="/createTQ">Addtopic</a></li>
-            <li><a href="/registration">registration</a></li>
-            <li><a href="#">Answer</a></li>
-
-        </ul>
         <form class="navbar-form navbar-left">
             <div class="form-group">
                 <input type="text" class="form-control" placeholder="Search">
             </div>
             <button type="submit" class="btn btn-default">Submit</button>
         </form>
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="listOfQuestion">Home</a></li>
+            <li><a href="createQuestion">Ask</a></li>
+            <li><a href="login">login</a></li>
+            <li><a href="/registration">registration</a></li>
+        </ul>
+
     </div>
 </nav>
 </body>

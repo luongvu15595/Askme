@@ -10,6 +10,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
 
     <style>
+
         .right{
             float: right;
         }
@@ -20,20 +21,19 @@
 </head>
 <body ng-app="QuestionManagement" ng-controller="QuestionController">
 <jsp:include page="header.jsp"/>
-<h1>List Questions</h1>
 <div class="container">
     <table class="table table-striped">
         <tbody>
-        <tr ng-repeat=" question in questions">
-           <td> {{numbers[$index]}}
+        <tr ng-repeat="(question_id,number) in properties">
+           <td> {{number}}
           <br>
                 <b>Answer</b>
             </td>
 
-            <td><a ng-href="/question/{{question.id_question}}"><h4>{{question.title}}</h4></a>
+            <td><a ng-href="/question/{{questions[$index].id_question}}"><h4>{{questions[$index].title}}</h4></a>
                 <br><i>Create by: </i><div class="right"><i>Time:</i></div><br>
-                <span>{{question.user.name}}</span>
-                <div class="right"><span>{{question.time | date : 'yyyy/MM/dd' }}</span></div>
+                <span>{{questions[$index].user.name}}</span>
+                <div class="right"><span>{{questions[$index].time | date : 'yyyy/MM/dd' }}</span></div>
             </td>
 
         </tr>
@@ -47,10 +47,7 @@
 
     QuestionManagement.controller("QuestionController", function ($scope, $http) {
         $scope.questions = [];
-        $scope.numbers = {"K":"V"};
         _refreshQuestionData();
-        _getData();
-        //HTTP GET- get all questions
         function _refreshQuestionData() {
             $http({
                 method: 'GET',
@@ -61,17 +58,14 @@
                 console.log(response.statusText);
             }
         }
-
-        function _getData() {
-            $http({
+            var req = {
                 method: 'GET',
-                url: 'http://localhost:8080/getcount'
-            }).then(function successCallback(response) {
-                $scope.numbers = response.data;
-            }), function errorCallback(response) {
-                console.log(response.statusText);
+                url: 'http://localhost:8080/getcount'};
+        $http(req).success(
+            function (data) {
+                $scope.properties = data;
             }
-        }
+        );
     });
 </script>
 

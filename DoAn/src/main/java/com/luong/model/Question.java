@@ -41,7 +41,6 @@ public class Question {
     @Temporal(TemporalType.TIMESTAMP)
     private Date time;
 
-
     @ManyToOne
     @JoinColumn(name = "id_user", nullable = false, foreignKey = @ForeignKey(name = "questions_ibfk_1"))
     private User user;
@@ -56,21 +55,24 @@ public class Question {
     @Cascade(CascadeType.ALL)
     private Set<Topic_Qestion> topic_qestions = new HashSet<Topic_Qestion>();
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "question")
+    @Cascade(CascadeType.ALL)
+    private Set<Vote_Question> vote_questions = new HashSet<Vote_Question>();
+
 
     public Question() {
         super();
     }
 
     public Question(int id) {
-        //   this.id_question = id_question;
         super();
-        this.id_question=id;
+        this.id_question = id;
         this.title = title;
         this.content = content;
         this.image = image;
         this.time = time;
         this.user = user;
-
     }
 
     public int getId_question() {
@@ -139,6 +141,11 @@ public class Question {
         this.answers = answers;
     }
 
+    public Set<Vote_Question> getVote_questions() {
+        return vote_questions;
+    }
 
-
+    public void setVote_questions(Set<Vote_Question> vote_questions) {
+        this.vote_questions = vote_questions;
+    }
 }

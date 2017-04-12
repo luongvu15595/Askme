@@ -16,9 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Luong-PC on 4/8/2017.
- */
 @Service("userDetailsServiceImpl")
 public class UserDetailsServiceImpl implements UserDetailsService {
 
@@ -32,9 +29,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         user = userDao.findByEmail(email);
         for (Role role : user.getRoles()) {
-                System.out.println("role process: " + role);
-                grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
-            }
+            grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
+        }
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), grantedAuthorities);
     }
 

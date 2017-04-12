@@ -1,11 +1,13 @@
 package com.luong.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
-/**
- * Created by HP on 4/3/2017.
- */
 @Entity
 @Table(name = "answers")
 public class Answer {
@@ -31,6 +33,13 @@ public class Answer {
     @ManyToOne
     @JoinColumn(name = "id_user", nullable = false, foreignKey = @ForeignKey(name = "answers_ibfk_2"))
     private User user;
+
+
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "answer")
+    @Cascade(CascadeType.ALL)
+    private Set<Vote_Answer> vote_answers = new HashSet<Vote_Answer>();
 
 
     public int getId() {

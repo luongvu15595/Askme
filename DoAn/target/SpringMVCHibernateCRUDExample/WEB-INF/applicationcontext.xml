@@ -12,5 +12,4 @@
     <import resource="appconfig-security.xml"/>
     <import resource="spring-servlet.xml"/>
 
-
 </beans:beans>
