@@ -1,5 +1,6 @@
 package com.luong.controller;
 
+import com.luong.model.Question;
 import com.luong.model.User;
 import com.luong.service.SecurityService;
 import com.luong.service.UserService;
@@ -10,8 +11,11 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.jws.soap.SOAPBinding;
 import java.nio.file.attribute.UserPrincipal;
 import java.security.Principal;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Luong-PC on 4/8/2017.
@@ -27,13 +31,14 @@ public class UserController {
     @Autowired
     private UserValidator userValidator;
 
+    // tra ve trang dang ki
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
     public String registration(Model model) {
         model.addAttribute("userForm", new User());
 
         return "registration";
     }
-
+    // kiem tra dang ki
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
     public String registration(@ModelAttribute("userForm") User userForm, BindingResult bindingResult, Model model) {
         userValidator.validate(userForm, bindingResult);
@@ -48,7 +53,7 @@ public class UserController {
 
         return "login";
     }
-
+   // dang nhap
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(Model model, String error, String logout) {
         if (error != null)
@@ -59,17 +64,44 @@ public class UserController {
 
         return "login";
     }
+    // tra ve 1 list user
+    @RequestMapping(value =  "/listUser", method = RequestMethod.GET)
+    @ResponseBody
+    public List<User> listUser() {
+        return userService.listUser();
+    }
+    // tra ve 1 trang chua list user
+    @RequestMapping(value = "/listofuser")
+    public String getListOfQuestion() {
+        return "listUser";
 
-    @RequestMapping(value =  "/welcome", method = RequestMethod.GET)
-    public String welcome(Model model) {
-        return "welcome";
     }
 
-    @RequestMapping(value = "/account", method = RequestMethod.GET)
+    //hien thi profile cua user tuong ung
+    @RequestMapping(value = "/{id}")
+    public String getUserDetail(@PathVariable("id") int id, Model model) {
+        User user = userService.findById(id);
+        model.addAttribute("user",user);
+        int question = user.getQuestions().size();
+        model.addAttribute("question",question);
+        int answer = user.getAnswers().size();
+        model.addAttribute("answer",answer);
+        return "profile";
 
-    public String account(Model model, Principal principal) {
-        String name = principal.getName();
-        model.addAttribute(userService.findByEmail(name));
-        return "name";
+    }
+   //chuyen sang trang list cau hoi cua user
+    @RequestMapping(value = "/{id}/question")
+    public String test2(@PathVariable("id") int id, Model model) {
+        User user = userService.findById(id);
+        model.addAttribute("user",user);
+        return "questionbyuser";
+    }
+
+    //chuyen sang trang list answer  cua user
+    @RequestMapping(value = "/{id}/answer")
+    public String test3(@PathVariable("id") int id, Model model) {
+        User user = userService.findById(id);
+        model.addAttribute("user",user);
+        return "AnswerByUser";
     }
 }

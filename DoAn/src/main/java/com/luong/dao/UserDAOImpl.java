@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 
 @Repository
 @Transactional
@@ -34,5 +35,10 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public void save(User user) {
         em.persist(user);
+    }
+
+    @Override
+    public List<User> listUser() {
+        return em.createQuery("select u from User u").getResultList();
     }
 }

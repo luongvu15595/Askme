@@ -56,6 +56,20 @@ public class AnswerServiceImpl implements AnswerService {
     }
 
     @Override
+    public Map<Integer, Long> countSearch(String string) {
+        Map<Integer, Long> mapCountAnswer = new HashMap<>();
+        long c;
+        QuestionDTO questionDTO = new QuestionDTO();
+        List<QuestionDTO> lq = questionService.search(string);
+        for (int i = 0; i < lq.size(); i++) {
+            questionDTO = lq.get(i);
+            c = (answerDAO.count(questionDTO.getId_question()));
+            mapCountAnswer.put(questionDTO.getId_question(),c);
+        }
+        return mapCountAnswer;
+    }
+
+    @Override
     public List<Answer> la() {
         return answerDAO.la();
     }

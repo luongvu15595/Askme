@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 
 @Repository
 @Transactional
@@ -24,5 +25,15 @@ public class TopicDAOImpl implements TopicDAO {
     public void create(Topic t) {
         entityManager.persist(t);
         return;
+    }
+
+    @Override
+    public List<Topic> listTopic() {
+        return entityManager.createQuery("select t from Topic t").getResultList();
+    }
+
+    @Override
+    public Topic findTopic(int id) {
+        return entityManager.find(Topic.class,id);
     }
 }

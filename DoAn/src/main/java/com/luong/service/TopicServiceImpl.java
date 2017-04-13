@@ -5,6 +5,8 @@ import com.luong.model.Topic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class TopicServiceImpl implements TopicService {
     @Autowired
@@ -13,5 +15,15 @@ public class TopicServiceImpl implements TopicService {
     @Override
     public Topic find(String name) {
         return topicDAO.found(name);
+    }
+
+    @Override
+    public List<Topic> listTopic() {
+        return topicDAO.listTopic();
+    }
+
+    @Override
+    public Topic findById(int id) {
+        return topicDAO.findTopic(id);
     }
 }

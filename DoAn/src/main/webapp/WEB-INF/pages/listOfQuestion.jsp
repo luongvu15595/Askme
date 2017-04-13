@@ -25,8 +25,8 @@
     <table class="table table-striped">
         <tbody>
         <tr ng-repeat="(question_id,number) in properties">
-           <td> {{number}}
-          <br>
+            <td> {{number}}
+                <br>
                 <b>Answer</b>
             </td>
 
@@ -58,9 +58,9 @@
                 console.log(response.statusText);
             }
         }
-            var req = {
-                method: 'GET',
-                url: 'http://localhost:8080/getcount'};
+        var req = {
+            method: 'GET',
+            url: 'http://localhost:8080/getcount'};
         $http(req).success(
             function (data) {
                 $scope.properties = data;

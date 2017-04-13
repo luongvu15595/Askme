@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -23,21 +24,21 @@ public class AnswerController {
     AnswerService answerService;
     @Autowired
     UserService userService;
-
+    //dem so cau tra loi
     @RequestMapping(value = "/getcount", method = RequestMethod.GET, headers = "Accept=Application/json")
     @ResponseBody
     public Map<Integer, Long> getcount() {
         return answerService.count();
 
     }
-
+    //lay tat ca cau ra loi
     @RequestMapping(value = "/getAllAnswer", method = RequestMethod.GET, headers = "Accept=Application/json")
     @ResponseBody
     public List<Answer> getAllAnswer() {
         return answerService.la();
 
     }
-
+   //lay ra tat ca cau tra loi theo question tuong ung
     @RequestMapping(value = "/getAllAnswer/{id}", method = RequestMethod.GET)
     @ResponseBody
     public List<Answer> answerForQuestion(@PathVariable(value = "id") int id) {
@@ -45,7 +46,7 @@ public class AnswerController {
         return answerService.listAnswerOfQuestion(id);
 
     }
-
+    //tao cau hoi
     @RequestMapping(value = "/createAnswer/{id}", method = RequestMethod.POST, headers = "Accept=Application/json")
     public @ResponseBody
     Answer saveAnswer(@RequestBody Answer answer, @PathVariable(value = "id") int idquestion, Principal principal) {
@@ -53,6 +54,14 @@ public class AnswerController {
         User user = userService.findByEmail(email);
         answerService.add(answer, idquestion,user);
         return answer;
+    }
+    //lay ra tat ca cau tra loi cua User tuong ung
+    @RequestMapping(value = "/getAllAnswerByUser/{id}", method = RequestMethod.GET, headers = "Accept=Application/json")
+    @ResponseBody
+    public List<Answer> getQuestionByUser(@PathVariable("id") int id){
+        User user = userService.findById(id);
+        List<Answer> q = new ArrayList<Answer>(user.getAnswers()) ;
+        return q;
     }
 }
 

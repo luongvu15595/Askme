@@ -23,7 +23,7 @@ public class QuestionDAOImpl implements QuestionDAO {
 
     @Override
     public List<Question> listQuestion() {
-        return em.createQuery("select q from Question q", Question.class).getResultList();
+        return em.createQuery("select q from Question q ORDER BY q.time DESC", Question.class).getResultList();
     }
 
     @Override
@@ -43,5 +43,10 @@ public class QuestionDAOImpl implements QuestionDAO {
         }
 
 
+    }
+
+    @Override
+    public List<Question> search(String string) {
+        return em.createQuery("select q from Question q where q.title like :string ORDER BY q.time DESC").setParameter("string","%"+string+"%").getResultList();
     }
 }

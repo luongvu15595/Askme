@@ -1,20 +1,15 @@
 package com.luong.controller;
 
+import com.luong.model.*;
 import com.luong.model.DTO.QuestionDTO;
-import com.luong.model.Question;
-import com.luong.model.Topic_Qestion;
-import com.luong.model.User;
-import com.luong.model.Vote_Question;
-import com.luong.service.QuestionService;
-import com.luong.service.Topic_QuestionService;
-import com.luong.service.UserService;
-import com.luong.service.Vote_QuestionService;
+import com.luong.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -29,27 +24,29 @@ public class QuestionController {
 
     @Autowired
     Vote_QuestionService vote_questionService;
+    @Autowired
+    AnswerService answerService;
 
-
+    // lay ra 1 list cau hoi
     @RequestMapping(value = "/getAllQuestion", method = RequestMethod.GET, headers = "Accept=Application/json")
     @ResponseBody
     public List<QuestionDTO> getListQuestion() {
         return questionService.listQuestion();
 
     }
-
+    //tra ve trang chu
     @RequestMapping(value = "/")
     public String getListOfQuestion() {
         return "listOfQuestion";
 
     }
-
+    //chuyen den trang tao cau hoi
     @RequestMapping(value = "/createQuestion", method = RequestMethod.GET, headers = "Accept=Application/json")
     public String createQuestion() {
         return "createQuestion";
 
     }
-
+    //tao cau hoi
     @RequestMapping(value = "/createQuestion/{name}", method = RequestMethod.POST, headers = "Accept=Application/json")
     public
     @ResponseBody
@@ -62,7 +59,7 @@ public class QuestionController {
         return question;
     }
 
-
+    //hien thi chi tiet cau hoi va vote cho cau hoi
     @RequestMapping(value = "/question/{id}", method= RequestMethod.GET)
     public String answer(@PathVariable(value="id") int  id , Model model) {
         model.addAttribute("question",questionService.findById(id));
@@ -81,5 +78,39 @@ public class QuestionController {
 
     }
 
+
+   //chuc nang search
+    @RequestMapping(value = "/search/{string}",method = RequestMethod.GET, headers = "Accept=Application/json")
+    public String search(@PathVariable("string") String string,Model model){
+        model.addAttribute("string",string);
+        return "search";
+    }
+
+    @RequestMapping(value = "/listsearchQuestion/{string}",method = RequestMethod.GET, headers = "Accept=Application/json")
+    @ResponseBody
+    public List<QuestionDTO> listsearchQuestion(@PathVariable("string") String string){
+        return questionService.search(string);
+    }
+   //lay ra tat ca question theo topic tuong ung
+    @RequestMapping(value = "/getAllQuestionByidTopic/{id}", method = RequestMethod.GET, headers = "Accept=Application/json")
+    @ResponseBody
+    public List<Question> getnametopic(@PathVariable("id") int id){
+        return topic_questionService.findQuestionByTopic(id);
+    }
+    // lay ra tat ca question theo user
+    @RequestMapping(value = "/getAllQuestionByUser/{id}", method = RequestMethod.GET, headers = "Accept=Application/json")
+    @ResponseBody
+    public List<Question> getQuestionByUser(@PathVariable("id") int id){
+        User user = userService.findById(id);
+        List<Question> q = new ArrayList<Question>(user.getQuestions()) ;
+       return q;
+    }
+
+    // lay ra tat ca topic theo question
+    @RequestMapping(value = "/getAllTopicByQuestion/{id}", method = RequestMethod.GET, headers = "Accept=Application/json")
+    @ResponseBody
+    public List<Topic> getAllTopicByQuestion(@PathVariable("id") int id){
+        return topic_questionService.findTopicByQuestion(id);
+    }
 
 }

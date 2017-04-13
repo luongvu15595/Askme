@@ -13,4 +13,6 @@ public interface QuestionDAO {
     public Question findById(int id);
 
     public void add(Question question);
+
+    public List<Question> search(String string);
 }

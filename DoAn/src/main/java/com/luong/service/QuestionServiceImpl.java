@@ -53,4 +53,18 @@ public class QuestionServiceImpl implements QuestionService {
         question.setUser(user);
         dao.add(question);
     }
+
+    @Override
+    public List<QuestionDTO> search(String string) {
+        QuestionDTO qt = new QuestionDTO();
+        List<QuestionDTO> lq = new ArrayList<QuestionDTO>();
+        List<Question> q = dao.search(string);
+        for (int i = 0; i < q.size(); i++) {
+            qt = QuestionDTO.convert(q.get(i));
+            Date time;
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+            lq.add(qt);
+        }
+        return lq;
+    }
 }

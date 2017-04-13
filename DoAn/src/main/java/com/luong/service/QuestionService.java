@@ -10,4 +10,5 @@ public interface QuestionService {
     public List<QuestionDTO> listQuestion();
     public QuestionDTO findById(int id);
     public void add(Question question, User user);
+    public List<QuestionDTO> search(String string);
 }

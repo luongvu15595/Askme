@@ -41,12 +41,12 @@ public class User {
 
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user")
+    @OneToMany(fetch = FetchType.EAGER,mappedBy = "user")
     @Cascade(CascadeType.ALL)
     private Set<Question> questions = new HashSet<Question>(0);
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user")
+    @OneToMany(fetch = FetchType.EAGER,mappedBy = "user")
     @Cascade(CascadeType.ALL)
     private Set<Answer> answers = new HashSet<Answer>();
 
@@ -164,4 +164,6 @@ public class User {
     public void setVote_questions(Set<Vote_Question> vote_questions) {
         this.vote_questions = vote_questions;
     }
+
+
 }

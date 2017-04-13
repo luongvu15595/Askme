@@ -28,4 +28,14 @@ public class Topic_QuestionDAOImpl implements Topic_QuestionDAO {
         }
 
     }
+
+    @Override
+    public List<Topic_Qestion> findlistTQ(int id) {
+        return em.createQuery("select t from Topic_Qestion t where t.topic.id= :id").setParameter("id",id).getResultList();
+    }
+    // lay ra list topic_question theo cau hoi
+    @Override
+    public List<Topic_Qestion> findListQuestion(int id) {
+        return em.createQuery("select t from Topic_Qestion t where t.question.id_question= :id").setParameter("id",id).getResultList();
+    }
 }

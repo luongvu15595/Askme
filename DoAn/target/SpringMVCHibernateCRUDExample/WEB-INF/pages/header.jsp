@@ -14,7 +14,7 @@
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="listOfQuestion">ASKME</a>
+            <a class="navbar-brand" href="/">ASKME</a>
         </div>
         <form class="navbar-form navbar-left">
             <div class="form-group">
@@ -23,13 +23,16 @@
             <button type="submit" class="btn btn-default">Submit</button>
         </form>
         <ul class="nav navbar-nav">
-            <li class="active"><a href="listOfQuestion">Home</a></li>
+            <li class="active"><a href="/">Home</a></li>
             <li><a href="createQuestion">Ask</a></li>
+            <li><a href="/listoftopic">Topics</a></li>
+            <li><a href="/listofuser">Users</a></li>
             <li><a href="login">login</a></li>
             <li><a href="/registration">registration</a></li>
         </ul>
 
     </div>
 </nav>
+
 </body>
 </html>

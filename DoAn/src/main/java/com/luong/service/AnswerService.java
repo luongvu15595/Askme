@@ -10,6 +10,7 @@ import java.util.Map;
 
 public interface AnswerService {
     Map<Integer, Long> count();
+    Map<Integer,Long> countSearch(String string);
 
     List<Answer> la();
 
