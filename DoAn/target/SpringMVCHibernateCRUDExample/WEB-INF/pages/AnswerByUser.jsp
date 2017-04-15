@@ -6,7 +6,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
 </head>
-<body ng-app="answerByUser" ng-controller="answerByUserController">
+<body ng-app="Askme" ng-controller="answerByUserController">
 <jsp:include page="header.jsp"/>
 <div class="container">
     <table class="table table-striped">
@@ -24,8 +24,8 @@
 
 
 <script type="text/javascript">
-    var answerByUser =  angular.module("answerByUser", []);
-    answerByUser.controller("answerByUserController",function ($scope,$http) {
+    var Askme =  angular.module("Askme", []);
+    Askme.controller("answerByUserController",function ($scope,$http) {
         $scope.answers=[];
         _getQuestionByUser();
 

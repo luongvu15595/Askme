@@ -4,6 +4,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -24,7 +25,7 @@
 
 </head>
 
-<body>
+<body ng-app="Askme" ng-controller="LoginController">
 <jsp:include page="header.jsp"/>
 <h2>LOGIN</h2>
 <div class="container">
@@ -39,10 +40,14 @@
                 <span>${error}</span>
                 <div class="top"><button class="btn btn-lg btn-primary btn-block" type="submit">Log In</button></div>
             </div>
+        </form>
     </div>
-    </form>
-
 </div>
+<script>
+    var Askme =  angular.module("Askme", []);
+    Askme.controller("LoginController",function () {
+    })
+</script>
 </body>
 </html>
 

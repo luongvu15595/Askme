@@ -19,7 +19,7 @@
         }
     </style>
 </head>
-<body ng-app="user" ng-controller="listUser">
+<body ng-app="Askme" ng-controller="listUser">
 <jsp:include page="header.jsp"/>
 <div class="container">
     <table class="table table-striped">
@@ -35,11 +35,13 @@
 
 
 <script type="text/javascript">
-    var user = angular.module("user", []);
+    var Askme = angular.module("Askme", []);
 
-    user.controller("listUser", function ($scope, $http) {
+    Askme.controller("listUser", function ($scope, $http) {
         $scope.users = [];
+
         _refreshQuestionData();
+
         function _refreshQuestionData() {
             $http({
                 method: 'GET',
@@ -50,6 +52,7 @@
                 console.log(response.statusText);
             }
         }
+
     });
 </script>
 

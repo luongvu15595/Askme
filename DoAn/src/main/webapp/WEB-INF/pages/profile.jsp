@@ -19,12 +19,16 @@
         }
     </style>
 </head>
-<body ng-app="topic" ng-controller="TopicController">
+<body ng-app="Askme" ng-controller="profile">
 <jsp:include page="header.jsp"/>
 <h1>${user.name}</h1>
 <h2><a href="/${user.id}/question">Questions(${question})</a></h2>
 <h2><a href="/${user.id}/answer">Answers(${answer})</a></h2>
 
-
+<script>
+    var Askme =  angular.module("Askme", []);
+    Askme.controller("profile",function () {
+    })
+</script>
 </body>
 </html>

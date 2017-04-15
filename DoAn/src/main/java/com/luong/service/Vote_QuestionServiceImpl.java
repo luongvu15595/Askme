@@ -20,6 +20,16 @@ public class Vote_QuestionServiceImpl implements Vote_QuestionService {
     QuestionDAO questionDAO;
 
     @Override
+    public Long countUp(int idQuestion) {
+        return vote_questionDAO.countUp(idQuestion);
+    }
+
+    @Override
+    public Long countDown(int idQuestion) {
+        return vote_questionDAO.countDown(idQuestion);
+    }
+
+    @Override
     public void up_Vote_Question(int idUser,int idQuestion) {
         Vote_Question vote_question1 = vote_questionDAO.find(idUser,idQuestion);
         if (vote_question1 == null) {

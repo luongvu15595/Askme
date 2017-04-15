@@ -31,6 +31,20 @@ public class AnswerController {
         return answerService.count();
 
     }
+    @RequestMapping(value = "/getListCountVoteUpAnswer/{id}", method = RequestMethod.GET, headers = "Accept=Application/json")
+    @ResponseBody
+    public Map<Integer, Long> getListCountVoteUpAnswer(@PathVariable(value = "id") int id) {
+        return answerService.countVoteUpAnswers(id);
+
+    }
+
+    @RequestMapping(value = "/getListCountVoteDownAnswer/{id}", method = RequestMethod.GET, headers = "Accept=Application/json")
+    @ResponseBody
+    public Map<Integer, Long> getListCountVoteDownAnswer(@PathVariable(value = "id") int id) {
+        return answerService.countVoteDownAnswers(id);
+
+    }
+
     //lay tat ca cau ra loi
     @RequestMapping(value = "/getAllAnswer", method = RequestMethod.GET, headers = "Accept=Application/json")
     @ResponseBody

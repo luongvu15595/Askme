@@ -19,21 +19,21 @@
         }
     </style>
 </head>
-<body ng-app="QuestionManagement" ng-controller="QuestionController">
+<body ng-app="Askme" ng-controller="QuestionController">
 <jsp:include page="header.jsp"/>
 <div class="container">
     <table class="table table-striped">
         <tbody>
-        <tr ng-repeat="(question_id,number) in properties">
-            <td> {{number}}
+        <tr ng-repeat="question in questions">
+            <td> {{properties[question.id_question]}}
                 <br>
                 <b>Answer</b>
             </td>
 
-            <td><a ng-href="/question/{{questions[$index].id_question}}"><h4>{{questions[$index].title}}</h4></a>
+            <td><a ng-href="/question/{{question.id_question}}"><h4>{{question.title}}</h4></a>
                 <br><i>Create by: </i><div class="right"><i>Time:</i></div><br>
-                <span>{{questions[$index].user.name}}</span>
-                <div class="right"><span>{{questions[$index].time | date : 'yyyy/MM/dd' }}</span></div>
+                <span>{{question.user.name}}</span>
+                <div class="right"><span>{{question.time | date : 'yyyy/MM/dd' }}</span></div>
             </td>
 
         </tr>
@@ -43,9 +43,9 @@
 
 
 <script type="text/javascript">
-    var QuestionManagement = angular.module("QuestionManagement", []);
+    var Askme = angular.module("Askme", []);
 
-    QuestionManagement.controller("QuestionController", function ($scope, $http) {
+    Askme.controller("QuestionController", function ($scope, $http) {
         $scope.questions = [];
         _refreshQuestionData();
         function _refreshQuestionData() {
@@ -54,10 +54,10 @@
                 url: 'http://localhost:8080/getAllQuestion'
             }).then(function successCallback(response) {
                 $scope.questions = response.data;
-            }), function errorCallback(response) {
-                console.log(response.statusText);
-            }
-        }
+//            }), function errorCallback(response) {
+//                console.log(response.statusText);
+//            }
+        })}
         var req = {
             method: 'GET',
             url: 'http://localhost:8080/getcount'};

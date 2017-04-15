@@ -12,7 +12,7 @@
         }
     </style>
 </head>
-<body ng-app="CreateQuestionManagement" ng-controller="CreateQuestionController">
+<body ng-app="Askme" ng-controller="CreateQuestionController">
 <jsp:include page="header.jsp"/>
 <div class="container">
     <form ng-submit="submitQuestion()">
@@ -46,8 +46,8 @@
 </div>
 
 <script type="text/javascript">
-    var CreateQuestionManagement = angular.module("CreateQuestionManagement", []);
-    CreateQuestionManagement.controller("CreateQuestionController", function ($scope, $http) {
+    var Askme = angular.module("Askme", []);
+    Askme.controller("CreateQuestionController", function ($scope, $http) {
         $scope.questionForm = {
             title: "",
             content: "",

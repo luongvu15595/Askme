@@ -21,6 +21,16 @@ public class Vote_AnswerServiceImpl implements Vote_AnswerService {
     AnswerDAO answerDAO;
 
     @Override
+    public Long countUp(int idAnswer) {
+        return vote_answerDAO.countUp(idAnswer);
+    }
+
+    @Override
+    public Long countDown(int idAnswer) {
+        return vote_answerDAO.countDown(idAnswer);
+    }
+
+    @Override
     public void up_Vote_Answer(int idUser, int idAnswer) {
         Vote_Answer vote_answer1 = vote_answerDAO.find(idUser,idAnswer);
         if (vote_answer1 == null){

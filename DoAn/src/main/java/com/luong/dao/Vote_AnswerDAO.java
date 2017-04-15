@@ -10,4 +10,6 @@ public interface Vote_AnswerDAO {
     public  void down_Vote_Answer(Vote_Answer vote_answer);
     public  void update_Vote_Answer(Vote_Answer vote_answer);
     public  Vote_Answer find(int idUser, int idAnswer);
+    public Long countUp(int id);
+    public Long countDown(int id);
 }

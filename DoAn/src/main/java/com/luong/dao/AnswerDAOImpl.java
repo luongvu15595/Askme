@@ -17,7 +17,8 @@ public class AnswerDAOImpl implements AnswerDAO {
 
     @Override
     public Long count(int id) {
-        return (Long) em.createQuery("select count(a) from Answer a where a.question.id_question = :id").setParameter("id", id).getSingleResult();
+        Long t =(Long) em.createQuery("select count(a) from Answer a where a.question.id_question = :id").setParameter("id", id).getSingleResult();
+        return t;
     }
 
     @Override

@@ -53,4 +53,16 @@ public class Vote_AnswerDAOImpl implements Vote_AnswerDAO{
         }
     }
 
+    @Override
+    public Long countUp(int id) {
+        return (Long) em.createQuery("select count(a.upvote) from Vote_Answer a where a.answer.id = :id and a.upvote =1")
+                .setParameter("id", id).getSingleResult();
+    }
+
+    @Override
+    public Long countDown(int id) {
+        return (Long) em.createQuery("select count(a.downvote) from Vote_Answer a where a.answer.id = :id and a.downvote =1")
+                .setParameter("id", id).getSingleResult();
+    }
+
 }

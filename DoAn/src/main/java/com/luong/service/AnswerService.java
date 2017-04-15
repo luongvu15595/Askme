@@ -10,8 +10,9 @@ import java.util.Map;
 
 public interface AnswerService {
     Map<Integer, Long> count();
-    Map<Integer,Long> countSearch(String string);
 
+    public Map<Integer, Long> countVoteUpAnswers(int idQuestion);
+    public Map<Integer, Long> countVoteDownAnswers(int idQuestion);
     List<Answer> la();
 
     public void add(Answer answer, int id,User user);

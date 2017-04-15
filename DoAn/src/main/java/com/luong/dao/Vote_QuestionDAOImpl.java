@@ -53,6 +53,18 @@ public class Vote_QuestionDAOImpl implements Vote_QuestionDAO {
     }
 
     @Override
+    public Long countUp(int id) {
+        return (Long) em.createQuery("select count(a.upvote) from Vote_Question a where a.question.id_question = :id and a.upvote =1")
+                .setParameter("id", id).getSingleResult();
+    }
+
+    @Override
+    public Long countDown(int id) {
+        return (Long) em.createQuery("select count(a.downvote) from Vote_Question a where a.question.id_question = :id and a.downvote =1")
+                .setParameter("id", id).getSingleResult();
+    }
+
+    @Override
     public void update_Vote_Question(Vote_Question vote_question) {
       //  Vote_Question vote_question = em.find(Vote_Question)
      //   em.getTransaction().begin();

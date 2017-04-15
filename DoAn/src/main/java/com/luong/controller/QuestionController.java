@@ -61,19 +61,11 @@ public class QuestionController {
 
     //hien thi chi tiet cau hoi va vote cho cau hoi
     @RequestMapping(value = "/question/{id}", method= RequestMethod.GET)
-    public String answer(@PathVariable(value="id") int  id , Model model) {
-        model.addAttribute("question",questionService.findById(id));
-        Vote_Question vote_question = vote_questionService.find(4,id);
-        if (vote_question == null) {
-            System.out.println("nullllll");
-            model.addAttribute("vote_question","0");
-        }
-        else {
-            if (vote_question.getDownvote() == 1)
-                model.addAttribute("vote_question", "-1");
-            else if (vote_question.getUpvote() == 1)
-                model.addAttribute("vote_question", "+1");
-        }
+    public String answer(@PathVariable(value="id") int  idQuestion , Model model,Principal principal) {
+        model.addAttribute("question",questionService.findById(idQuestion));
+        model.addAttribute("up_vote_question",vote_questionService.countUp(idQuestion));
+        model.addAttribute("down_vote_question",vote_questionService.countDown(idQuestion));
+
         return "question";
 
     }

@@ -6,7 +6,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
 </head>
-<body ng-app="searchquestion" ng-controller="searchquestionController">
+<body ng-app="Askme" ng-controller="searchquestionController">
 <jsp:include page="header.jsp"/>
 <div class="container">
     <table class="table table-striped">
@@ -27,8 +27,8 @@
 
 
 <script type="text/javascript">
-    var searchquestion =  angular.module("searchquestion", []);
-    searchquestion.controller("searchquestionController",function ($scope,$http) {
+    var Askme =  angular.module("Askme", []);
+    Askme.controller("searchquestionController",function ($scope,$http) {
         $scope.questions=[];
         _getQuestionByUser();
 

@@ -104,4 +104,30 @@ public class UserController {
         model.addAttribute("user",user);
         return "AnswerByUser";
     }
+    //kiem tra dang nhap chua
+    @RequestMapping(value = "/testthu")
+    @ResponseBody
+    public Integer checklogin(Principal principal,Model model){
+        if(principal != null){
+            String name = principal.getName();
+            User user = userService.findByEmail(name);
+            model.addAttribute("user",user);
+            return 1;
+        }
+        else return 2;
+    }
+
+//    //kiem tra tai khoan hien tai
+//    @RequestMapping(value = "/currentuser/{id}")
+//    @ResponseBody
+//    public Integer checkcurrent(Principal principal,Model model,@PathVariable("id") int id){
+//        if(principal != null){
+//            String name = principal.getName();
+//            User user = userService.findByEmail(name);
+//            if(user.getId() == )
+//
+//            return 1;
+//        }
+//        else return 2;
+//    }
 }

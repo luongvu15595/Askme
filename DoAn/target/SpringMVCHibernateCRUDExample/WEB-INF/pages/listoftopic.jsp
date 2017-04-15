@@ -19,7 +19,7 @@
         }
     </style>
 </head>
-<body ng-app="QuestionManagement" ng-controller="QuestionController">
+<body ng-app="Askme" ng-controller="QuestionController">
 <jsp:include page="header.jsp"/>
 <div class="container">
     <table class="table table-striped">
@@ -36,9 +36,9 @@
 
 
 <script type="text/javascript">
-    var QuestionManagement = angular.module("QuestionManagement", []);
+    var Askme = angular.module("Askme", []);
 
-    QuestionManagement.controller("QuestionController", function ($scope, $http) {
+    Askme.controller("QuestionController", function ($scope, $http) {
         $scope.topics = [];
         _refreshTopicData();
         function _refreshTopicData() {
