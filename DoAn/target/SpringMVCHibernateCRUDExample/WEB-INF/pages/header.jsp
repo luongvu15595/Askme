@@ -1,64 +1,48 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Bootstrap Example</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
-</head>
-<body ng-app="Askme" ng-controller="headerController">
-
-<nav class="navbar navbar-inverse">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="/">ASKME</a>
-        </div>
-        <form class="navbar-form navbar-left">
-            <div class="form-group">
-                <input type="text" class="form-control" placeholder="Search">
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<div ng-controller="headerController">
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">ASKME</a>
             </div>
-            <button type="submit" class="btn btn-default">Submit</button>
-        </form>
-        <ul class="nav navbar-nav">
-            <li class="active"><a href="/">Home</a></li>
-            <li><a href="/createQuestion">Ask</a></li>
-            <li><a href="/listoftopic">Topics</a></li>
-            <li><a href="/listofuser">Users</a></li>
-            <%--<span ng-if="kiemtra == 2">--%>
-            <li><a href="/login">login</a></li>
-            <li><a href="/registration">registration</a></li>
-            <%--</span>--%>
-            <%--<span ng-if="kiemtra == 1">--%>
-                <%--{{user.name}}--%>
-            <%--</span>--%>
-        </ul>
+            <form class="navbar-form navbar-left" ng-submit="submitSearch()">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Search" ng-model="headerForm.search">
+                </div>
+                <button type="submit" class="btn btn-default">Submit</button>
+            </form>
 
-    </div>
+                <ul class="nav navbar-nav">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/createQuestion">Ask</a></li>
+                    <li><a href="/listoftopic">Topics</a></li>
+                    <li><a href="/listofuser">Users</a></li>
+                    <span ng-if="kiemtra == 2">
+                    <li><a href="/login">Login</a></li>
+                    <li><a href="/registration">Registration</a></li>
+                    </span>
+                </ul>
 
-</nav>
-<%--<script type="text/javascript">--%>
-    <%--var Askme =  angular.module("Askme", []);--%>
-    <%--Askme.controller("headerController",function ($scope,$http) {--%>
-        <%--$scope.kiemtra =0;--%>
-        <%--checkdangnhap();--%>
 
-        <%--//kiem tra dang nhap--%>
-        <%--function checkdangnhap() {--%>
-            <%--$http({--%>
-                <%--method: 'GET',--%>
-                <%--url: 'http://localhost:8080/testthu'--%>
-            <%--}).then(function successCallback(response) {--%>
-                <%--$scope.kiemtra = response.data;--%>
-            <%--}), function errorCallback(response) {--%>
-                <%--console.log(response.statusText);--%>
-            <%--}--%>
-        <%--} ;--%>
-    <%--});--%>
+            <div ng-if="kiemtra == 1">
+                <ul class="nav navbar-nav">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/createQuestion">Ask</a></li>
+                    <li><a href="/listoftopic">Topics</a></li>
+                    <li><a href="/listofuser">Users</a></li>
+                    <span class="dropdown">
+                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            {{user}}
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                            <li><a href="/logout">Logout</a></li>
+                        </ul>
+                    </span>
+                </ul>
+            </div>
 
-<%--</script>--%>
-</body>
-</html>
+        </div>
+
+    </nav>
+</div>

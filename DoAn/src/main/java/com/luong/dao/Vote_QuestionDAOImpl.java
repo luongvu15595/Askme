@@ -68,7 +68,6 @@ public class Vote_QuestionDAOImpl implements Vote_QuestionDAO {
     public void update_Vote_Question(Vote_Question vote_question) {
       //  Vote_Question vote_question = em.find(Vote_Question)
      //   em.getTransaction().begin();
-        System.out.printf("merge");
         em.merge(vote_question);
       //  em.getTransaction().commit();
 

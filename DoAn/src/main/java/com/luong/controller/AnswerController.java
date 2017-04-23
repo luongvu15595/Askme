@@ -64,9 +64,11 @@ public class AnswerController {
     @RequestMapping(value = "/createAnswer/{id}", method = RequestMethod.POST, headers = "Accept=Application/json")
     public @ResponseBody
     Answer saveAnswer(@RequestBody Answer answer, @PathVariable(value = "id") int idquestion, Principal principal) {
-        String email = principal.getName();
-        User user = userService.findByEmail(email);
-        answerService.add(answer, idquestion,user);
+        if (principal != null) {
+            String email = principal.getName();
+            User user = userService.findByEmail(email);
+            answerService.add(answer, idquestion, user);
+        }
         return answer;
     }
     //lay ra tat ca cau tra loi cua User tuong ung

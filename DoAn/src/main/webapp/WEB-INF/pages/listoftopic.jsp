@@ -8,6 +8,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
+    <script src="/js/app.js"></script>
 
     <style>
 
@@ -19,7 +20,7 @@
         }
 </style>
 </head>
-<body ng-app="Askme" ng-controller="QuestionController">
+<body ng-app="Askme" ng-controller="listOfTopicController">
 <jsp:include page="header.jsp"/>
 <div class="container">
     <table class="table table-striped">
@@ -33,26 +34,5 @@
         </tbody>
     </table>
 </div>
-
-
-<script type="text/javascript">
-    var Askme = angular.module("Askme", []);
-
-    Askme.controller("QuestionController", function ($scope, $http) {
-        $scope.topics = [];
-        _refreshTopicData();
-        function _refreshTopicData() {
-            $http({
-                method: 'GET',
-                url: 'http://localhost:8080/listtopic'
-            }).then(function successCallback(response) {
-                $scope.topics = response.data;
-            }), function errorCallback(response) {
-                console.log(response.statusText);
-            }
-        };
-    });
-</script>
-
 </body>
 </html>

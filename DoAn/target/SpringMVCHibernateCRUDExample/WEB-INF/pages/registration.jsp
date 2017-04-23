@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="/js/app.js"></script>
     <title>Create an account</title>
     <style type="text/css">
         h2{
@@ -39,14 +40,14 @@
         <div class="form-group col-md-4">
         <spring:bind path="email">
             <div class="formrow ${status.error ? 'has-error' : ''} ">
-                <form:input type="text" path="email" class="form-control" placeholder="email"
+                <form:input type="text" path="email" class="form-control" placeholder="Email"
                             autofocus="true"></form:input>
                 <form:errors path="email"></form:errors>
             </div>
         </spring:bind>
         <div class="formrow">
         <spring:bind path="name">
-                <form:input type="text" path="name" class="form-control" placeholder="name"
+                <form:input type="text" path="name" class="form-control" placeholder="Name"
                             autofocus="true"></form:input>
             </div>
         </spring:bind>
@@ -72,10 +73,5 @@
 
 </div>
 </div>
-<script>
-    var Askme =  angular.module("Askme", []);
-    Askme.controller("RegisterController",function () {
-    })
-</script>
 </body>
 </html>

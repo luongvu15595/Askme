@@ -1,7 +1,10 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8"%>
 <html>
 <head>
     <title>Create Question</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
@@ -15,7 +18,7 @@
 <body ng-app="Askme" ng-controller="CreateQuestionController">
 <jsp:include page="header.jsp"/>
 <div class="container">
-    <form ng-submit="submitQuestion()">
+    <form accept-charset="UTF-8" ng-submit="submitQuestion()">
         <div class="row">
             <div class="form-group col-sm-10 top ">
                 <span class="col-sm-1"><label >Title:</label></span>
@@ -38,15 +41,54 @@
             </div>
 
             <div class="form-group col-sm-10">
-                <span class="col-sm-7">&nbsp;</span>
+                <span class="col-sm-7">{{statussubmit}}</span>
                 <span class="col-sm-3"><input type="submit" class="btn btn-lg btn-primary btn-block" value="Submit"/></span>
             </div>
         </div>
     </form>
 </div>
-
-<script type="text/javascript">
+<script>
     var Askme = angular.module("Askme", []);
+
+    Askme.controller("headerController", function ($scope, $http) {
+        $scope.kiemtra = 0;
+        $scope.user = "";
+        $scope.headerForm = {
+            search: ""
+        };
+        checkdangnhap();
+        test();
+
+        //kiem tra dang nhap
+        function checkdangnhap() {
+            $http({
+                method: 'GET',
+                url: 'http://localhost:8080/testthu'
+            }).then(function successCallback(response) {
+                $scope.kiemtra = response.data;
+            }), function errorCallback(response) {
+                console.log(response.statusText);
+            }
+        };
+        function test() {
+            $http({
+                method: 'GET',
+                url: 'http://localhost:8080/testabc'
+            }).then(function successCallback(response) {
+                $scope.user = response.data;
+            }), function errorCallback(response) {
+                console.log(response.statusText);
+            }
+        };
+        $scope.submitSearch = function () {
+            var name = "/search/" + $scope.headerForm.search;
+            location.href = name;
+        };
+
+
+    });
+
+
     Askme.controller("CreateQuestionController", function ($scope, $http) {
         $scope.questionForm = {
             title: "",
@@ -74,13 +116,18 @@
                 url: name,
                 data: angular.toJson($scope.questionForm),
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json;charset=UTF-8'
                 }
             });
+            $scope.questionForm.title = "";
+            $scope.questionForm.content = "";
+            $scope.questionForm.image = "";
+            $scope.statussubmit = "Thanh Cong !!"
+            $scope.tagForm.name = "";
 
         };
 
-    })
+    });
 
 </script>
 </body>

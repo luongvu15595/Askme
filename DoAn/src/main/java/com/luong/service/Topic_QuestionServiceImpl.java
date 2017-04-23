@@ -51,4 +51,21 @@ public class Topic_QuestionServiceImpl implements Topic_QuestionService {
         }
         return topics ;
     }
+    //map cac cau hoi va topic tuong ung
+    @Override
+    public Map<Integer, List> topicsOfQuestion() {
+        QuestionDTO questionDTO = new QuestionDTO();
+        List<QuestionDTO> q = questionService.listQuestion();
+        List<Topic> t = new ArrayList<>();
+        Map<Integer,List> tq = new HashMap<>();
+        int id;
+        for (int i = 0 ; i<q.size();i++){
+            questionDTO = q.get(i);
+            id = questionDTO.getId_question();
+            t = findTopicByQuestion(id);
+            tq.put(id,t);
+
+        }
+        return tq;
+    }
 }

@@ -40,10 +40,6 @@ public class Vote_AnswerDAOImpl implements Vote_AnswerDAO{
                     "AND q.answer.id = ?2",Vote_Answer.class)
                     .setParameter(1,idUser)
                     .setParameter(2,idAnswer).getSingleResult();
-            System.out.println(idUser);
-            System.out.println(String.valueOf(idAnswer));
-            System.out.printf("finanswer");
-            System.out.println(vote_answer);
             return vote_answer;
 
         }

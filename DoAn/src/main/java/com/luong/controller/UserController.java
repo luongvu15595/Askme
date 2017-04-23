@@ -70,11 +70,13 @@ public class UserController {
     public List<User> listUser() {
         return userService.listUser();
     }
+
+
     // tra ve 1 trang chua list user
     @RequestMapping(value = "/listofuser")
     public String getListOfQuestion() {
-        return "listUser";
 
+        return "listUser";
     }
 
     //hien thi profile cua user tuong ung
@@ -111,23 +113,36 @@ public class UserController {
         if(principal != null){
             String name = principal.getName();
             User user = userService.findByEmail(name);
-            model.addAttribute("user",user);
+            model.addAttribute("user", user);
             return 1;
         }
         else return 2;
     }
+    @RequestMapping(value = "/testabc")
+    @ResponseBody
+    public String checkedlogin(Principal principal, Model model){
+        if(principal != null) {
+            String name = principal.getName();
+            User user1 = userService.findByEmail(name);
 
-//    //kiem tra tai khoan hien tai
-//    @RequestMapping(value = "/currentuser/{id}")
-//    @ResponseBody
-//    public Integer checkcurrent(Principal principal,Model model,@PathVariable("id") int id){
-//        if(principal != null){
-//            String name = principal.getName();
-//            User user = userService.findByEmail(name);
-//            if(user.getId() == )
-//
-//            return 1;
-//        }
-//        else return 2;
-//    }
+            return user1.getName();
+        }
+        else return null;
+    }
+
+    //kiem tra tai khoan hien tai
+    @RequestMapping(value = "/currentuser/{id}")
+    @ResponseBody
+    public Integer checkcurrent(Principal principal,Model model,@PathVariable("id") int id){
+        if(principal != null){
+            String name = principal.getName();
+            User user = userService.findByEmail(name);
+            if(user.getId() == id )
+            {
+                return 3;
+            }
+            else {return 1;}
+        }
+        else return 2;
+    }
 }

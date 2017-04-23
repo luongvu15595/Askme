@@ -47,6 +47,22 @@ public class QuestionDAOImpl implements QuestionDAO {
 
     @Override
     public List<Question> search(String string) {
-        return em.createQuery("select q from Question q where q.title like :string ORDER BY q.time DESC").setParameter("string","%"+string+"%").getResultList();
+        try{
+            List<Question> listquestion= em.createQuery("select q from Question q where q.title like :string ORDER BY q.time DESC").setParameter("string","%"+string+"%").getResultList();
+          return listquestion;
+        }catch (Exception e){
+            return null;
+        }
+
+    }
+
+    @Override
+    public void remote(int id) {
+        em.createQuery("DELETE FROM Question q WHERE q.id_question= :id").setParameter("id",id).executeUpdate();
+    }
+
+    @Override
+    public void update(Question question) {
+        em.merge(question);
     }
 }

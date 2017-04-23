@@ -1,5 +1,6 @@
 package com.luong.service;
 
+import com.luong.model.User;
 import com.luong.model.Vote_Question;
 
 /**
@@ -10,5 +11,5 @@ public interface Vote_QuestionService {
     public Long countDown(int idQuestion);
     public void up_Vote_Question(int idUser, int idQuestion);
     public void down_Vote_Question(int idUser, int idQuestion);
-    public Vote_Question find(int idUser, int idQuestion);
+    public Vote_Question find(User User, int idQuestion);
 }

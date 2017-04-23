@@ -7,7 +7,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
 </head>
 <body ng-app="Askme" ng-controller="answerByUserController">
-<jsp:include page="header.jsp"/>
 <div class="container">
     <table class="table table-striped">
         <tbody>

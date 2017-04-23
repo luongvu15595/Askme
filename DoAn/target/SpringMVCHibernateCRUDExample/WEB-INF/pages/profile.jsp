@@ -8,6 +8,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
+    <script src="/js/app.js"></script>
 
     <style>
 
@@ -24,11 +25,5 @@
 <h1>${user.name}</h1>
 <h2><a href="/${user.id}/question">Questions(${question})</a></h2>
 <h2><a href="/${user.id}/answer">Answers(${answer})</a></h2>
-
-<script>
-    var Askme =  angular.module("Askme", []);
-    Askme.controller("profile",function () {
-    })
-</script>
 </body>
 </html>

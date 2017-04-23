@@ -3,6 +3,7 @@ package com.luong.service;
 import com.luong.dao.QuestionDAO;
 import com.luong.dao.UserDAO;
 import com.luong.dao.Vote_QuestionDAO;
+import com.luong.model.User;
 import com.luong.model.Vote_Question;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -80,7 +81,7 @@ public class Vote_QuestionServiceImpl implements Vote_QuestionService {
     }
 
     @Override
-    public Vote_Question find(int idUser, int idQuestion) {
-        return vote_questionDAO.find(idUser, idQuestion);
+    public Vote_Question find(User user, int idQuestion) {
+        return vote_questionDAO.find(user.getId(), idQuestion);
     }
 }
