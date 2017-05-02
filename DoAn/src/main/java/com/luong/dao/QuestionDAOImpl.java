@@ -56,9 +56,10 @@ public class QuestionDAOImpl implements QuestionDAO {
 
     }
 
+    //28-4
     @Override
-    public void remote(int id) {
-        em.createQuery("DELETE FROM Question q WHERE q.id_question= :id").setParameter("id",id).executeUpdate();
+    public void del(int id) {
+        em.createQuery("delete from Question q where q.id= :id").setParameter("id", id).executeUpdate();
     }
 
     @Override

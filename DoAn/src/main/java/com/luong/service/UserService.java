@@ -11,4 +11,5 @@ public interface UserService {
     User findByEmail(String email);
     User findById(int id);
     List<User> listUser();
+    public int isAdmin(User user);
 }

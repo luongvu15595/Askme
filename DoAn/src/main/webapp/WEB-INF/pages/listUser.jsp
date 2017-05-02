@@ -27,7 +27,21 @@
     <table class="table table-striped">
         <tbody>
         <tr ng-repeat="user in users">
-            <td><a ng-href="/{{user.id}}"><h4>{{user.name}}</h4></a>
+
+            <td>
+                <span><a ng-href="/{{user.id}}"><h4>{{user.name}}</h4></a></span>
+                <span ng-if="kiemtra == 1">
+                    <span ng-if="following[user.id]['following'] == 1">
+                        <button type="button" class="btn btn-success" ng-click="clickfollowing(user.id)">
+                            following
+                        </button>
+                    </span>
+                    <span ng-if="following[user.id]['following'] == 0">
+                        <button type="button" class="btn" ng-click="clickfollowing(user.id)">
+                            following
+                        </button>
+                    </span>
+                </span>
             </td>
 
         </tr>
@@ -76,9 +90,36 @@
     });
 
     Askme.controller("listUser", function ($scope, $http) {
+        $scope.kiemtra = 0;
+        checkdangnhap();
         $scope.users = [];
+        $scope.following = ["",[]];
 
         _refreshQuestionData();
+
+        function checkdangnhap() {
+            $http({
+                method: 'GET',
+                url: 'http://localhost:8080/testthu'
+            }).then(function successCallback(response) {
+                $scope.kiemtra = response.data;
+            }), function errorCallback(response) {
+                console.log(response.statusText);
+            }
+        };
+
+        refreshFollowinhData();
+        function refreshFollowinhData() {
+            $http({
+                method: 'GET',
+                url: 'http://localhost:8080/getmapfollowing'
+            }).then(function successCallback(response) {
+                $scope.following = response.data;
+            }), function errorCallback(response) {
+                console.log(response.statusText);
+            }
+
+        }
 
         function _refreshQuestionData() {
             $http({
@@ -90,7 +131,31 @@
                 console.log(response.statusText);
             }
         }
+        $scope.clickfollowing = function (id) {
+            if ($scope.kiemtra == 1) {
 
+                if($scope.following[id]['following'] == 0){
+                   var urlstr = 'http://localhost:8080/following/' + id;
+                    $http({
+                        method: 'POST',
+                        url: urlstr
+                    })
+                    $scope.following[id]['following']++;
+                }
+                else{
+                    var urlstr1 = 'http://localhost:8080/destroyfollowing/' + id;
+                    $http({
+                        method: 'Delete',
+                        url: urlstr1
+                    })
+                    $scope.following[id]['following']--;}
+
+
+        }else {
+                alert("Dang nhap de vote cau hoi va cau tra loi");
+            }
+
+        }
     });
 </script>
 </body>

@@ -10,5 +10,7 @@ public interface AnswerDAO {
     public List<Answer> listAnswerOfQuestion(int id);
     public void add(Answer answer);
     public Answer findById(int id);
+    public void del(int  id);
+    public void updateAnswer(Answer answer);
 
 }

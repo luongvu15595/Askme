@@ -8,6 +8,7 @@ import com.luong.model.Answer;
 import com.luong.model.DTO.QuestionDTO;
 import com.luong.model.Question;
 import com.luong.model.User;
+import com.luong.model.Vote_Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,12 +31,19 @@ public class AnswerServiceImpl implements AnswerService {
     Vote_AnswerDAO vote_answerDAO;
 
     @Override
-    public void add(Answer answer, int id, User user) {
+    public Answer add(Answer answer, int id, User user) {
         Question question = questionDAO.findById(id);
         answer.setTime(new Date());
         answer.setQuestion(question);
         answer.setUser(user);
         answerDAO.add(answer);
+        return answerDAO.listAnswerOfQuestion(id).get(answerDAO.listAnswerOfQuestion(id).size() -1);
+    }
+
+
+    @Override
+    public void del(int id) {
+        answerDAO.del(id);
     }
 
     @Override
@@ -43,6 +51,12 @@ public class AnswerServiceImpl implements AnswerService {
         return answerDAO.listAnswerOfQuestion(id);
     }
 
+    @Override
+    public void updateAnswer(Answer answer) {
+        Answer answer1 =answerDAO.findById(answer.getId());
+        answer1.setContent(answer.getContent());
+        answerDAO.updateAnswer(answer1);
+    }
 
     @Override
     public Map<Integer, Long> count() {
@@ -88,6 +102,33 @@ public class AnswerServiceImpl implements AnswerService {
 
         return mapCountAnswer;
     }
+
+    @Override
+    public Map<Integer, Map<String, Long>> voteAnswerData(User user,int idQuestion) {
+        Map<Integer, Map<String, Long>> integerMapMap = new HashMap<>();
+        List<Answer> la = answerDAO.listAnswerOfQuestion(idQuestion);
+
+        for (int i = 0; i < la.size(); i++) {
+            Answer answer = new Answer();
+            answer = la.get(i);
+            Map<String, Long> map = new HashMap<>();
+            map.put("countdown",vote_answerDAO.countDown(answer.getId()));
+            map.put("countup",vote_answerDAO.countUp(answer.getId()));
+
+            if (user != null){
+                Vote_Answer vote_answer = vote_answerDAO.find(user.getId(), answer.getId());
+                if (vote_answer != null ){
+                    if (vote_answer.getDownvote() == 1 && vote_answer.getUpvote() ==0)  map.put("voted", (long) 2);
+                    if (vote_answer.getDownvote() == 0 && vote_answer.getUpvote() ==1)  map.put("voted", (long) 1);
+                }
+                else map.put("voted", (long) 0);
+            }
+            else map.put("voted", (long) 0);
+            integerMapMap.put(answer.getId(),map);
+        }
+        return integerMapMap;
+    }
+
 
 
     @Override

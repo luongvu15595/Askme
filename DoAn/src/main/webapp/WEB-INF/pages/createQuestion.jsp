@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="/js/ng-tags-input.min.js"></script>
     <style type="text/css">
         .top{
             margin-top: 10px;
@@ -18,7 +19,7 @@
 <body ng-app="Askme" ng-controller="CreateQuestionController">
 <jsp:include page="header.jsp"/>
 <div class="container">
-    <form accept-charset="UTF-8" ng-submit="submitQuestion()">
+    <form accept-charset="UTF-8" ng-submit="submitQuestion()" enctype="multipart/form-data">
         <div class="row">
             <div class="form-group col-sm-10 top ">
                 <span class="col-sm-1"><label >Title:</label></span>
@@ -29,10 +30,10 @@
                 <span class="col-sm-1"><label>Content:</label></span>
                 <span class="col-sm-9"><textarea type="text" rows="10" class="form-control" ng-model="questionForm.content" required></textarea></span>
             </div>
-
+            <%--//  25/4--%>
             <div class="form-group col-sm-10">
                 <span class="col-sm-1"><label>Browse:</label></span>
-                <span class="col-sm-9"><input type="file" ng-model="questionForm.image" hidden></span>
+                <span class="col-sm-9"><input type="file"  ng-model="questionForm.image" hidden></span>
             </div>
 
             <div class="form-group col-sm-10">

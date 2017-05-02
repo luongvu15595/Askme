@@ -3,12 +3,19 @@ package com.luong.controller;
 import com.luong.model.*;
 import com.luong.model.DTO.QuestionDTO;
 import com.luong.service.*;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -56,26 +63,69 @@ public class QuestionController {
     public
     @ResponseBody
     Question createQuestion1(@RequestBody Question question, @PathVariable("name") String name, Principal principal) {
-       if(principal!=null) {
-           String email = principal.getName();
-           User user = userService.findByEmail(email);
-           questionService.add(question, user);
-           Topic_Qestion topic_qestion = new Topic_Qestion();
-           topic_questionService.add(topic_qestion, name, question);
-       }
+        if(principal!=null) {
+            String email = principal.getName();
+            User user = userService.findByEmail(email);
+            questionService.add(question, user);
+            Topic_Qestion topic_qestion = new Topic_Qestion();
+            topic_questionService.add(topic_qestion, name, question);
+        }
         return question;
     }
+//    @RequestMapping(value = "/createQuestion/{name}", method = RequestMethod.POST, headers = "Accept=Application/json;charset=UTF-8")
+//    public
+//    @ResponseBody
+//    Question createQuestion1(@RequestBody Question question, @PathVariable("name") String name, @RequestParam("file")MultipartFile file, HttpServletRequest request, Principal principal) {
+////        try {
+////            InputStream inputStream = file.getInputStream();
+////            if (inputStream == null)
+////                System.out.println("File inputstream is null");
+////            // cach 2 - upload vao thu muc
+////            String path = request.getSession().getServletContext().getRealPath("/") + "resources/upload/";
+////            FileUtils.forceMkdir(new File(path));
+////            File upload = new File (path + file.getOriginalFilename());
+////            file.transferTo(upload);
+////            String imagePath = request.getContextPath() + "/resources/upload/" + file.getOriginalFilename();
+////            question.setImage(imagePath);
+////            IOUtils.closeQuietly(inputStream);
+////        } catch (IOException ex) {
+////            System.out.println("Error saving uploaded file");
+////        }
+////
+////
+////
+////        if(principal!=null) {
+////           String email = principal.getName();
+////           User user = userService.findByEmail(email);
+////           questionService.add(question, user);
+////           System.out.println(question.getImage());
+////           Topic_Qestion topic_qestion = new Topic_Qestion();
+////           topic_questionService.add(topic_qestion, name, question);
+////
+////       }
+//        if(principal!=null) {
+//            String email = principal.getName();
+//            User user = userService.findByEmail(email);
+//            questionService.add(question, user);
+//            Topic_Qestion topic_qestion = new Topic_Qestion();
+//            topic_questionService.add(topic_qestion, name, question);
+//        }
+//        return question;
+//    }
 
     //hien thi chi tiet cau hoi va vote cho cau hoi
     @RequestMapping(value = "/question/{id}", method= RequestMethod.GET)
     public String answer(@PathVariable(value="id") int  idQuestion , Model model,Principal principal) {
         User user = new User();
-        user.setName("Luong");
+        user.setEmail("x");
+        user.setName("x");
+        model.addAttribute("isAdmin",0);
         if (principal != null) {
             String email = principal.getName();
             user = userService.findByEmail(email);
+            model.addAttribute("isAdmin",userService.isAdmin(user));
         }
-        model.addAttribute("userquestion",user);
+        model.addAttribute("userlogin",user);
         model.addAttribute("question", questionService.findById(idQuestion));
         model.addAttribute("up_vote_question", vote_questionService.countUp(idQuestion));
         model.addAttribute("down_vote_question", vote_questionService.countDown(idQuestion));
@@ -84,8 +134,10 @@ public class QuestionController {
         vote_question.setUpvote(0);
         if (vote_questionService.find(user, idQuestion) != null) {
             vote_question = vote_questionService.find(user, idQuestion);
+            if (vote_question.getDownvote() ==1) model.addAttribute("voted", 2);//da down
+            if (vote_question.getUpvote() ==1) model.addAttribute("voted", 1);//da up
         }
-        model.addAttribute("voted", vote_question);
+        else model.addAttribute("voted",0);//chua vote or chua dang nhap
 
         return "question";
 
@@ -109,8 +161,11 @@ public class QuestionController {
     }
 
     @RequestMapping(value = "/listsearchQuestion/{string}",method = RequestMethod.GET, headers = "Accept=Application/json")
+
     @ResponseBody
-    public List<QuestionDTO> listsearchQuestion(@PathVariable("string") String string){
+
+    public List<Question>listsearchQuestion(@PathVariable("string") String string){
+        System.out.println(string);
         if(!questionService.search(string).isEmpty()){
         return questionService.search(string);}
         else return null;
@@ -144,33 +199,32 @@ public class QuestionController {
     }
 
     //ngay 17/4
-    // delete question
-    @RequestMapping(value = "/deletequestion/{id}", method = RequestMethod.GET, headers = "Accept=Application/json")
-
-    public ModelAndView deleteQuestion(@PathVariable("id")int id){
-        questionService.remote(id);
-        return new ModelAndView("redirect:/");
-    }
-    //ngay 17/4
     // update question
+    //26-4 : edit Question
+    @RequestMapping(value = "/updatequestion", method= RequestMethod.PUT)
+    @ResponseBody
+    public void updatequestion(@RequestBody Question question) {
+        questionService.update(question);
 
-    @RequestMapping(value = "/updatequestion/{id}", method = RequestMethod.GET, headers = "Accept=Application/json")
-
-    public String editQuestion(@PathVariable("id")int id, Model model){
-        QuestionDTO question = questionService.findById(id);
-        model.addAttribute("questionFormUpdate",question);
-        return "editQuestion";
     }
 
-    @RequestMapping(value = "/updatequestion",method = RequestMethod.PUT, headers = "Accept=Application/json")
-    public
+    @RequestMapping(value = "/getmapvoteanswers/{id}", method = RequestMethod.GET, headers = "Accept=Application/json")
     @ResponseBody
-    Question updateQuestion1(@RequestBody Question question,Principal principal) {
-        Date date = questionService.findById(question.getId_question()).getTime();
-        String name = principal.getName();
-        User user = userService.findByEmail(name);
-        questionService.update(question,user,date);
-        return question;
+    public Map<Integer, Map<String, Long>> getmapvoteanswers(@PathVariable("id") int idQuestion , Principal principal) {
+        User user = new User();
+        if (principal != null) {
+            String email = principal.getName();
+            user = userService.findByEmail(email);
+        }
+        return answerService.voteAnswerData(user, idQuestion);
+    }
+
+    //28-4 delQues
+    @RequestMapping(value = "/delquestion/{id}", method= RequestMethod.DELETE)
+    @ResponseBody
+    public void delquestion(@PathVariable(value="id") int  idQuestion) {
+        questionService.del(idQuestion);
+        System.out.println(idQuestion);
     }
 
 }

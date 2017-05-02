@@ -14,9 +14,9 @@ public interface AnswerService {
     public Map<Integer, Long> countVoteUpAnswers(int idQuestion);
     public Map<Integer, Long> countVoteDownAnswers(int idQuestion);
     List<Answer> la();
-
-    public void add(Answer answer, int id,User user);
-
+    public Map<Integer,Map<String,Long> > voteAnswerData(User user,int idQuestion);
+    public Answer add(Answer answer, int id,User user);
+    public void del(int id);
     public List<Answer> listAnswerOfQuestion(int id);
-
+    public void updateAnswer(Answer answer);
 }

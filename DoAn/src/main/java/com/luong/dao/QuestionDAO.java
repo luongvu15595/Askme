@@ -15,8 +15,9 @@ public interface QuestionDAO {
     public void add(Question question);
 
     public List<Question> search(String string);
-    //ngay 17/4
-    public void remote(int id);
 
     public void update(Question question);
+
+    //28-4
+    public void del(int  id);
 }

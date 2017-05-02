@@ -48,4 +48,15 @@ public class UserServiceImpl implements UserService {
     public List<User> listUser() {
         return userRepository.listUser();
     }
+
+    @Override
+    public int isAdmin(User user) {
+        for (Role role : user.getRoles()){
+            System.out.println(role.getName() + "-");
+        }
+        for (Role role : user.getRoles()){
+            if (role.getName().equals("ROLE_ADMIN")) return 1;
+        }
+        return 0;
+    }
 }

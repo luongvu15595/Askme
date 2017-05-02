@@ -148,4 +148,6 @@ public class Question {
     public void setVote_questions(Set<Vote_Question> vote_questions) {
         this.vote_questions = vote_questions;
     }
+
+
 }

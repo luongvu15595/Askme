@@ -53,7 +53,7 @@ public class AnswerController {
 
     }
    //lay ra tat ca cau tra loi theo question tuong ung
-    @RequestMapping(value = "/getAllAnswer/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/getallanswer/{id}", method = RequestMethod.GET)
     @ResponseBody
     public List<Answer> answerForQuestion(@PathVariable(value = "id") int id) {
 
@@ -67,7 +67,7 @@ public class AnswerController {
         if (principal != null) {
             String email = principal.getName();
             User user = userService.findByEmail(email);
-            answerService.add(answer, idquestion, user);
+            answer= answerService.add(answer, idquestion, user);
         }
         return answer;
     }
@@ -78,6 +78,22 @@ public class AnswerController {
         User user = userService.findById(id);
         List<Answer> q = new ArrayList<Answer>(user.getAnswers()) ;
         return q;
+    }
+
+    //25-4 : thuc hien gui yeu cau xoa cau tra loi
+    @RequestMapping(value = "/delanswer/{id}", method= RequestMethod.DELETE)
+    @ResponseBody
+    public void voteDownQuestion(@PathVariable(value="id") int  idAnswer) {
+        answerService.del(idAnswer);
+        System.out.println(idAnswer);
+    }
+
+    //26-4 : edit Answer
+    @RequestMapping(value = "/editanswer", method= RequestMethod.PUT)
+    @ResponseBody
+    public void editAnswer(@RequestBody Answer answer) {
+        answerService.updateAnswer(answer);
+        System.out.println(answer.getId()+ "   " + answer.getContent());
     }
 }
 

@@ -35,7 +35,7 @@ public class User {
     @Column(name = "image")
     private String image;
     @JsonIgnore
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private List<Role> roles;
 
@@ -60,8 +60,21 @@ public class User {
     @Cascade(CascadeType.ALL)
     private Set<Vote_Question> vote_questions = new HashSet<Vote_Question>();
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "user_following")
+    @Cascade(CascadeType.ALL)
+    private Set<Following> followings = new HashSet<Following>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user_followed")
+    @Cascade(CascadeType.ALL)
+    private Set<Followed> followeds = new HashSet<Followed>();
 
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    @Cascade(CascadeType.ALL)
+    private Set<Report> reports = new HashSet<Report>();
     public User() {
         super();
     }
@@ -165,5 +178,27 @@ public class User {
         this.vote_questions = vote_questions;
     }
 
+    public Set<Following> getFollowings() {
+        return followings;
+    }
 
+    public void setFollowings(Set<Following> followings) {
+        this.followings = followings;
+    }
+
+    public Set<Followed> getFolloweds() {
+        return followeds;
+    }
+
+    public void setFolloweds(Set<Followed> followeds) {
+        this.followeds = followeds;
+    }
+
+    public Set<Report> getReports() {
+        return reports;
+    }
+
+    public void setReports(Set<Report> reports) {
+        this.reports = reports;
+    }
 }

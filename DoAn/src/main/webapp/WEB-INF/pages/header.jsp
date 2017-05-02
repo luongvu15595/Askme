@@ -28,7 +28,7 @@
                     <li><a href="/createQuestion">Ask</a></li>
                     <li><a href="/listoftopic">Topics</a></li>
                     <li><a href="/listofuser">Users</a></li>
-                    <li><a href="##">{{user}}</a></li>
+                    <li><a href="##">{{user.name}}</a></li>
                     <li><a href="/logout">Logout</a></li>
                 </ul>
             </div>

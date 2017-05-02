@@ -44,5 +44,14 @@ public class AnswerDAOImpl implements AnswerDAO {
         return em.find(Answer.class,id);
     }
 
+    @Override
+    public void del(int id) {
+        em.createQuery("delete from Answer q where q.id= :id").setParameter("id", id).executeUpdate();
+    }
 
+    @Override
+    public void updateAnswer(Answer answer) {
+        System.out.println("sua cau tra loi");
+        em.merge(answer);
+    }
 }

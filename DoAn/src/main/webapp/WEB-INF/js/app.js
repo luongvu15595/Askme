@@ -72,6 +72,7 @@ Askme.controller("QuestionController", function ($scope, $http) {
             $scope.topics = data;
         }
     );
+    console.log($scope.questions.length);
 });
 // page listoftopic
 Askme.controller("listOfTopicController", function ($scope, $http) {

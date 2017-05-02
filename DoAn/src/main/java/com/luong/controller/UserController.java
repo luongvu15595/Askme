@@ -120,12 +120,12 @@ public class UserController {
     }
     @RequestMapping(value = "/testabc")
     @ResponseBody
-    public String checkedlogin(Principal principal, Model model){
+    public User checkedlogin(Principal principal, Model model){
         if(principal != null) {
             String name = principal.getName();
             User user1 = userService.findByEmail(name);
 
-            return user1.getName();
+            return user1;
         }
         else return null;
     }

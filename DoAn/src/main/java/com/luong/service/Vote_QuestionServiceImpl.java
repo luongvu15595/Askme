@@ -41,7 +41,6 @@ public class Vote_QuestionServiceImpl implements Vote_QuestionService {
         vote_question.setUpvote(1);
         vote_question.setDownvote(0);
         vote_questionDAO.up_Vote_Question(vote_question);
-            System.out.println("vao 2");
         }
         else
         {
