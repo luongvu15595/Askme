@@ -20,4 +20,8 @@ public interface QuestionDAO {
 
     //28-4
     public void del(int  id);
+    //6/5
+    public List<Question> hotweek();
+    public List<Question> hotmonth();
+
 }

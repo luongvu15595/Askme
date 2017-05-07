@@ -75,6 +75,16 @@ public class Question {
         this.user = user;
     }
 
+    public Question(int id,String title,String content,String image,Date time,User user) {
+        super();
+        this.id_question = id;
+        this.title = title;
+        this.content = content;
+        this.image = image;
+        this.time = time;
+        this.user = user;
+    }
+
     public int getId_question() {
         return id_question;
     }

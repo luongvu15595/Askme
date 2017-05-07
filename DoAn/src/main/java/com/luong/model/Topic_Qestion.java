@@ -36,7 +36,7 @@ public class Topic_Qestion {
         this.topic = topic;
     }
 
-    public Question getQuestion(int i) {
+    public Question getQuestion() {
         return question;
     }
 

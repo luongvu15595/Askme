@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface Topic_QuestionService {
-    public void add(Topic_Qestion topic_qestion, String name, Question question);
+    public void add(List<String> listtopic, Question question);
     public List<Question> findQuestionByTopic(int id);
     public List<Topic> findTopicByQuestion(int id);
     public Map<Integer,List> topicsOfQuestion();

@@ -1,10 +1,11 @@
 package com.luong.service;
 
-import com.luong.dao.QuestionDAO;
-import com.luong.dao.UserDAO;
+import com.luong.dao.*;
 import com.luong.model.DTO.QuestionDTO;
 import com.luong.model.Question;
+import com.luong.model.Topic;
 import com.luong.model.User;
+import com.luong.model.Vote_Question;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.text.SimpleDateFormat;
@@ -21,6 +22,12 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Autowired
     UserDAO userDAO;
+    @Autowired
+    AnswerDAO answerDAO;
+    @Autowired
+    Vote_QuestionDAO vote_questionDAO;
+    @Autowired
+    Topic_QuestionService topic_questionService;
 
     @Override
     public QuestionDTO findById(int id) {
@@ -44,10 +51,11 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public void add(Question question, User user) {
+    public Question add(Question question, User user) {
         question.setTime(new Date());
         question.setUser(user);
         dao.add(question);
+        return question;
     }
 
     //27/4/2017
@@ -215,4 +223,146 @@ public class QuestionServiceImpl implements QuestionService {
     public void del(int id) {
         dao.del(id);
     }
+
+    @Override
+    public Map<Integer, Long> countUpVote() {
+        List<Question> questions = dao.listQuestion();
+        Long voteup;
+        Map<Integer,Long> map = new HashMap<>();
+        for (int i=0;i<questions.size();i++){
+            voteup = vote_questionDAO.countUp(questions.get(i).getId_question());
+            map.put(questions.get(i).getId_question(),voteup);
+        }
+        return map;
+    }
+
+    @Override
+    public Map<Integer, Long> countAnswerHotWeek() {
+        List<Question> hotweek = dao.hotweek();
+        Long count ;
+        Map<Integer,Long> mapHotWeek = new HashMap<>();
+        for (int i =0; i<hotweek.size();i++){
+            count = answerDAO.count(hotweek.get(i).getId_question());
+            mapHotWeek.put(hotweek.get(i).getId_question(),count);
+        }
+        return mapHotWeek;
+    }
+
+    @Override
+    public List<Question> sortHotWeek() {
+        Map<Integer,Long> mapQuestionWeek = new HashMap<>();
+        List<Question> hotWeek = dao.hotweek();
+        Long countVoteUp;
+        Long countAnswer;
+        Long total;
+        for(int i = 0; i<hotWeek.size();i++) {
+             countVoteUp = vote_questionDAO.countUp(hotWeek.get(i).getId_question());
+             countAnswer = answerDAO.count(hotWeek.get(i).getId_question());
+             total = countVoteUp + countAnswer;
+             mapQuestionWeek.put(hotWeek.get(i).getId_question(),total);
+        }
+        Map<Integer,Long> sortByHotWeek = sortByQuestion(mapQuestionWeek,false);
+        List<Question> listQuestionHot = new ArrayList<>();
+        Question question = new Question();
+        Set set = sortByHotWeek.entrySet();
+        Iterator iterator = set.iterator();
+        while (iterator.hasNext()) {
+            Map.Entry mentry = (Map.Entry) iterator.next();
+            question = dao.findById((Integer) mentry.getKey());
+            listQuestionHot.add(question);
+        }
+
+        return listQuestionHot;
+    }
+
+    @Override
+    public Map<Integer, List> topicQuestionHotWeek() {
+        List<Question> list = dao.hotweek();
+        List<Topic> topicList = new ArrayList<>();
+        Map<Integer,List> map = new HashMap<>();
+        for (int i=0;i<list.size();i++){
+            topicList = topic_questionService.findTopicByQuestion(list.get(i).getId_question());
+            map.put(list.get(i).getId_question(),topicList);
+        }
+        return map;
+    }
+
+    @Override
+    public Map<Integer, Long> countAnswerHotMonth() {
+        List<Question> hotMonth = dao.hotmonth();
+        Long count ;
+        Map<Integer,Long> mapHotMonth = new HashMap<>();
+        for (int i =0; i<hotMonth.size();i++){
+            count = answerDAO.count(hotMonth.get(i).getId_question());
+            mapHotMonth.put(hotMonth.get(i).getId_question(),count);
+        }
+        return mapHotMonth;
+    }
+
+    @Override
+    public List<Question> sortHotMonth() {
+        Map<Integer,Long> mapQuestionMonth = new HashMap<>();
+        List<Question> hotMonth = dao.hotmonth();
+        Long countVoteUp;
+        Long countAnswer;
+        Long total;
+        for(int i = 0; i<hotMonth.size();i++) {
+            countVoteUp = vote_questionDAO.countUp(hotMonth.get(i).getId_question());
+            countAnswer = answerDAO.count(hotMonth.get(i).getId_question());
+            total = countVoteUp + countAnswer;
+            mapQuestionMonth.put(hotMonth.get(i).getId_question(),total);
+        }
+        Map<Integer,Long> sortByHotMonth = sortByQuestion(mapQuestionMonth,false);
+        List<Question> listQuestionHot = new ArrayList<>();
+        Question question = new Question();
+        Set set = sortByHotMonth.entrySet();
+        Iterator iterator = set.iterator();
+        while (iterator.hasNext()) {
+            Map.Entry mentry = (Map.Entry) iterator.next();
+            question = dao.findById((Integer) mentry.getKey());
+            listQuestionHot.add(question);
+        }
+
+        return listQuestionHot;
+    }
+
+    @Override
+    public Map<Integer, List> topicQuestionHotMonth() {
+        List<Question> list = dao.hotmonth();
+        List<Topic> topicList = new ArrayList<>();
+        Map<Integer,List> map = new HashMap<>();
+        for (int i=0;i<list.size();i++){
+            topicList = topic_questionService.findTopicByQuestion(list.get(i).getId_question());
+            map.put(list.get(i).getId_question(),topicList);
+        }
+        return map;
+    }
+
+    //sap xep map theo value giam dan
+    private static Map<Integer, Long> sortByQuestion(Map<Integer, Long> unsortMap, final boolean order) {
+
+        List<Map.Entry<Integer, Long>> list = new LinkedList<Map.Entry<Integer, Long>>(unsortMap.entrySet());
+
+        // Sorting the list based on values
+        Collections.sort(list, new Comparator<Map.Entry<Integer, Long>>() {
+            public int compare(Map.Entry<Integer, Long> o1,
+                               Map.Entry<Integer, Long> o2) {
+                if (order) {
+                    return o1.getValue().compareTo(o2.getValue());
+                } else {
+                    return o2.getValue().compareTo(o1.getValue());
+
+                }
+            }
+        });
+
+        // Maintaining insertion order with the help of LinkedList
+        Map<Integer, Long> sortedMap = new LinkedHashMap<Integer, Long>();
+        for (Map.Entry<Integer, Long> entry : list) {
+            sortedMap.put(entry.getKey(), entry.getValue());
+        }
+
+        return sortedMap;
+    }
+
 }

@@ -5,10 +5,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -60,6 +57,18 @@ public class QuestionDAOImpl implements QuestionDAO {
     @Override
     public void del(int id) {
         em.createQuery("delete from Question q where q.id= :id").setParameter("id", id).executeUpdate();
+    }
+
+    @Override
+    public List<Question> hotweek() {
+        String sql ="select * from questions having datediff (curdate(),time)<=7";
+        return em.createNativeQuery(sql,Question.class).getResultList();
+    }
+
+    @Override
+    public List<Question> hotmonth() {
+        String sql ="select * from questions having datediff (curdate(),time)<=30";
+        return em.createNativeQuery(sql,Question.class).getResultList();
     }
 
     @Override

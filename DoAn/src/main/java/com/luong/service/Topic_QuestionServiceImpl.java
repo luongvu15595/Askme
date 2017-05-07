@@ -23,11 +23,27 @@ public class Topic_QuestionServiceImpl implements Topic_QuestionService {
     QuestionService questionService;
 
     @Override
-    public void add(Topic_Qestion topic_qestion, String name, Question question) {
-        Topic t = topicService.find(name);
-        topic_qestion.setQuestion(question);
-        topic_qestion.setTopic(t);
-        topic_questionDAO.add(topic_qestion);
+    public void add( List<String> listtopic, Question question) {
+        Topic_Qestion topic_qestion = new Topic_Qestion();
+        Topic topic = new Topic();
+        System.out.println(listtopic.size());
+        for (int i=0;i<listtopic.size();i++) {
+            System.out.println("1");
+            topic = topicDAO.found(listtopic.get(i));
+            System.out.println("2");
+            if (topic == null) {
+                Topic topic1 = new Topic();
+                topic1.setName(listtopic.get(i));
+                topicService.add(topic1);
+            }
+        }
+        for (int i=0;i<listtopic.size();i++) {
+            topic = topicDAO.found(listtopic.get(i));
+            topic_qestion.setQuestion(question);
+            topic_qestion.setTopic(topic);
+            topic_questionDAO.add(topic_qestion);
+        }
+
     }
 
     @Override
@@ -35,7 +51,7 @@ public class Topic_QuestionServiceImpl implements Topic_QuestionService {
         List<Topic_Qestion> tq = topic_questionDAO.findlistTQ(id);
         List<Question> q = new ArrayList<Question>();
         for(int i = 0; i<tq.size();i++){
-            q.add(tq.get(i).getQuestion(i));
+            q.add(tq.get(i).getQuestion());
         }
         return q;
     }

@@ -18,7 +18,13 @@ public class TopicDAOImpl implements TopicDAO {
 
     @Override
     public Topic found(String name) {
-        return (Topic) entityManager.createQuery("select t from Topic t where t.name = :name").setParameter("name", name).getSingleResult();
+        try {
+            Topic topic = (Topic) entityManager.createQuery("select t from Topic t where t.name = :name").setParameter("name", name).getSingleResult();
+            return topic;
+        }catch (Exception e){
+            return null;
+        }
+
     }
 
     @Override

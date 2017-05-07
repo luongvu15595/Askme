@@ -7,12 +7,12 @@ import java.util.Date;
  * Created by Luong-PC on 4/24/2017.
  */
 @Entity
-@Table(name = "following")
+@Table(name = "followed")
 public class Followed{
     @Id
-    @Column(name = "id_following")
+    @Column(name = "id_followed")
     @GeneratedValue()
-    private int id_following;
+    private int id_followed;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false, foreignKey = @ForeignKey(name = "followed_ibfk_1"))
@@ -23,19 +23,19 @@ public class Followed{
     private User user_followed;
 
     public Followed(){super();}
-    public Followed(int id_following,User user_followed,User user_following){
+    public Followed(int id_followed,User user_followed,User user_following){
         super();
-        this.id_following = id_following;
+        this.id_followed = id_followed;
         this.user_followed = user_followed;
         this.user_following = user_following;
     }
 
-    public int getId_following() {
-        return id_following;
+    public int getId_followed() {
+        return id_followed;
     }
 
-    public void setId_following(int id_following) {
-        this.id_following = id_following;
+    public void setId_followed(int id_followed) {
+        this.id_followed = id_followed;
     }
 
     public User getUser_followed() {

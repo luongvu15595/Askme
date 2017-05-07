@@ -25,7 +25,7 @@ public class VoteController {
     @Autowired
     UserService userService;
 
-    @RequestMapping(value = "/voteDownQuestion/{id}", method= RequestMethod.POST)
+    @RequestMapping(value = "/votedownquestion/{id}", method= RequestMethod.POST)
     @ResponseBody
     public void voteDownQuestion(@PathVariable(value="id") int  idQuestion, Principal principal) {
         String name = principal.getName();
@@ -33,7 +33,7 @@ public class VoteController {
         vote_questionService.down_Vote_Question(user.getId(),idQuestion);
     }
 
-    @RequestMapping(value = "/voteUpQuestion/{id}", method= RequestMethod.POST)
+    @RequestMapping(value = "/voteupquestion/{id}", method= RequestMethod.POST)
     @ResponseBody
     public void voteUpQuestion(@PathVariable(value="id") int  idQuestion,Principal principal) {
         if (principal != null) {
@@ -43,7 +43,7 @@ public class VoteController {
         }
         }
 
-    @RequestMapping(value = "/voteDownAnswer/{id}", method= RequestMethod.POST)
+    @RequestMapping(value = "/votedownanswer/{id}", method= RequestMethod.POST)
     @ResponseBody
     public void voteDownAnswer(@PathVariable(value="id") int  idAnswer,Principal principal) {
         if (principal != null) {
@@ -52,7 +52,7 @@ public class VoteController {
             vote_answerService.down_Vote_Answer(user.getId(), idAnswer);
         }}
 
-    @RequestMapping(value = "/voteUpAnswer/{id}", method= RequestMethod.POST)
+    @RequestMapping(value = "/voteupanswer/{id}", method= RequestMethod.POST)
     @ResponseBody
     public void voteUpAnswer(@PathVariable(value="id") int  idAnswer,Principal principal) {
         if (principal != null) {
