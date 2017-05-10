@@ -13,9 +13,9 @@
     <script src="/js/app.js"></script>
 
 </head>
-<body ng-app="Askme" ng-controller="questionByUserController">
+<body ng-app="Askme" >
 <jsp:include page="header.jsp"/>
-<div class="container">
+<div class="container" ng-controller="questionByUserController" ng-init="getQuestionByUser(${user.id})">
     <table class="table table-striped">
         <tbody>
         <tr ng-repeat="question in questions">

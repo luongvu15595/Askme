@@ -41,22 +41,39 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findById(int id) {
+
         return userRepository.findById(id);
     }
 
     @Override
     public List<User> listUser() {
-        return userRepository.listUser();
+        List<User> list =userRepository.listUser();
+//        System.out.println(list.size());
+        for(int i = list.size()-1;i>=0; i-- ){
+            if (isAdmin(list.get(i)) == 1) {
+                  list.remove(list.get(i));
+            }
+        }
+        return list;
     }
 
     @Override
     public int isAdmin(User user) {
         for (Role role : user.getRoles()){
-            System.out.println(role.getName() + "-");
-        }
-        for (Role role : user.getRoles()){
             if (role.getName().equals("ROLE_ADMIN")) return 1;
         }
         return 0;
+    }
+
+    @Override
+    public void updatePassword(User user) {
+        User user1 = userRepository.findById(user.getId());
+        user1.setPassword(user.getPassword());
+        userRepository.update(user1);
+    }
+
+    @Override
+    public void del(int idUser) {
+        userRepository.del(idUser);
     }
 }

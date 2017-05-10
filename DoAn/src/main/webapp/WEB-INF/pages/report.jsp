@@ -11,7 +11,9 @@
     <script src="http://mbenford.github.io/ngTagsInput/js/ng-tags-input.min.js"></script>
     <script src="/js/app.js"></script>
 </head>
-<body ng-app="Askme" ng-controller="ReportController">
+<body ng-app="Askme" >
+<jsp:include page="header.jsp"/>
+<div class="container"ng-controller="ReportController">
     <form ng-submit="submitReport(${idquestion})">
         <div class="col-sm-12 ">  &nbsp; </div>
         <div class="col-sm-12 ">  &nbsp; </div>
@@ -21,7 +23,7 @@
         <div class="col-sm-12 input">
             <div class="col-sm-3">&nbsp;</div>
             <div class="col-sm-6">
-                <textarea type="text" rows="4" class="form-control" ng-model="content" required></textarea>
+                <textarea type="text" rows="4" class="form-control" ng-model="formreport.content" required></textarea>
             </div>
         </div>
         <div class="col-sm-12 ">  &nbsp; </div>
@@ -33,5 +35,7 @@
             </div>
         </div>
     </form>
+</div>
+
 </body>
 </html>

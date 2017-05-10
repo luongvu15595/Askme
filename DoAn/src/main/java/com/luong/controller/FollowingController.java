@@ -43,11 +43,11 @@ public class FollowingController {
     @RequestMapping(value = "/following/{id}", method= RequestMethod.POST)
     @ResponseBody
     public void following(@PathVariable(value="id") int  id_userfollowing,Principal principal) {
-        if (principal != null) {
+
             String name = principal.getName();
             User user = userService.findByEmail(name);
             followingService.add(user.getId(), id_userfollowing);
-        }
+
     }
 
     @RequestMapping(value = "/destroyfollowing/{id}", method= RequestMethod.DELETE)
@@ -56,7 +56,6 @@ public class FollowingController {
         if (principal != null) {
             String name = principal.getName();
             User user = userService.findByEmail(name);
-            System.out.println(id_userfollowing);
             followingService.destroy(user.getId(), id_userfollowing);
         }
     }
@@ -65,11 +64,8 @@ public class FollowingController {
     @ResponseBody
     public Map<Integer, Map<String, Long>> getmapfollowing( Principal principal) {
         User user = new User();
-        if (principal != null) {
-            String email = principal.getName();
-            user = userService.findByEmail(email);
-        }
-
+        String email = principal.getName();
+        user = userService.findByEmail(email);
         return followingService.followingUserData( user);
     }
 

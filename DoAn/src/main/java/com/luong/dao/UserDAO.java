@@ -11,4 +11,6 @@ public interface UserDAO {
 
     void save(User user);
     List<User> listUser();
+    public void update(User user);
+    public void del(int  id);
 }

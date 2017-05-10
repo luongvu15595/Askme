@@ -43,7 +43,6 @@ public class Vote_QuestionDAOImpl implements Vote_QuestionDAO {
         }
         catch (Exception e){
 
-            e.printStackTrace();
             return  null;
         }
 
@@ -66,10 +65,6 @@ public class Vote_QuestionDAOImpl implements Vote_QuestionDAO {
 
     @Override
     public void update_Vote_Question(Vote_Question vote_question) {
-      //  Vote_Question vote_question = em.find(Vote_Question)
-     //   em.getTransaction().begin();
         em.merge(vote_question);
-      //  em.getTransaction().commit();
-
     }
 }

@@ -13,30 +13,79 @@
     <script src="/js/app.js"></script>
     <style>
 
-        .right{
-            float: right;
+        .username{
+            font-size: 15px;
         }
-        .center{
-            margin-top: 5px;
+        .body{
+            margin-top: 3em;
+            text-align: justify;
+        }
+
+        .tag-group{
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .tagtext{
+            color: white;
+        }
+
+        .tags{
+            margin-right: 7px;
+        }
+        .count{
+            margin-top: 14px;
+            font-weight: bold;
+        }
+        h4{
+            font-weight: bold;
+            font-size: 23px;
+            line-height: 1.46667em;
+            display: block;
+        }
+        .labelAnswer{
+            width: 70px;
+        }
+        .table1{
+            margin-left: 15px;
+        }
+        h1{
+           margin-left: 200px;
         }
     </style>
 </head>
 <body ng-app="Askme" ng-controller="listquestionbytopicController">
 <jsp:include page="header.jsp"/>
 <h1>${topic.name}</h1>
-<div class="container">
-    <table class="table table-striped">
-        <tbody>
-        <tr ng-repeat="question in questions">
-            <td><a ng-href="/question/{{question.id_question}}"><h4>{{question.title}}</h4></a>
-                <br><i>Create by: </i><div class="right"><i>Time:</i></div><br>
-                <span>{{question.user.name}}</span>
-                <div class="right"><span>{{question.time | date : 'yyyy/MM/dd' }}</span></div>
-            </td>
+<div class="container body ">
+<div class="row">
+    <table class="table table-striped table1">
+        <tbody  ng-init= "getQuestionByTopicData(${topic.id})">
 
+        <tr ng-repeat="question in questionbytopics">
+            <td class="labelAnswer" > <div class="count labelAnswer">{{countanswerquestionbytopics[question.id_question]}}
+                <br>
+                <b>Answer</b>
+            </div>
+            </td>
+            <td class="labelAnswer" > <div class="count labelAnswer">{{countvoteupquestionbytopicdatas[question.id_question]}}
+                <br>
+                <b>upvote</b>
+            </div>
+            </td>
+            <td>
+                <div class="col-sm-12"><a ng-href="/question/{{question.id_question}}">
+                    <h4>{{question.title}}</h4>
+                </a>
+                </div>
+                <div class="col-sm-12 username">
+                    <span><i><a href="/{{question.user.id}}">{{question.user.name}}</a></i></span>
+                    <span><i>,{{question.time | date : 'hh:mm:ss dd/MM/yyyy' }}</i></span></div>
+            </td>
         </tr>
         </tbody>
     </table>
+</div>
 </div>
 </body>
 </html>

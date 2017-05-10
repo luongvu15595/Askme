@@ -15,26 +15,33 @@
     <style>
 
         .right{
-            float: right;
+            font-size: 20px;
+            margin-top: 15px;
         }
-        .center{
-            margin-top: 5px;
+        .right1{
+            font-size: 20px;
+            margin-top: 25px;
+        }
+
+        .hr{
+            border-top: 1px solid #ccc;
+            margin-top: 35px;
         }
 </style>
 </head>
 <body ng-app="Askme" ng-controller="listOfTopicController">
 <jsp:include page="header.jsp"/>
 <div class="container">
-    <table class="table table-striped">
-        <tbody>
-        <tr ng-repeat="topic in topics">
-            <td><a ng-href="/topic/{{topic.id}}"> {{topic.name}}</a>
-                <br>
-                <b>Answer</b>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+    <div class="row" >
+        <div class="col-sm-12">
+            <span class=" col-sm-4 " ng-repeat="topic in topics">
+                <div class="hr"></div>
+                <div ><a ng-href="/topic/{{topic.id}}"><button class="btn btn-info right">{{topic.name}}</button></a>
+                <span class="right1"> x {{countquestionbytopics[topic.id]}}</span></div >
+            </span>
+        </div>
+    </div>
+
 </div>
 </body>
 </html>

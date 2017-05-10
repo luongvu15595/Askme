@@ -73,27 +73,12 @@ public class QuestionController {
 
     }
 
-    //tao cau hoi
-//    @RequestMapping(value = "/createQuestion/{name}", method = RequestMethod.POST, headers = "Accept=Application/json;charset=UTF-8")
-//    public
-//    @ResponseBody
-//    Question createQuestion1(@RequestBody Question question, @PathVariable("name") String name, Principal principal) {
-//        if(principal!=null) {
-//            String email = principal.getName();
-//            User user = userService.findByEmail(email);
-//            questionService.add(question, user);
-//            Topic_Qestion topic_qestion = new Topic_Qestion();
-//            topic_questionService.add(topic_qestion, name, question);
-//        }
-//        return question;
-//    }
     @RequestMapping(value = "/image/{id}", method = RequestMethod.GET)
     public  void   loadimage(@PathVariable("id") int id,HttpServletResponse response) throws IOException {
          response.setContentType("image/png");
           QuestionDTO question = questionService.findById(id);
           String url = question.getImage();
           url = "C:\\testUpload\\" +url;
-        System.out.println(url);
           BufferedImage image = ImageIO.read(new File(url));
           ImageIO.write(image, "png", response.getOutputStream());
 
@@ -104,6 +89,7 @@ public class QuestionController {
     @ResponseBody
     Object createQuestion1(@RequestParam(value = "question") String question, @RequestParam(value = "file") MultipartFile file, HttpServletRequest request, @RequestParam(value = "topic") String topic, Principal principal) {
         String email = principal.getName();
+        System.out.println(topic);
         List<String> listtopic = topicService.cut(topic);
         User user = userService.findByEmail(email);
         System.out.println("Inside File upload " + question);
@@ -120,17 +106,19 @@ public class QuestionController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        String path = "C:\\testUpload\\";
-        System.out.println("Root Directory" + path);
-        try {
-            InputStream inputStream = file.getInputStream();
-            FileUtils.forceMkdir(new File(path));
-            file.transferTo(new File(path + file.getOriginalFilename()));
-            String imageUpload = file.getOriginalFilename();
-            System.out.println(imageUpload);
-            question1.setImage(imageUpload);
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(!file.isEmpty()) {
+            String path = "C:\\testUpload\\";
+            System.out.println("Root Directory" + path);
+            try {
+                InputStream inputStream = file.getInputStream();
+                FileUtils.forceMkdir(new File(path));
+                file.transferTo(new File(path + file.getOriginalFilename()));
+                String imageUpload = file.getOriginalFilename();
+                System.out.println(imageUpload);
+                question1.setImage(imageUpload);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         question1 = questionService.add(question1, user);
         topic_questionService.add(listtopic, question1);
@@ -190,7 +178,6 @@ public class QuestionController {
     @ResponseBody
 
     public List<Question> listsearchQuestion(@PathVariable("string") String string) {
-        System.out.println(string);
         if (!questionService.search(string).isEmpty()) {
             return questionService.search(string);
         } else return null;
@@ -200,7 +187,20 @@ public class QuestionController {
     @RequestMapping(value = "/getAllQuestionByidTopic/{id}", method = RequestMethod.GET, headers = "Accept=Application/json")
     @ResponseBody
     public List<Question> getnametopic(@PathVariable("id") int id) {
+
         return topic_questionService.findQuestionByTopic(id);
+    }
+
+    @RequestMapping(value = "/getcountanswerAllQuestionByidTopic/{id}", method = RequestMethod.GET, headers = "Accept=Application/json")
+    @ResponseBody
+    public Map<Integer,Long> mapcountanswerbyquestionfortopic(@PathVariable("id") int id) {
+        return questionService.countanswerquestionbytopic(id);
+    }
+
+    @RequestMapping(value = "/mapcountupvotebyquestionfortopic/{id}", method = RequestMethod.GET, headers = "Accept=Application/json")
+    @ResponseBody
+    public Map<Integer,Long> mapCountupVoteByQuestionForTopic(@PathVariable("id") int id) {
+        return questionService.countUpVotequestionbytopic(id);
     }
 
     // lay ra tat ca question theo user
@@ -229,7 +229,7 @@ public class QuestionController {
     //ngay 17/4
     // update question
     //26-4 : edit Question
-    @RequestMapping(value = "/updatequestion", method = RequestMethod.PUT)
+    @RequestMapping(value = "/updatequestion", method = RequestMethod.PUT,headers = "Accept=Application/json")
     @ResponseBody
     public void updatequestion(@RequestBody Question question) {
         questionService.update(question);
@@ -261,6 +261,18 @@ public class QuestionController {
         return questionService.countUpVote();
     }
 
+
+    @RequestMapping(value = "/countvoteuphotweek",method = RequestMethod.GET)
+    @ResponseBody
+    public  Map<Integer,Long> countVoteUpHotWeek(){
+        return questionService.countUpVoteHotWeek();
+    }
+
+    @RequestMapping(value = "/countvoteuphotmonth",method = RequestMethod.GET)
+    @ResponseBody
+    public  Map<Integer,Long> countVoteUpHotMonth(){
+        return questionService.countUpVoteHotMonth();
+    }
 
     @RequestMapping(value = "/listquestionhotweek",method = RequestMethod.GET)
     @ResponseBody

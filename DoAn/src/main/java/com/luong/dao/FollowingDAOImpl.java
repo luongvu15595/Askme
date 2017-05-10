@@ -24,7 +24,12 @@ public class FollowingDAOImpl implements FollowingDAO {
 
     @Override
     public void add(Following following) {
-        em.persist(following);
+        System.out.println(following.getUser_followed()+ "add");
+        try {
+            em.persist(following);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Override
@@ -38,7 +43,6 @@ public class FollowingDAOImpl implements FollowingDAO {
                     .setParameter(2,user_following).getSingleResult();
             return following;
         }catch (Exception e){
-            e.printStackTrace();
             return null;
         }
     }
@@ -46,9 +50,8 @@ public class FollowingDAOImpl implements FollowingDAO {
     @Override
     public void Destroy(Following following) {
         int id = following.getId_following();
-        System.out.println("2");
         em.createQuery("DELETE FROM Following f WHERE f.id_following= :id ").setParameter("id",id).executeUpdate();
-        System.out.println("3");
+
     }
 
 

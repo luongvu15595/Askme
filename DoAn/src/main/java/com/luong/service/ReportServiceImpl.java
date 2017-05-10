@@ -7,6 +7,8 @@ import com.luong.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created by HP on 4/24/2017.
  */
@@ -28,5 +30,10 @@ public class ReportServiceImpl implements ReportService {
             reportDAO.add(report);
         }
         else return;
+    }
+
+    @Override
+    public List<Report> listReports() {
+        return  reportDAO.listReports();
     }
 }

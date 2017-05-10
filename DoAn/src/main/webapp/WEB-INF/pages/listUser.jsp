@@ -32,7 +32,7 @@
 
             <td>
                 <span><a ng-href="/{{user.id}}"><h4>{{user.name}}</h4></a></span>
-                <span ng-if="kiemtra == 1">
+                <span ng-if="kiemtra == 1|| kiemtra == 3">
                     <span ng-if="following[user.id]['following'] == 1">
                         <button type="button" class="btn btn-success" ng-click="clickfollowing(user.id)">
                             following
@@ -43,6 +43,31 @@
                             following
                         </button>
                     </span>
+                </span>
+                <span ng-if="kiemtra == 3">
+                     <button type="button" class="btn" data-toggle="modal" data-target="#delModalQuestion">
+                        Xoa
+                    </button>
+                    <div class="modal fade" id="delModalQuestion" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h3 class="modal-title"> {{user.name}}</h3>
+                                </div>
+                                <div class="modal-body">
+                                    <h4>Xoa bo nguoi dung ??</h4>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">&nbsp;Giu
+                                    </button>
+                                        <button type="button" class="btn btn-default"
+                                                ng-click="delUser(user)">Xoa
+                                        </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </span>
             </td>
 

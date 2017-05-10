@@ -13,19 +13,63 @@
     <script src="/js/app.js"></script>
 
     <style>
+        .toptabs{
+            margin-top: 30px;
+        }
+        .topcontent{
+            margin-top: 50px;
+        }
+        .top{
+            margin-top: 10px;
+        }
 
-        .right{
-            float: right;
+        .image{
+            width: 150px;
         }
         .center{
-            margin-top: 5px;
+            margin-top: 25px;
+        }
+        .information{
+            width: 820px;
+            float: right;
+            height: 150px;
+            margin-bottom: 50px;
         }
     </style>
 </head>
 <body ng-app="Askme" ng-controller="profile">
 <jsp:include page="header.jsp"/>
-<h1>${user.name}</h1>
-<h2><a href="/${user.id}/question">Questions(${question})</a></h2>
-<h2><a href="/${user.id}/answer">Answers(${answer})</a></h2>
+<div class="container body" ng-controller="QuestionController">
+    <div class="row">
+        <ul class="nav nav-tabs toptabs">
+            <li class="active"><a data-toggle="tab" href="#profile">thông tin cá nhân</a></li>
+            <li><a data-toggle="tab" href="#active">Hoạt động</a></li>
+            <li><a data-toggle="tab" href="#editprofile">sửa thông tin cá nhân</a></li>
+        </ul>
+
+        <div class="tab-content topcontent">
+            <div id="profile" class="tab-pane fade in active center">
+                <span class="image"><img src="/imageuser/${user.id}" width="150px" height="150px"/></span>
+                <span class="information">
+                <div>
+                    <h1>${user.name}</h1>
+                </div>
+                <div class="top">
+                    ${user.email}
+                </div>
+                <div class="top">
+                    <a href="/changepass">đổi mật khẩu</a>
+                </div>
+                </span>
+            </div>
+            <div id="active" class="tab-pane fade">
+                <h2><a href="/${user.id}/question">Questions(${question})</a></h2>
+                <h2><a href="/${user.id}/answer">Answers(${answer})</a></h2>
+            </div>
+            <div id="editprofile" class="tab-pane fade">
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

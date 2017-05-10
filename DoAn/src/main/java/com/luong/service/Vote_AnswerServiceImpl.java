@@ -53,10 +53,8 @@ public class Vote_AnswerServiceImpl implements Vote_AnswerService {
 
     @Override
     public void down_Vote_Answer(int idUser, int idAnswer) {
-        System.out.println("davao1");
         Vote_Answer vote_answer1 = vote_answerDAO.find(idUser,idAnswer);
         if (vote_answer1 == null){
-            System.out.println("davao2");
             Vote_Answer vote_answer = new Vote_Answer();
             vote_answer.setUser(userDAO.findById(idUser));
             vote_answer.setAnswer(answerDAO.findById(idAnswer));
@@ -66,7 +64,6 @@ public class Vote_AnswerServiceImpl implements Vote_AnswerService {
             vote_answerDAO.up_Vote_Answer(vote_answer);
         }
         else {
-            System.out.println("davao3");
             if (vote_answer1.getDownvote() ==1 )return;
             else {
                 vote_answer1.setUpvote(0);

@@ -225,8 +225,45 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
+    public Map<Integer, Long> countanswerquestionbytopic(int id) {
+        List<Question> questions = topic_questionService.findQuestionByTopic(id);
+        Map<Integer,Long> map = new HashMap<>();
+        Long count ;
+        for(int i =0;i<questions.size();i++){
+            count = answerDAO.count(questions.get(i).getId_question());
+            map.put(questions.get(i).getId_question(),count);
+        }
+
+        return map;
+    }
+
+    @Override
+    public Map<Integer, Long> countUpVotequestionbytopic(int id) {
+        List<Question> questions = topic_questionService.findQuestionByTopic(id);
+        Long voteup;
+        Map<Integer,Long> map = new HashMap<>();
+        for (int i=0;i<questions.size();i++){
+            voteup = vote_questionDAO.countUp(questions.get(i).getId_question());
+            map.put(questions.get(i).getId_question(),voteup);
+        }
+        return map;
+    }
+
+    @Override
     public Map<Integer, Long> countUpVote() {
         List<Question> questions = dao.listQuestion();
+        Long voteup;
+        Map<Integer,Long> map = new HashMap<>();
+        for (int i=0;i<questions.size();i++){
+            voteup = vote_questionDAO.countUp(questions.get(i).getId_question());
+            map.put(questions.get(i).getId_question(),voteup);
+        }
+        return map;
+    }
+
+    @Override
+    public Map<Integer, Long> countUpVoteHotWeek() {
+        List<Question> questions = dao.hotweek();
         Long voteup;
         Map<Integer,Long> map = new HashMap<>();
         for (int i=0;i<questions.size();i++){
@@ -283,6 +320,18 @@ public class QuestionServiceImpl implements QuestionService {
         for (int i=0;i<list.size();i++){
             topicList = topic_questionService.findTopicByQuestion(list.get(i).getId_question());
             map.put(list.get(i).getId_question(),topicList);
+        }
+        return map;
+    }
+
+    @Override
+    public Map<Integer, Long> countUpVoteHotMonth() {
+        List<Question> questions = dao.hotmonth();
+        Long voteup;
+        Map<Integer,Long> map = new HashMap<>();
+        for (int i=0;i<questions.size();i++){
+            voteup = vote_questionDAO.countUp(questions.get(i).getId_question());
+            map.put(questions.get(i).getId_question(),voteup);
         }
         return map;
     }

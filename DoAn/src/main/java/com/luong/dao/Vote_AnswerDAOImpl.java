@@ -44,7 +44,6 @@ public class Vote_AnswerDAOImpl implements Vote_AnswerDAO{
 
         }
         catch (Exception e){
-            e.printStackTrace();
             return  null;
         }
     }

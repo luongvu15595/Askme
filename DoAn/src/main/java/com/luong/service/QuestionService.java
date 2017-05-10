@@ -18,10 +18,14 @@ public interface QuestionService {
     public void update(Question question);
     public void del(int id);
     //6/5
+    public Map<Integer,Long> countanswerquestionbytopic(int id);
+    public Map<Integer,Long> countUpVotequestionbytopic(int id);
     public Map<Integer,Long> countUpVote();
+    public Map<Integer,Long> countUpVoteHotWeek();
     public Map<Integer,Long> countAnswerHotWeek();
     public List<Question> sortHotWeek();
     public Map<Integer,List> topicQuestionHotWeek();
+    public Map<Integer,Long> countUpVoteHotMonth();
     public Map<Integer,Long> countAnswerHotMonth();
     public List<Question> sortHotMonth();
     public Map<Integer,List> topicQuestionHotMonth();

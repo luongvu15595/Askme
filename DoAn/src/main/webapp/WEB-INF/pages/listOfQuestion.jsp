@@ -47,7 +47,10 @@
             display: block;
         }
         .labelAnswer{
-            margin-left: 10px;
+            width: 70px;
+        }
+        .table1{
+            margin-left: 15px;
         }
     </style>
 </head>
@@ -63,16 +66,16 @@
     <div class="tab-content">
         <div id="listQuestion" class="tab-pane fade in active">
             <div class="row">
-            <table class="table table-striped">
+            <table class="table table-striped table1">
             <tbody>
 
             <tr  ng-repeat="question in questions">
-            <td > <div class="count labelAnswer">{{countAnwsers[question.id_question]}}
+            <td class="labelAnswer"> <div class="count labelAnswer">{{countAnwsers[question.id_question]}}
             <br>
             <b>Answer</b>
             </div>
             </td>
-                <td> <div class="count">{{countVoteUps[question.id_question]}}
+                <td class="labelAnswer"> <div class="count">{{countVoteUps[question.id_question]}}
                     <br>
                     <b>VoteUp</b>
                 </div>
@@ -83,9 +86,8 @@
             </a>
             </div>
 
-            <div ng-init="list= topics[question.id_question] "></div>
             <div class="col-sm-12 tag-group">
-            <span ng-repeat="i in list" class="btn-sm btn-warning tags">
+            <span ng-repeat="i in topics[question.id_question]" class="btn-sm btn-warning tags">
             <a ng-href="/topic/{{i.id}}" class="tagtext">{{i.name}}</a>
             </span>
             </div>
@@ -101,13 +103,18 @@
         </div>
         <div id="HotWeek" class="tab-pane fade">
             <div class="row">
-                <table class="table table-striped">
+                <table class="table table-striped table1">
                     <tbody>
 
                     <tr ng-repeat="questionsHotWeek in questionsHotWeeks">
-                        <td> <div class="count">{{countAnwserHotWeeks[questionsHotWeek.id_question]}}
+                        <td class="labelAnswer"> <div class="count">{{countAnwserHotWeeks[questionsHotWeek.id_question]}}
                             <br>
                             <b>Answer</b>
+                        </div>
+                        </td>
+                        <td class="labelAnswer"> <div class="count">{{countVoteUpHotWeeks[questionsHotWeek.id_question]}}
+                            <br>
+                            <b>VoteUp</b>
                         </div>
                         </td>
 
@@ -117,9 +124,9 @@
                             </a>
                             </div>
 
-                            <div ng-init="list1= topicHotWeeks[questionsHotWeek.id_question] "></div>
+
                             <div class="col-sm-12 tag-group">
-            <span ng-repeat="i1 in list1" class="btn-sm btn-warning tags">
+            <span ng-repeat="i1 in topicHotWeeks[questionsHotWeek.id_question]" class="btn-sm btn-warning tags">
             <a ng-href="/topic/{{i1.id}}" class="tagtext">{{i1.name}}</a>
             </span>
                             </div>
@@ -135,13 +142,19 @@
         </div>
         <div id="HotMonth" class="tab-pane fade">
             <div class="row">
-                <table class="table table-striped">
+                <table class="table table-striped table1">
                     <tbody>
 
                     <tr ng-repeat="questionsHotMonth in questionsHotMonths">
-                        <td> <div class="count">{{countAnwserHotMonths[questionsHotMonth.id_question]}}
+                        <td class="labelAnswer"> <div class="count">{{countAnwserHotMonths[questionsHotMonth.id_question]}}
                             <br>
                             <b>Answer</b>
+                        </div>
+                        </td>
+
+                        <td class="labelAnswer"> <div class="count">{{countVoteUpHotMonths[questionsHotMonth.id_question]}}
+                            <br>
+                            <b>VoteUp</b>
                         </div>
                         </td>
 
@@ -151,9 +164,9 @@
                             </a>
                             </div>
 
-                            <div ng-init="list2= topicHotMonths[questionsHotMonth.id_question] "></div>
+
                             <div class="col-sm-12 tag-group">
-            <span ng-repeat="i2 in list2" class="btn-sm btn-warning tags">
+            <span ng-repeat="i2 in topicHotMonths[questionsHotMonth.id_question]" class="btn-sm btn-warning tags">
             <a ng-href="/topic/{{i2.id}}" class="tagtext">{{i2.name}}</a>
             </span>
                             </div>
@@ -169,39 +182,5 @@
         </div>
     </div>
 </div>
-<%--<div class="container body" ng-controller="QuestionController">--%>
-    <%--<div class="row">--%>
-    <%--<table class="table table-striped">--%>
-        <%--<tbody>--%>
-
-        <%--<tr ng-repeat="question in questions">--%>
-            <%--<td> <div class="count">{{countAnwsers[question.id_question]}}--%>
-                <%--<br>--%>
-                <%--<b>Answer</b>--%>
-            <%--</div>--%>
-            <%--</td>--%>
-
-            <%--<td>--%>
-                <%--<div class="col-sm-12"><a ng-href="/question/{{question.id_question}}">--%>
-                      <%--<h4>{{question.title}}</h4>--%>
-                    <%--</a>--%>
-                <%--</div>--%>
-
-                <%--<div ng-init="list= topics[question.id_question] "></div>--%>
-                <%--<div class="col-sm-12 tag-group">--%>
-                <%--<span ng-repeat="i in list" class="btn-sm btn-warning tags">--%>
-                    <%--<a ng-href="/topic/{{i.id}}" class="tagtext">{{i.name}}</a>--%>
-                <%--</span>--%>
-                <%--</div>--%>
-                <%--<div class="col-sm-12 username">--%>
-                    <%--<span><i><a href="/{{question.user.id}}">{{question.user.name}}</a></i></span>--%>
-                    <%--<span><i>,{{question.time | date : 'hh:mm:ss dd/MM/yyyy' }}</i></span></div>--%>
-            <%--</td>--%>
-
-        <%--</tr>--%>
-        <%--</tbody>--%>
-    <%--</table>--%>
-<%--</div>--%>
-<%--</div>--%>
 </body>
 </html>

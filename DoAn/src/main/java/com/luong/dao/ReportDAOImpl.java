@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 
 /**
  * Created by HP on 4/24/2017.
@@ -35,9 +36,12 @@ public class ReportDAOImpl implements ReportDAO {
 
         }
         catch (Exception e){
-
-            e.printStackTrace();
             return  null;
         }
     }
+    @Override
+    public List<Report> listReports() {
+        return em.createQuery("select u from Report u").getResultList();
+    }
+
 }

@@ -32,14 +32,11 @@ public class QuestionDAOImpl implements QuestionDAO {
 
     @Override
     public void add(Question question) {
-
         try {
             em.persist(question);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-
-
     }
 
     @Override

@@ -9,20 +9,27 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="http://mbenford.github.io/ngTagsInput/css/ng-tags-input.min.css" />
+    <script src="http://mbenford.github.io/ngTagsInput/js/ng-tags-input.min.js"></script>
+    <script src="/js/app.js"></script>
+    <%--//9/5--%>
+
+    <%--//9/5--%>
     <style type="text/css">
         .title {
             font-size: 30px;
+            margin-top: 1em;
+            text-align: justify;
         }
 
         .content {
-            margin-top: 5px;
-            font-size: 20px;
-            border-style: outset;
+            margin-top: 15px;
+            font-size: 15px;
+            padding: 15px;
+            margin-left: 10px;
         }
-
-        .content1 {
-            margin-top: 20px;
-
+        .updown{
+            margin-top: 10px;
         }
 
         .createby {
@@ -31,7 +38,12 @@
         }
 
         .infor {
-            font-size: 12px;
+            font-size: 15px;
+            margin-top: 5px;
+        }
+
+        .infor1 {
+            font-size: 15px;
             margin-top: 5px;
         }
 
@@ -40,152 +52,248 @@
         }
 
         .text {
-            font-size: 15px;
+            font-size: 13px;
         }
 
         .contentanswer {
             font-size: 15px;
+            padding:15px;
         }
 
         .answer {
             margin-top: 15px;
         }
-        .height{
-            height : 50%;
+
+        .answertext{
+            margin-top: 1em;
+            margin-bottom: 0.5em;
+        }
+
+        .hr{
+            border-top: 1px solid #ccc;
+            margin-top: 35px;
+            margin-left: 15px;
+        }
+
+        .hr1{
+            border-top: 1px solid #ccc;
+            margin-left: 15px;
+        }
+
+        .comment{
+            margin-bottom: 1em;
+        }
+        .image{
+            margin-top: 15px;
+        }
+        .link{
+            margin-top: 15px;
+            float: left;
+        }
+        .createby{
+            margin-left: 0px;
         }
     </style>
 
 </head>
-<body ng-app="Askme" ng-controller="AnswerController">
+<body ng-app="Askme">
+<div id="fb-root"></div>
+<script>
+    window.fbAsyncInit = function() {
+        FB.init({appId: '1028308307300721', status: true, cookie: true,
+            xfbml: true});
+    };
+    (function() {
+        var e = document.createElement('script'); e.async = true;
+        e.src = document.location.protocol +
+            '//connect.facebook.net/en_US/all.js';
+        document.getElementById('fb-root').appendChild(e);
+    }());
+</script>
+<jsp:include page="header.jsp"/>
 
-<div class="container title">
+<div class="container title"  ng-controller="AnswerController" ng-init="
+                                                               question = {
+                                                                                id_question: '${question.id_question}',
+                                                                                title: '${question.title}',
+                                                                                time: '${question.time}',
+                                                                                content: '${question.content}',
+                                                                                image: '${question.image}',
+                                                                                user: {
+                                                                                id: '${question.user.id}',
+                                                                                name: '${question.user.name}',
+                                                                                email: '${question.user.email}'
+                                                                                }
+
+                                                                           };
+                                                                upQuestion =${up_vote_question};
+                                                                DownQuestion =${down_vote_question};
+                                                                voted =${voted};
+                                                                isAdmin =${isAdmin};
+                                                                nginit('${question.id_question}');
+                                                                                   ">
     <div class="row">
 
-        <div    class="col-sm-12">
-            <label><b>{{question.title}}</b></label>
-            <img src="/image/${question.id_question}" width="600px" height="400px"/>
-            <label class="createby" ng-if="kiemtra == 1">
-                <a href="/report/{{question.id_question}}">
-                    <button type="button" class="btn">
-                        report
-                    </button>
-                </a>
-                <!-- Modal 28-4-->
-                <label ng-if="question.user.id == ${userlogin.id} || ${isAdmin} == 1">
-                    <button type="button" class="btn" data-toggle="modal" data-target="#delModalQuestion">
-                        Xoa
-                    </button>
+        <div class="col-sm-12">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-9"><label class="title1"><b>{{question.title}}</b></label></div>
+        </div>
 
+        <div class="col-sm-12 infor">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-10">
+                <span><a href="/{{question.user.id}}">{{question.user.name}}</a></span>
+                <span>,{{question.time | date : 'hh:mm dd/MM/yyyy'}}</span>
+            </div>
 
-                    <div class="modal fade" id="delModalQuestion" role="dialog">
-                        <div class="modal-dialog">
-                            <!-- Modal content-->
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h3 class="modal-title"> {{question.title}}</h3>
-                                </div>
-                                <div class="modal-body">
-                                    <h4>Xoa bo bai dang ??</h4>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">&nbsp;Giu
-                                    </button>
-                                    <a href="/">
-                                        <button type="button" class="btn btn-default"
-                                                ng-click="delQuestion()">Xoa
+        </div>
+        <div class="col-sm-12">
+            <div class="col-sm-2 updown">
+                <div ng-if="voted == 1">
+
+                    <button type="button" class="btn btn-success" ng-click="clickUp()">
+                        &nbsp; &nbsp;Up &nbsp;
+                    </button>
+                    <button type="button" class="btn" ng-click="clickDown()">
+                        Down
+                    </button>
+                </div>
+                <div ng-if="voted == 2">
+                    <button type="button" class="btn" ng-click="clickUp()">
+                        &nbsp; &nbsp;Up &nbsp;
+                    </button>
+                    <button type="button" class="btn btn-danger" ng-click="clickDown()">
+                        Down
+                    </button>
+                </div>
+                <div ng-if="voted ==0">
+                    <button type="button" class="btn" ng-click="clickUp()">
+                        &nbsp;&nbsp;Up &nbsp;
+                    </button>
+                    <button type="button" class="btn" ng-click="clickDown()">
+                        Down
+                    </button>
+                </div>
+                <br>
+                <div class="text"><b><label>{{upQuestion}} upvote</label></b> || <b><label>{{DownQuestion}} downvote</label></b>
+                </div>
+            </div>
+
+            <div class="col-sm-9 content">
+	            <div>{{question.content}}</div>
+                <div class="image"><img src="/image/${question.id_question}" width="700px" height="400px"/></div>
+
+                <div class="link" ng-if="kiemtra == 1 || kiemtra == 3">
+                    <button ng-click="share()">SHARE</button>
+                    <span ng-if="question.user.id != ${userlogin.id} && ${isAdmin} != 1">
+                        <a href="/report/{{question.id_question}}">
+                            report
+                        </a>
+                    </span>
+                    <!-- Modal 28-4-->
+                    <span ng-if="question.user.id == ${userlogin.id} || ${isAdmin} == 1">
+                        <a type="button" class="btn" data-toggle="modal" data-target="#delModalQuestion">
+                            Xoa
+                        </a>
+                    </span>
+
+                        <div class="modal fade" id="delModalQuestion" role="dialog">
+                            <div class="modal-dialog">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h3 class="modal-title"> {{question.title}}</h3>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h4>Xoa bo bai dang ??</h4>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">&nbsp;Giu
                                         </button>
-                                    </a>
+                                        <a href="/">
+                                            <button type="button" class="btn btn-default"
+                                                    ng-click="delQuestion()">Xoa
+                                            </button>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </label>
-                <!-- Modal 28-4-->
-                <label ng-if="question.user.id == ${userlogin.id} ">
-                    <button type="button" class="btn" data-toggle="modal" data-target="#editModalQuestion"
-                            ng-click="questionmodal()">Sua
-                    </button>
 
+                    <!-- Modal 28-4-->
+                    <span ng-if="question.user.id == ${userlogin.id} ">
+                        <a type="button" class="btn" data-toggle="modal" data-target="#editModalQuestion"
+                                ng-click="questionmodal()">Sua
+                        </a>
+                    </span>
                     <div class="modal fade" id="editModalQuestion" role="dialog">
                         <div class="modal-dialog ">
                             <!-- Modal content-->
                             <div class="modal-content">
-                                <div class="modal-body height">
-                                    <div class="input col-sm-12">
-                                        <div class="col-sm-1"></div>
-                                        <div class="col-sm-10"><input type="text"  class="form-control"
-                                                                      ng-model="questionx.title"
-                                                                      required/></div>
-                                        <div class="col-sm-1"></div>
-                                    </div>
-                                    <div class="input col-sm-12">
-                                        <div class="col-sm-1"></div>
-                                        <div class="col-sm-10"><textarea type="text" rows="5" class="form-control"
-                                                                         ng-model="questionx.content"
-                                                                         required></textarea></div>
-                                        <div class="col-sm-1"></div>
-                                    </div>
+                                <div class="modal-body heightq">
+                                    <form name="myForm">
+                                        <div class="input col-sm-12">
+                                            <div class="col-sm-1"></div>
+                                            <div class="col-sm-10"><input type="text"  class="form-control" name="xtitle"
+                                                                          ng-model="questionx.title"
+                                                                          ng-minlength="10" ng-maxlength="100"
+                                                                          required/></div>
+                                            <div class="col-sm-1"></div>
+                                        </div>
+                                        <div class="input col-sm-12">
+                                            <div class="col-sm-1"></div>
+                                            <div class="col-sm-10"><textarea type="text" rows="5" class="form-control" name="xcontent"
+                                                                             ng-model="questionx.content"
+                                                                             ng-minlength="10" ng-maxlength="500"
+                                                                             required></textarea></div>
+                                            <div class="col-sm-1"></div>
+                                        </div>
+                                        <div class=" col-sm-12">
+                                            <div class="col-sm-1"></div>
+                                            <div class="col-sm-10" style="color:red">
+                                              <span class="error" ng-show="myForm.xtitle.$error.minlength">
+                                                <h4>Tiêu đề quá ngắn !! </h4>
+                                              </span>
+                                                <span class="error" ng-show="myForm.xtitle.$error.maxlength">
+                                                  <h4>Tiêu đề quá dài !! </h4>
+                                              </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12" style="color:red">
+                                            <div class="col-sm-1"></div>
+                                            <div class="col-sm-10">
+                                                <div class="error" ng-show="myForm.xcontent.$error.minlength">
+                                                    <h4>Nội dung quá ngắn !! </h4>
+                                                </div>
+                                                <div class="error" ng-show="myForm.xcontent.$error.maxlength">
+                                                    <h4>Nội dung quá dài !! </h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default" data-dismiss="modal">&nbsp;Giu
                                     </button>
-                                    <button type="button" class="btn btn-default" data-dismiss="modal"
-                                            ng-click="editQuestion()">Sua
+                                    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="editQuestion()"
+                                            ng-disabled="myForm.xtitle.$error.minlength || myForm.xtitle.$error.maxlength
+                                            || myForm.xcontent.$error.minlength || myForm.xcontent.$error.maxlength" >Sua
                                     </button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </label>
-            </label>
-        </div>
-        <div class="col-sm-2 content1">
-            <div ng-if="voted == 1">
 
-                <button type="button" class="btn btn-success" ng-click="clickUp()">
-                    &nbsp; &nbsp;Up &nbsp;
-                </button>
-                <button type="button" class="btn" ng-click="clickDown()">
-                    Down
-                </button>
-            </div>
-            <div ng-if="voted == 2">
-                <button type="button" class="btn" ng-click="clickUp()">
-                    &nbsp; &nbsp;Up &nbsp;
-                </button>
-                <button type="button" class="btn btn-danger" ng-click="clickDown()">
-                    Down
-                </button>
-            </div>
-            <div ng-if="voted ==0">
-                <button type="button" class="btn" ng-click="clickUp()">
-                    &nbsp;&nbsp;Up &nbsp;
-                </button>
-                <button type="button" class="btn" ng-click="clickDown()">
-                    Down
-                </button>
-            </div>
-            <br>
-            <div class="text"><b><label>{{upQuestion}} upvote</label></b> || <b><label>{{DownQuestion}} downvote</label></b>
+                </div>
+
             </div>
         </div>
 
-        <div class="col-sm-10 content contentanswer ">
-            <label>{{question.content}}</label>
-        </div>
-        <div class="col-sm-12 infor">
-            <div class="col-sm-2">&nbsp;</div>
-            <label>create By</label>
-            <div class="createby"><label>Time</label></div>
-            <br>
-            <div class="col-sm-2">&nbsp;</div>
-            <label>{{question.user.name}}</label>
-            <div class="createby"><label>{{question.time | date : 'yyyy/MM/dd'}}</label></div>
-        </div>
+        <div class="hr col-sm-11"></div>
 
         <div class="col-sm-12 answer"><h2>Answer : </h2></div>
-        <div ng-repeat=" answer in answers">
-            <div class="col-sm-2 content1">
+        <div ng-repeat=" answer in answers" class="col-sm-12 answertext">
+            <div class="col-sm-2 ">
                 <div ng-if="VoteAnswer[answer.id]['voted'] == 0">
                     <button type="button" class="btn" ng-click="clickUpAnswer(answer.id)">
                         &nbsp; &nbsp;Up &nbsp;
@@ -221,88 +329,110 @@
                 </div>
             </div>
 
-            <div class="col-sm-10 content contentanswer ">
-                <label>{{answer.content}}</label>
-            </div>
-            <div class="col-sm-12 infor">
-                <div class="col-sm-2">&nbsp;</div>
-                <label>Create by</label>
-                <div class="createby"><label>Time</label></div>
-                <br>
-                <div class="col-sm-2">&nbsp;</div>
-                <label>{{answer.user.name}}</label>
-                <div class="createby"><label>{{answer.time | date : 'yyyy/MM/dd' }}</label></div>
-                <br>
-                <div class="col-sm-2">&nbsp;</div>
+            <div class="col-sm-10 infor1">
+                <div class="col-sm-12">
+                    <span><i><a href="/{{answer.user.id}}">{{answer.user.name}}</a></i></span>
+                    <span><i>{{answer.time | date : 'hh:mm dd/MM/yyyy' }}</i></span>
+                </div>
+                <div class="col-sm-12">
+                    <div>{{answer.content}}</div>
+                    <div class="link">
 
-                <!--25/4 user co the ua va xoa cau tra loi cua minh-->
-                <div ng-if="answer.user.email == '${userlogin.email}' || ${isAdmin} == 1">
 
-                    <button type="button" class="btn" data-toggle="modal" data-target="#delModalAnswer"
-                            ng-click="answermodal(answer)">Xoa
-                    </button>
-                    <!-- Modal -->
+                        <!--25/4 user co the ua va xoa cau tra loi cua minh-->
+                        <div class="createby" ng-if="answer.user.email == '${userlogin.email}' || ${isAdmin} == 1">
 
-                    <div class="modal fade" id="delModalAnswer" role="dialog">
-                        <div class="modal-dialog">
-                            <!-- Modal content-->
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h3 class="modal-title"> {{answerx.content}}</h3>
-                                </div>
-                                <div class="modal-body">
-                                    <h4>Xoa bo cau tra loi ??</h4>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">&nbsp;Giu
-                                    </button>
-                                    <button type="button" class="btn btn-default" data-dismiss="modal"
-                                            ng-click="delAnswer()">Xoa
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                            <a type="button" class="btn" data-toggle="modal" data-target="#delModalAnswer"
+                                    ng-click="answermodal(answer)">Xoa
+                            </a>
+                            <!-- Modal -->
 
-                    <!--25/4 user co the ua va xoa cau tra loi cua minh-->
-                    <button type="button" class="btn" data-toggle="modal" data-target="#editModalAnswer"
-                            ng-click="answermodal(answer)">Sua
-                    </button>
-
-                    <div class="modal fade" id="editModalAnswer" role="dialog">
-                        <div class="modal-dialog">
-                            <!-- Modal content-->
-                            <div class="modal-content">
-                                <div class="modal-body">
-                                    <div class="input">
-                                        <div class="col-sm-2">&nbsp;</div>
-                                        <div class="col-sm-8"><textarea type="text" rows="4" class="form-control"
-                                                                        ng-model="AnswereditForm.content"
-                                                                        required></textarea></div>
+                            <div class="modal fade" id="delModalAnswer" role="dialog">
+                                <div class="modal-dialog">
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h3 class="modal-title"> {{answerx.content}}</h3>
+                                        </div>
+                                        <div class="modal-body">
+                                            <h4>Xoa bo cau tra loi ??</h4>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">&nbsp;Giu
+                                            </button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal"
+                                                    ng-click="delAnswer()">Xoa
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">&nbsp;Giu
-                                    </button>
-                                    <button type="button" class="btn btn-default" data-dismiss="modal"
-                                            ng-click="editAnswer(answer)">Sua
-                                    </button>
+                            </div>
+
+                            <!--25/4 user co the ua va xoa cau tra loi cua minh-->
+                            <a type="button" class="btn" data-toggle="modal" data-target="#editModalAnswer"
+                                    ng-click="answermodal(answer)">Sua
+                            </a>
+
+                            <div class="modal fade" id="editModalAnswer" role="dialog">
+                                <div class="modal-dialog">
+
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                        <div class="modal-body heighta">
+                                            <form name="myForm">
+                                                <div class="input col-sm-12">
+                                                    <div class="col-sm-1"></div>
+                                                    <div class="col-sm-10"><textarea type="text" rows="5" class="form-control" name="aswcontentedit"
+                                                                                     ng-model="AnswereditForm.content"
+                                                                                     ng-minlength="10" ng-maxlength="500"
+                                                                                     required></textarea></div>
+                                                    <div class="col-sm-1"></div>
+                                                </div>
+                                                <div class=" col-sm-12">
+                                                    <div class="col-sm-1"></div>
+                                                    <div class="col-sm-10">
+                                              <span class="error" ng-show="myForm.aswcontentedit.$error.minlength">
+                                                <h4>Tiêu đề quá ngắn !! </h4>
+                                              </span>
+                                                        <span class="error" ng-show="myForm.aswcontentedit.$error.maxlength">
+                                                  <h4>Tiêu đề quá dài !! </h4>
+                                              </span>
+                                                    </div>
+                                                </div>
+
+                                            </form>
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">&nbsp;Giu
+                                            </button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal"
+                                                    ng-click="editAnswer(answer)"
+                                                    ng-disabled="myForm.aswcontentedit.$error.minlength || myForm.aswcontentedit.$error.maxlength">
+                                                Sua
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
+
+
+
+
             </div>
+            <div class="hr1 col-sm-11"></div>
         </div>
-        <div ng-if="kiemtra == 1">
+        <div ng-if="kiemtra == 1 || kiemtra == 3">
             <form ng-submit="submitAnswer('${userlogin.name}','${userlogin.email}')">
                 <div class="col-sm-12 input">
                     <div class="col-sm-2">&nbsp;</div>
-                    <div class="col-sm-8"><textarea type="text" rows="10" class="form-control"
+                    <div class="col-sm-8 comment"><textarea minlength="10" maxlength="200" type="text" rows="5" class="form-control"
                                                     ng-model="AnswerForm.content" required></textarea></div>
                     <div class="col-sm-2">
-                        <input type="submit" class="btn btn-primary" value="Submit"/>
+                        <input type="submit" class="btn btn-primary" value="Comment"/>
                     </div>
                 </div>
             </form>
@@ -313,281 +443,7 @@
 
     </div>
 </div>
-<script type="text/javascript">
-    var Askme = angular.module("Askme", []);
-    Askme.controller("AnswerController", function ($scope, $http) {
-        $scope.kiemtra = 0;
-        checkdangnhap();
-        $scope.question = {
-            id_question: "${question.id_question}",
-            title: "${question.title}",
-            content: "${question.content}",
-            user: {
-                id: "${question.user.id}",
-                name: "${question.user.name}",
-                email: "${question.user.email}"
-            }
 
-        }
-
-        $scope.upQuestion =${up_vote_question};
-        $scope.DownQuestion =${down_vote_question};
-        $scope.voted =${voted};
-        $scope.isAdmin =${isAdmin};
-
-        $scope.AnswerForm = {
-            content: "",
-            image: ""
-        };
-        $scope.AnswereditForm = {
-            content: "",
-            image: ""
-        };
-
-        $scope.answers = [];
-        $scope.answer = {
-            id: "",
-            content: "",
-            image: ""
-        };
-        $scope.VoteAnswer = ["", []];
-
-        refreshAnswerData();
-        function refreshAnswerData() {
-            $http({
-                method: 'GET',
-                url: 'http://localhost:8080/getallanswer/${question.id_question}'
-            }).then(function successCallback(response) {
-                $scope.answers = response.data;
-            }), function errorCallback(response) {
-                console.log(response.statusText);
-            }
-
-        }
-
-        refreshVoteAnswerData();
-        function refreshVoteAnswerData() {
-            $http({
-                method: 'GET',
-                url: 'http://localhost:8080/getmapvoteanswers/${question.id_question}'
-            }).then(function successCallback(response) {
-                $scope.VoteAnswer = response.data;
-            }), function errorCallback(response) {
-                console.log(response.statusText);
-            }
-
-        }
-
-
-        //17/4
-        $scope.clickUp = function () {
-            if ($scope.kiemtra == 1) {
-                if ($scope.voted != 1) {
-                    $http({
-                        method: 'POST',
-                        url: 'http://localhost:8080/voteupquestion/${question.id_question}'
-                    });
-
-                    if ($scope.voted == 2) {
-                        $scope.upQuestion++;
-                        $scope.DownQuestion--;
-
-                    } else if ($scope.voted == 0) {
-                        $scope.upQuestion++;
-
-                    }
-                    $scope.voted = 1;
-                }
-            }
-            else {
-                alert("Dang nhap de vote cau hoi va cau tra loi");
-            }
-
-        }
-        $scope.clickDown = function () {
-            if ($scope.kiemtra == 1) {
-                if ($scope.voted != 2) {
-                    $http({
-                        method: 'POST',
-                        url: 'http://localhost:8080/votedownquestion/${question.id_question}'
-                    });
-                    if ($scope.voted == 1) {
-                        $scope.DownQuestion++;
-                        $scope.upQuestion--;
-
-                    }
-                    else if ($scope.voted == 0) {
-                        $scope.DownQuestion++;
-
-                    }
-                    $scope.voted = 2;
-                }
-            }
-            else {
-                alert("Dang nhap de vote cau hoi va cau tra loi");
-            }
-        }
-
-
-        $scope.clickUpAnswer = function (id) {
-            if ($scope.kiemtra == 1) {
-                urlstr = 'http://localhost:8080/voteupanswer/' + id;
-                $http({
-                    method: 'POST',
-                    url: urlstr
-                })
-                if ($scope.VoteAnswer[id]["voted"] != 1) {
-                    if ($scope.VoteAnswer[id]["voted"] == 0) {
-                        $scope.VoteAnswer[id]["countup"]++;
-                        $scope.VoteAnswer[id]["voted"] = 1;
-
-                        // $scope.VoteAnswer[id] = {"countup" :1,"countdown" :0,"voted" :1 };
-                    }
-                    else if ($scope.VoteAnswer[id]["voted"] == 2) {
-                        $scope.VoteAnswer[id]["countup"]++;
-                        $scope.VoteAnswer[id]["countdown"]--;
-                        $scope.VoteAnswer[id]["voted"] = 1;
-                    }
-                }
-            }
-            else {
-                alert("Dang nhap de vote cau hoi va cau tra loi");
-            }
-
-        }
-        $scope.clickDownAnswer = function (id) {
-            if ($scope.kiemtra == 1) {
-                urlstr = 'http://localhost:8080/votedownanswer/' + id;
-                $http({
-                    method: 'POST',
-                    url: urlstr
-                })
-                if ($scope.VoteAnswer[id]["voted"] != 2) {
-                    if ($scope.VoteAnswer[id]["voted"] == 0) {
-                        $scope.VoteAnswer[id]["countdown"]++;
-                        $scope.VoteAnswer[id]["voted"] = 2;
-
-                        // $scope.VoteAnswer[id] = {"countup" :1,"countdown" :0,"voted" :1 };
-                    }
-                    else if ($scope.VoteAnswer[id]["voted"] == 1) {
-                        $scope.VoteAnswer[id]["countup"]--;
-                        $scope.VoteAnswer[id]["countdown"]++;
-                        $scope.VoteAnswer[id]["voted"] = 2;
-                    }
-                }
-
-            }
-            else {
-                alert("Dang nhap de vote cau hoi va cau tra loi");
-            }
-
-        }
-
-        //kiem tra dang nhap
-        function checkdangnhap() {
-            $http({
-                method: 'GET',
-                url: 'http://localhost:8080/testthu'
-            }).then(function successCallback(response) {
-                $scope.kiemtra = response.data;
-            }, function errorCallback(response) {
-                console.log(response.statusText);
-            })
-
-        }
-
-        //25-4 : ham delAnswer() gui yeu cau xoa cau tra loi
-        $scope.delAnswer = function () {
-            urlstr = 'http://localhost:8080/delanswer/' + $scope.answerx.id;
-            $http({
-                method: 'DELETE',
-                url: urlstr
-            })
-            $scope.answers.splice($scope.answers.indexOf($scope.answerx), 1);
-        }
-
-        //26-4 sua noi dung cau tra loi
-        $scope.editAnswer = function () {
-            console.log($scope.answerx.id);
-            $scope.answerx.content = $scope.AnswereditForm.content;
-            $http({
-                method: "PUT",
-                url: 'http://localhost:8080/editanswer',
-                data: angular.toJson($scope.answerx),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-        }
-        //26-4 load data answer to modal
-        $scope.answermodal = function (answer) {
-            console.log(answer.id);
-            $scope.answerx = answer;
-            $scope.AnswereditForm.content = answer.content;
-            $scope.AnswereditForm.image = answer.image;
-        }
-
-        //28-4 load data question to modal
-        $scope.questionmodal = function () {
-            $scope.questionx = {
-                title : $scope.question.title,
-                content: $scope.question.content
-            }
-        }
-        //28-4 sua noi dung cau hoi
-        $scope.editQuestion = function () {
-            $scope.question.title =$scope.questionx.title;
-            $scope.question.content=$scope.questionx.content;
-            $http({
-                method: "PUT",
-                url: 'http://localhost:8080/updatequestion',
-                data: angular.toJson($scope.question),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-        }
-
-        //28-4 delQuestion
-        $scope.delQuestion = function () {
-            urlstr = 'http://localhost:8080/delquestion/' + $scope.question.id_question;
-            $http({
-                method: 'DELETE',
-                url: urlstr
-            })
-        }
-
-        $scope.submitAnswer = function (name, email) {
-
-            $http({
-                method: "POST",
-                url: "/createAnswer/${question.id_question}",
-                data: angular.toJson($scope.AnswerForm),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-                .then(function success(response) {
-                    $scope.res = response.data;
-                    console.log($scope.res.id);
-                    $scope.answers.push({
-                        id: $scope.res.id,
-                        content: $scope.res.content,
-                        user: {name: name, email: email},
-                        time: $scope.res.time
-                    });
-
-                    $scope.VoteAnswer[$scope.res.id] = {"countup": 0, "countdown": 0, "voted": 0};
-                    $scope.AnswerForm.content = "";
-                    $scope.AnswerForm.image = "";
-                })
-
-        };
-
-
-    })
-
-</script>
 
 </body>
 </html>

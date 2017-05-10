@@ -15,7 +15,10 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
+    <link rel="stylesheet" href="http://mbenford.github.io/ngTagsInput/css/ng-tags-input.min.css" />
+    <script src="http://mbenford.github.io/ngTagsInput/js/ng-tags-input.min.js"></script>
     <script src="/js/app.js"></script>
+
 </head>
 <body ng-app="Askme" >
 <jsp:include page="header.jsp"/>

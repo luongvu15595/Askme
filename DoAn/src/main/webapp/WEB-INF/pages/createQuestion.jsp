@@ -45,12 +45,12 @@
         <div class="row">
             <div class="form-group col-sm-10 top ">
                 <span class="col-sm-1"><label >Title:</label></span>
-                <span class="col-sm-9"><input type="text" minlength="3" maxlength="100" class="form-control" ng-model="questionForm.title" required></span>
+                <span class="col-sm-9"><input type="text" minlength="10" maxlength="100" class="form-control" ng-model="questionForm.title" required></span>
             </div>
 
             <div class="form-group col-sm-10">
                 <span class="col-sm-1"><label>Content:</label></span>
-                <span class="col-sm-9"><textarea type="text" rows="10" class="form-control" ng-model="questionForm.content" required></textarea></span>
+                <span class="col-sm-9"><textarea type="text" rows="10" minlength="10" maxlength="500" class="form-control" ng-model="questionForm.content" required></textarea></span>
             </div>
             <%--//  25/4--%>
             <div class="form-group col-sm-10">
@@ -63,7 +63,15 @@
                 <span class="col-sm-9 tag"><tags-input ng-model="tags"
                             display-property="name"
                             placeholder="Add topic"
-                            template="my-custom-template">
+                            replace-spaces-with-dashes="false">
+                    <auto-complete source="loadTags($query)"
+                                   min-length="0"
+                                   load-on-focus="true"
+                                   load-on-empty="true"
+                                   max-results-to-show="32"
+                                   template="my-custom-template"
+
+                    ></auto-complete>
                 </tags-input></span>
                 <p>{{message}}</p>
             </div>
@@ -76,10 +84,8 @@
     </form>
 </div>
 <script type="text/ng-template" id="my-custom-template">
-    <div class="tag-template">
-        <span>{{$getDisplayText()}}</span>
-        <a class="remove-button" ng-click="$removeTag()">&#10006;</a>
-    </div>
+    <div class="right-panel">
+        <span ng-bind-html="$highlight($getDisplayText())"></span>
     </div>
 </script>
 </body>

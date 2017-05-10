@@ -9,7 +9,7 @@ Askme.controller("headerController", function ($scope, $http) {
     };
     checkdangnhap();
     test();
-    // ireport();
+    ireport();
     //kiem tra dang nhap
     function checkdangnhap() {
         $http({
@@ -63,9 +63,7 @@ Askme.controller("QuestionController", function ($scope, $http) {
             url: 'http://localhost:8080/getAllQuestion'
         }).then(function successCallback(response) {
             $scope.questions = response.data;
-//            }), function errorCallback(response) {
-//                console.log(response.statusText);
-//            }
+
         })
     }
 
@@ -119,6 +117,16 @@ Askme.controller("QuestionController", function ($scope, $http) {
         }
     );
 
+    var countVoteUpHotWeek = {
+        method: 'GET',
+        url: 'http://localhost:8080/countvoteuphotweek'
+    };
+    $http(countVoteUpHotWeek).success(
+        function (data) {
+            $scope.countVoteUpHotWeeks = data;
+        }
+    );
+
     var topicHotWeek = {
         method: 'GET',
         url: 'http://localhost:8080/topicQuestionHotWeek'
@@ -148,6 +156,16 @@ Askme.controller("QuestionController", function ($scope, $http) {
         }
     );
 
+    var countVoteUpHotMonth = {
+        method: 'GET',
+        url: 'http://localhost:8080/countvoteuphotmonth'
+    };
+    $http(countVoteUpHotMonth).success(
+        function (data) {
+            $scope.countVoteUpHotMonths = data;
+        }
+    );
+
     var topicHotMonth = {
         method: 'GET',
         url: 'http://localhost:8080/topicQuestionHotmonth'
@@ -172,6 +190,16 @@ Askme.controller("listOfTopicController", function ($scope, $http) {
             console.log(response.statusText);
         }
     };
+    var countquestionbytopic = {
+        method: 'GET',
+        url: 'http://localhost:8080/countquestionbytopic'
+    };
+    $http(countquestionbytopic).success(
+        function (data) {
+            $scope.countquestionbytopics = data;
+        }
+    );
+
 });
 //pages answerByUser
 Askme.controller("answerByUserController",function ($scope,$http) {
@@ -217,6 +245,18 @@ Askme.controller("CreateQuestionController", function ($scope, $http) {
         name: ""
     };
     $scope.tags = [];
+    $scope.count1 = 0;
+    $scope.loadTags = function($query) {
+        return $http({
+            method: 'GET',
+            url: 'http://localhost:8080/listtopic'
+        }).then(function successCallback(response) {
+           var topics = response.data;
+            return topics.filter(function(topic) {
+                return topic.name.toLowerCase().indexOf($query.toLowerCase()) != -1;
+            });
+         })
+    };
     $scope.reset = function () {
         $scope.questionForm.title = "";
         $scope.questionForm.content = "";
@@ -226,22 +266,41 @@ Askme.controller("CreateQuestionController", function ($scope, $http) {
 
     $scope.submitQuestion = function () {
         var file = $scope.myFile;
-        var name = "/createQuestion/" + $scope.tagForm.name;
+        var name = "/createQuestion";
         var fd = new FormData;
         console.log($scope.tags.length + "hello");
+
+        for(var i =0; i<$scope.tags.length;i++){
+            if ($scope.tags[i].name.length > 20){
+                $scope.count1 = 1;
+                break;
+            }
+            else {$scope.count1 = 0;}
+        }
         if($scope.tags.length > 0 && $scope.tags.length < 5) {
-            fd.append('file', file);
-            fd.append('question', angular.toJson($scope.questionForm, true));
-            fd.append('topic', angular.toJson($scope.tags, true));
-            $http({
-                method: "POST",
-                url: name,
-                data: fd,
-                transformRequest: angular.identity,
-                headers: {
-                    'Content-Type': undefined
-                }
-            });
+            console.log($scope.count1);
+            if($scope.count1 == 0) {
+
+                fd.append('file', file);
+                fd.append('question', angular.toJson($scope.questionForm, true));
+                fd.append('topic', angular.toJson($scope.tags, true));
+                $http({
+                    method: "POST",
+                    url: name,
+                    data: fd,
+                    transformRequest: angular.identity,
+                    headers: {
+                        'Content-Type': undefined
+                    }
+                });
+                $scope.questionForm.title = "";
+                $scope.questionForm.content = "";
+                $scope.statussubmit = "Thanh Cong !!"
+                $scope.tags = "";
+            }
+            else {
+                $scope.message="noi dung tag khong qua 20 ki tu";
+            }
         }else{
             $scope.message="ban can nhap it nhat 1 tag va nhieu nhat 5 tag";
         }
@@ -254,48 +313,42 @@ Askme.controller("CreateQuestionController", function ($scope, $http) {
     };
 
 });
-//page editQuestion
-Askme.controller("editQuestionController", function ($scope, $http) {
-    $scope.questionForm ={
-        content : "",
-        image:"",
-        title:"",
-        id_question:"",
-    }
-    $scope.questionForm.content = "${questionFormUpdate.content}";
-    $scope.questionForm.title="${questionFormUpdate.title}";
-    $scope.questionForm.image="${questionFormUpdate.image}";
-    $scope.questionForm.id_question ="${questionFormUpdate.id_question}";
-
-
-
-    $scope.submitUpdateQuestion = function () {
-        $http({
-            method: "PUT",
-            url: "http://localhost:8080/updatequestion",
-            data: angular.toJson($scope.questionForm),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-    };
-});
 
 //page listquestionbytopic
 Askme.controller("listquestionbytopicController", function ($scope, $http) {
-    $scope.questions = [];
-
-
+    $scope.questionbytopics = [];
     $scope.getQuestionByTopicData = function(id) {
         urlstr = 'http://localhost:8080/getAllQuestionByidTopic/' + id;
+        url =  'http://localhost:8080/getcountanswerAllQuestionByidTopic/'+id;
+        url1 = 'http://localhost:8080/mapcountupvotebyquestionfortopic/'+id;
         $http({
             method: 'GET',
             url: urlstr
         }).then(function successCallback(response) {
-            $scope.questions = response.data;
+            $scope.questionbytopics = response.data;
+            console.log($scope.questionbytopics);
         }), function errorCallback(response) {
             console.log(response.statusText);
         }
+        var countAswerQuestionByTopicData = {
+            method: 'GET',
+            url: url
+        };
+        $http(countAswerQuestionByTopicData).success(
+            function (data) {
+                $scope.countanswerquestionbytopics = data;
+            }
+        );
+
+        var countVoteUpQuestionByTopicData = {
+            method: 'GET',
+            url: url
+        };
+        $http(countVoteUpQuestionByTopicData).success(
+            function (data) {
+                $scope.countvoteupquestionbytopicdatas = data;
+            }
+        );
 
     };
 
@@ -307,7 +360,7 @@ Askme.controller("listUser", function ($scope, $http) {
     $scope.users = [];
     $scope.following = ["",[]];
 
-    _refreshQuestionData();
+    _refreshUserData();
 
     function checkdangnhap() {
         $http({
@@ -333,7 +386,7 @@ Askme.controller("listUser", function ($scope, $http) {
 
     }
 
-    function _refreshQuestionData() {
+    function _refreshUserData() {
         $http({
             method: 'GET',
             url: 'http://localhost:8080/listUser'
@@ -343,8 +396,19 @@ Askme.controller("listUser", function ($scope, $http) {
             console.log(response.statusText);
         }
     }
+    $scope.delUser = function (user) {
+        if ($scope.kiemtra == 3) {
+            var urlstr = 'http://localhost:8080/deluser/' + user.id;
+            $http({
+                method: 'Delete',
+                url: urlstr
+            })
+            $scope.users.splice($scope.users.indexOf(user), 1);
+        }
+
+    }
     $scope.clickfollowing = function (id) {
-        if ($scope.kiemtra == 1) {
+        if ($scope.kiemtra == 1|| $scope.kiemtra == 3) {
 
             if($scope.following[id]['following'] == 0){
                 var urlstr = 'http://localhost:8080/following/' + id;
@@ -478,6 +542,7 @@ Askme.controller("searchquestionController",function ($scope,$http) {
 });
 //AnswerController
 Askme.controller("AnswerController", function ($scope, $http) {
+
     $scope.kiemtra = 0;
     checkdangnhap();
     $scope.nginit = function (idquestion) {
@@ -485,7 +550,23 @@ Askme.controller("AnswerController", function ($scope, $http) {
         refreshAnswerData($scope.question.id_question);
         refreshVoteAnswerData($scope.question.id_question);
     }
+    $scope.share = function(){
+        // FB.ui(
+        //     {
+        //         method: 'share',
+        //         href: 'https://google.com.vn/'
+        //     }, function(response){});
+        FB.ui(
+            {
+                method: 'feed',
+                name: 'Đồ Án Hữu Lượng :v',
+                link: 'https://google.com.vn',
 
+                caption: $scope.question.title,
+                description: 'xxxxx xxxxx',
+                message: ''
+            });
+    }
     $scope.AnswerForm = {
         content: "",
         image: ""
@@ -676,7 +757,6 @@ Askme.controller("AnswerController", function ($scope, $http) {
     }
     //26-4 load data answer to modal
     $scope.answermodal = function (answer) {
-        console.log(answer.id);
         $scope.answerx = answer;
         $scope.AnswereditForm.content = answer.content;
         $scope.AnswereditForm.image = answer.image;
@@ -691,16 +771,20 @@ Askme.controller("AnswerController", function ($scope, $http) {
     }
     //28-4 sua noi dung cau hoi
     $scope.editQuestion = function () {
-        $scope.question.title =$scope.questionx.title;
-        $scope.question.content=$scope.questionx.content;
-        $http({
-            method: "PUT",
-            url: 'http://localhost:8080/updatequestion',
-            data: angular.toJson($scope.question),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
+        if (typeof  $scope.questionx.title === "undefined" || typeof  $scope.questionx.content === "undefined")
+            console.log("loiminmaxQuestion");
+        else {
+            $scope.question.title =$scope.questionx.title;
+            $scope.question.content=$scope.questionx.content;
+            $http({
+                method: "PUT",
+                url: 'http://localhost:8080/updatequestion',
+                data: angular.toJson($scope.question),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+        }
     }
 
     //28-4 delQuestion
@@ -713,32 +797,70 @@ Askme.controller("AnswerController", function ($scope, $http) {
     }
 
     $scope.submitAnswer = function (name, email) {
-        urlstr = 'http://localhost:8080/createAnswer/' + $scope.question.id_question ;
-        $http({
-            method: "POST",
-            url: urlstr,
-            data: angular.toJson($scope.AnswerForm),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-            .then(function success(response) {
-                $scope.res = response.data;
-                console.log($scope.res.id);
-                $scope.answers.push({
-                    id: $scope.res.id,
-                    content: $scope.res.content,
-                    user: {name: name, email: email},
-                    time: $scope.res.time
-                });
-
-                $scope.VoteAnswer[$scope.res.id] = {"countup": 0, "countdown": 0, "voted": 0};
-                $scope.AnswerForm.content = "";
-                $scope.AnswerForm.image = "";
+        if (typeof  $scope.AnswerForm.content === "undefined" )
+            console.log("loiminmaxaddanswer");
+        else {
+            urlstr = 'http://localhost:8080/createAnswer/' + $scope.question.id_question;
+            $http({
+                method: "POST",
+                url: urlstr,
+                data: angular.toJson($scope.AnswerForm),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
             })
+                .then(function success(response) {
+                    $scope.res = response.data;
+                    console.log($scope.res.id);
+                    $scope.answers.push({
+                        id: $scope.res.id,
+                        content: $scope.res.content,
+                        user: {name: name, email: email},
+                        time: $scope.res.time
+                    });
 
+                    $scope.VoteAnswer[$scope.res.id] = {"countup": 0, "countdown": 0, "voted": 0};
+                    $scope.AnswerForm.content = "";
+                    $scope.AnswerForm.image = "";
+                })
+        }
     };
 
-
 })
-//list question by user
+//changePassowrd
+Askme.controller("ChangePasswordController", function ($scope, $http) {
+    $scope.changePassword="";
+    $scope.check=0;
+    $scope.newPassword="";
+    $scope.renewPassword= "";
+    $scope.submitPassword = function () {
+        var url ="http://localhost:8080/changepassword/" + $scope.changePassword;
+        _getcheck();
+        function _getcheck() {
+            $http({
+                method: 'GET',
+                url: url
+            }).then(function successCallback(response) {
+                $scope.check = response.data;
+                if($scope.check == 1){
+                    if($scope.newPassword == $scope.renewPassword){
+                        $scope.message= "hello";
+                        var name = "http://localhost:8080/changepassword/"+$scope.newPassword;
+                        $http({
+                            method: "POST",
+                            url: name,
+                        });
+                        $scope.message1= "Đổi mật khẩu thành công";
+                    }
+                    else {
+                        $scope.message2= "mật khẩu mới và nhập lại mật khẩu không trùng ";
+                    }
+                }
+                else {
+                    $scope.message3 ="mật khẩu cũ không đúng";
+                }
+            })
+
+        }
+    }
+});

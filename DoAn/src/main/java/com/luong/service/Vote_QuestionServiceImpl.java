@@ -34,7 +34,6 @@ public class Vote_QuestionServiceImpl implements Vote_QuestionService {
     public void up_Vote_Question(int idUser,int idQuestion) {
         Vote_Question vote_question1 = vote_questionDAO.find(idUser,idQuestion);
         if (vote_question1 == null) {
-            System.out.println("vao 1");
         Vote_Question vote_question = new Vote_Question();
         vote_question.setUser(userDAO.findById(idUser));
         vote_question.setQuestion(questionDAO.findById(idQuestion));

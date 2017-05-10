@@ -12,4 +12,6 @@ public interface UserService {
     User findById(int id);
     List<User> listUser();
     public int isAdmin(User user);
+    public void updatePassword(User user);
+    public void del(int idUser);
 }

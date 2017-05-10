@@ -41,4 +41,14 @@ public class UserDAOImpl implements UserDAO {
     public List<User> listUser() {
         return em.createQuery("select u from User u").getResultList();
     }
+
+    @Override
+    public void update(User user) {
+        em.merge(user);
+    }
+
+    @Override
+    public void del(int id) {
+        em.createQuery("delete from User q where q.id= :id").setParameter("id", id).executeUpdate();
+    }
 }

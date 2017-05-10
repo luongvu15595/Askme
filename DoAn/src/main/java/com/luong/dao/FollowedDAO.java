@@ -8,6 +8,6 @@ import com.luong.model.Following;
  */
 public interface FollowedDAO {
     public void add(Followed followed);
-    public Followed find(int user_follow, int user_following);
-    public void Destroy(Following following);
+    public Followed findfollowed(int user_following,int user_followed);
+    public void Destroy(Followed followed);
 }

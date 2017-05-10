@@ -21,13 +21,8 @@ public class Topic_QuestionDAOImpl implements Topic_QuestionDAO {
     private EntityManager em;
     @Override
     public void add(Topic_Qestion topic_qestion) {
-        try {
             em.persist(topic_qestion);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
+     }
 
     @Override
     public List<Topic_Qestion> findlistTQ(int id) {

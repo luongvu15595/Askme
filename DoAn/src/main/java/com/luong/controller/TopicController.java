@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Luong-PC on 4/13/2017.
@@ -33,6 +34,12 @@ public class TopicController {
     public String getListOfQuestion() {
         return "listoftopic";
 
+    }
+    // tra ve so cau hoi trong tags
+    @RequestMapping(value = "/countquestionbytopic",method = RequestMethod.GET,headers = "Accept=Application/json")
+    @ResponseBody
+    public Map<Integer,Integer> map (){
+        return topicService.countQuestionByTopic();
     }
     //chuyen sang trang chua cac cau hoi voi topic tuong ung
     @RequestMapping(value = "/topic/{id}")
