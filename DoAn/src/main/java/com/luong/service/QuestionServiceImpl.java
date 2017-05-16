@@ -8,8 +8,11 @@ import com.luong.model.User;
 import com.luong.model.Vote_Question;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.text.Normalizer;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * Created by HP on 3/30/2017.
@@ -68,6 +71,7 @@ public class QuestionServiceImpl implements QuestionService {
 
         string = string.replaceAll("\\s+", " ");
         String[] key1 = string.split(" ");
+
         //lay ra map cac tu khoa va so lan xuat hien
         Map<String, Integer> map = new HashMap<String, Integer>();
         for (String x : key1) {
@@ -93,25 +97,36 @@ public class QuestionServiceImpl implements QuestionService {
             for (int j = 0; j < lq.size(); j++) {
                 question = lq.get(j);
                 title = question.getTitle().toLowerCase();
+                String temp = Normalizer.normalize(title, Normalizer.Form.NFD);
+                Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+                title = pattern.matcher(temp).replaceAll("").replaceAll("Đ", "D").replaceAll("đ", "d");
                 test = title.matches(regex1);
                 if (test) {
                     lq1.add(question);
                 }
             }
-            HashSet h = new HashSet(lq1);
-            lq1.clear();
-            lq1.addAll(h);
-            lq3 = lq1;
         }
+        HashSet h = new HashSet(lq1);
+        lq1.clear();
+        lq1.addAll(h);
+        lq3 = lq1;
+
+
+
+
+
         //tra ve 1 list cac bai viet du tu khoa va theo thu tu va tra ve 1 list cac cau hoi con lai
         String regex = "([\\s\\w\\W])*" + key1[0];
         for (int i = 1; i < key1.length; i++) {
             regex = regex + "((\\s+)([\\w\\W]*))*" + "(\\s)+" + key1[i];
         }
-        regex = regex + "((\\s+)([\\w\\W]*))*";
+        regex = regex + "((\\s*)([\\w\\W]*))*";
         for (int j = 0; j < lq1.size(); j++) {
             question = lq1.get(j);
             title = question.getTitle().toLowerCase();
+            String temp = Normalizer.normalize(title, Normalizer.Form.NFD);
+            Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+            title = pattern.matcher(temp).replaceAll("").replaceAll("Đ", "D").replaceAll("đ", "d");
             test = title.matches(regex);
             if (test) {
                 lq2.add(question);
@@ -122,7 +137,10 @@ public class QuestionServiceImpl implements QuestionService {
         Map<Integer, Integer> map3 = new HashMap<>();
         for (int i = 0; i < lq3.size(); i++) {
             question = lq3.get(i);
-            title = question.getTitle();
+            title = question.getTitle().toLowerCase();
+            String temp = Normalizer.normalize(title, Normalizer.Form.NFD);
+            Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+            title = pattern.matcher(temp).replaceAll("").replaceAll("Đ", "D").replaceAll("đ", "d");
             int count = 0;
             Set set3 = map.entrySet();
             Iterator iterator3 = set3.iterator();
@@ -131,7 +149,7 @@ public class QuestionServiceImpl implements QuestionService {
                 mentry3.getKey();
                 String key = (String) mentry3.getKey();
                 //key xuat hien 1 lan dau hoac lan dau tien
-                String regex4 = "([\\s\\w\\W])*" + key + "((\\s+)([\\w\\W]*))*";
+                String regex4 = "([\\s\\w\\W])*" + key + "((\\s*)([\\w\\W]*))*";
                 test = title.matches(regex4);
                 if (test) {
                     count++;
@@ -165,6 +183,7 @@ public class QuestionServiceImpl implements QuestionService {
 
             }
         }
+
         //sap xep map theo chieu giam dan value
         Map<Integer, Integer> sortedMapDesc = sortByComparator(map3, false);
         List<Question> lq4 = new ArrayList<>();
@@ -174,14 +193,53 @@ public class QuestionServiceImpl implements QuestionService {
         while (iterator4.hasNext()) {
             Map.Entry mentry4 = (Map.Entry) iterator4.next();
             question1 = dao.findById((Integer) mentry4.getKey());
+            lq3.remove(question1);
             lq2.add(question1);
-        }
 
+        }
 
         return lq2;
 
 
     }
+
+    @Override
+    public Map<Integer, Long> countanswerquestionsearch(String string) {
+        List<Question> questions = search(string);
+        Map<Integer,Long> map = new HashMap<>();
+        Long count ;
+        for(int i =0;i<questions.size();i++){
+            count = answerDAO.count(questions.get(i).getId_question());
+            map.put(questions.get(i).getId_question(),count);
+        }
+
+        return map;
+    }
+
+    @Override
+    public Map<Integer, List> topicquestionsearch(String string) {
+        List<Question> list = search(string);
+        List<Topic> topicList = new ArrayList<>();
+        Map<Integer,List> map = new HashMap<>();
+        for (int i=0;i<list.size();i++){
+            topicList = topic_questionService.findTopicByQuestion(list.get(i).getId_question());
+            map.put(list.get(i).getId_question(),topicList);
+        }
+        return map;
+    }
+
+    @Override
+    public Map<Integer, Long> countUpvotequestionsearch(String string) {
+        List<Question> questions = search(string);
+        Long voteup;
+        Map<Integer,Long> map = new HashMap<>();
+        for (int i=0;i<questions.size();i++){
+            voteup = vote_questionDAO.countUp(questions.get(i).getId_question());
+            map.put(questions.get(i).getId_question(),voteup);
+        }
+        return map;
+    }
+
 
     //sap xep map theo value giam dan
     private static Map<Integer, Integer> sortByComparator(Map<Integer, Integer> unsortMap, final boolean order) {
@@ -245,6 +303,18 @@ public class QuestionServiceImpl implements QuestionService {
         for (int i=0;i<questions.size();i++){
             voteup = vote_questionDAO.countUp(questions.get(i).getId_question());
             map.put(questions.get(i).getId_question(),voteup);
+        }
+        return map;
+    }
+
+    @Override
+    public Map<Integer, List> listtopicbytopic(int id) {
+        List<Question> list = topic_questionService.findQuestionByTopic(id);
+        List<Topic> topicList = new ArrayList<>();
+        Map<Integer,List> map = new HashMap<>();
+        for (int i=0;i<list.size();i++){
+            topicList = topic_questionService.findTopicByQuestion(list.get(i).getId_question());
+            map.put(list.get(i).getId_question(),topicList);
         }
         return map;
     }
@@ -372,7 +442,7 @@ public class QuestionServiceImpl implements QuestionService {
             listQuestionHot.add(question);
         }
 
-        return listQuestionHot;
+        return listQuestionHot.subList(0,5);
     }
 
     @Override
@@ -386,6 +456,109 @@ public class QuestionServiceImpl implements QuestionService {
         }
         return map;
     }
+
+    @Override
+    public Integer countquestion() {
+        List<QuestionDTO> list = listQuestion();
+        return list.size();
+    }
+
+    @Override
+    public Map<Integer, Long> countquestionUser() {
+        Map<Integer,Long> map = new HashMap<>();
+        List<User> users = userDAO.listUser();
+        for (int i = 0 ; i<users.size();i++){
+            map.put(users.get(i).getId(), (long) users.get(i).getQuestions().size());
+        }
+        return map;
+    }
+
+    @Override
+    public List<User> listSortUserQuetions() {
+        Map<Integer,Long> map = countquestionUser();
+        Map<Integer,Long> sortByQuestions = sortByQuestion(map,false);
+        List<User> listSortUserQuetions = new ArrayList<>();
+        User user = new User();
+        Set set = sortByQuestions.entrySet();
+        Iterator iterator = set.iterator();
+        while (iterator.hasNext()) {
+            Map.Entry mentry = (Map.Entry) iterator.next();
+            user = userDAO.findById((Integer) mentry.getKey());
+            listSortUserQuetions.add(user);
+        }
+
+        return listSortUserQuetions.subList(0,5);
+    }
+
+    @Override
+    public Map<Integer, Long> countAnswerUser() {
+        Map<Integer,Long> map = new HashMap<>();
+        List<User> users = userDAO.listUser();
+        for (int i = 0 ; i<users.size();i++){
+            map.put(users.get(i).getId(), (long) users.get(i).getAnswers().size());
+        }
+        return map;
+    }
+
+    @Override
+    public List<User> listSortUserAnswers() {
+        Map<Integer,Long> map = countAnswerUser();
+        Map<Integer,Long> sortByAnswers = sortByQuestion(map,false);
+        List<User> listSortUserAnswers = new ArrayList<>();
+        User user = new User();
+        Set set = sortByAnswers.entrySet();
+        Iterator iterator = set.iterator();
+        while (iterator.hasNext()) {
+            Map.Entry mentry = (Map.Entry) iterator.next();
+            user = userDAO.findById((Integer) mentry.getKey());
+            listSortUserAnswers.add(user);
+        }
+
+        return listSortUserAnswers.subList(0,5);
+    }
+
+    @Override
+    public Map<Integer, Long> countanswerquestionbyuser(int id) {
+        Map<Integer, Long> mapCountAnswer = new TreeMap(Collections.reverseOrder());
+        long c;
+        User user = userDAO.findById(id);
+        Question question = new Question();
+        List<Question> lq = new ArrayList<>(user.getQuestions());
+        for (int i = 0; i < lq.size(); i++) {
+            question = lq.get(i);
+            c = (answerDAO.count(question.getId_question()));
+            mapCountAnswer.put(question.getId_question(),c);
+        }
+
+        return mapCountAnswer;
+    }
+
+    @Override
+    public Map<Integer, List> topicQuestionbyuser(int id) {
+        User user = userDAO.findById(id);
+        List<Question> list = new ArrayList<>(user.getQuestions()) ;
+        List<Topic> topicList = new ArrayList<>();
+        Map<Integer,List> map = new HashMap<>();
+        for (int i=0;i<list.size();i++){
+            topicList = topic_questionService.findTopicByQuestion(list.get(i).getId_question());
+            map.put(list.get(i).getId_question(),topicList);
+        }
+        return map;
+    }
+
+    @Override
+    public Map<Integer, Long> countUpVoteQuestionUser(int id) {
+        User user = userDAO.findById(id);
+        List<Question> list = new ArrayList<>(user.getQuestions());
+        Long voteup;
+        Map<Integer,Long> map = new HashMap<>();
+        for (int i=0;i<list.size();i++){
+            voteup = vote_questionDAO.countUp(list.get(i).getId_question());
+            map.put(list.get(i).getId_question(),voteup);
+        }
+        return map;
+    }
+
 
     //sap xep map theo value giam dan
     private static Map<Integer, Long> sortByQuestion(Map<Integer, Long> unsortMap, final boolean order) {

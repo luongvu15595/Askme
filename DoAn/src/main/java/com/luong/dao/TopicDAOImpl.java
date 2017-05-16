@@ -42,4 +42,9 @@ public class TopicDAOImpl implements TopicDAO {
     public Topic findTopic(int id) {
         return entityManager.find(Topic.class,id);
     }
+
+    @Override
+    public void del(int idTopic) {
+        entityManager.createQuery("delete from Topic t where t.id= :id").setParameter("id", idTopic).executeUpdate();
+    }
 }

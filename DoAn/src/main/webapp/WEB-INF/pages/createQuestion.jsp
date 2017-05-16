@@ -11,6 +11,8 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="http://mbenford.github.io/ngTagsInput/css/ng-tags-input.min.css" />
     <script src="http://mbenford.github.io/ngTagsInput/js/ng-tags-input.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.11.0/ui-bootstrap-tpls.js"></script>
+    <script src="/js/dirPagination.js"></script>
     <script src="/js/app.js"></script>
     <style type="text/css">
         .top{
@@ -35,6 +37,10 @@
         }
         .lable{
             margin-top: 4px;
+        }
+        p{
+            color: red;
+            font-size: 15px;
         }
     </style>
 </head>
@@ -73,13 +79,16 @@
 
                     ></auto-complete>
                 </tags-input></span>
-                <p>{{message}}</p>
+
             </div>
 
             <div class="form-group col-sm-10">
-                <span class="col-sm-7">{{statussubmit}}</span>
+                <span class="col-sm-7"></span>
                 <span class="col-sm-3"><input type="submit" class="btn btn-lg btn-primary btn-block" value="Submit"/></span>
             </div>
+            <div class="form-group col-sm-10">
+                <p style="margin-left: 5px">{{statussubmit}}</p>
+                <p style="margin-left: 5px">{{message}}</p></div>
         </div>
     </form>
 </div>
@@ -88,5 +97,6 @@
         <span ng-bind-html="$highlight($getDisplayText())"></span>
     </div>
 </script>
+<jsp:include page="footer.jsp"/>
 </body>
 </html>

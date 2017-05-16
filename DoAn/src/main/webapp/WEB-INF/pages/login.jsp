@@ -10,6 +10,8 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="http://mbenford.github.io/ngTagsInput/css/ng-tags-input.min.css" />
     <script src="http://mbenford.github.io/ngTagsInput/js/ng-tags-input.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.11.0/ui-bootstrap-tpls.js"></script>
+    <script src="/js/dirPagination.js"></script>
     <script src="/js/app.js"></script>
     <style type="text/css">
         h2{
@@ -46,6 +48,7 @@
         </form>
     </div>
 </div>
+<jsp:include page="footer.jsp"/>
 </body>
 </html>
 

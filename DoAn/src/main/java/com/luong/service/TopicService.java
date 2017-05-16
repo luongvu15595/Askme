@@ -12,5 +12,6 @@ public interface TopicService {
     public Topic findById(int id);
     public List<String> cut(String topic);
     public Topic add(Topic topic);
+    public void del(int id);
 
 }

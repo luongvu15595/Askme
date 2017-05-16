@@ -41,7 +41,17 @@ public class ReportDAOImpl implements ReportDAO {
     }
     @Override
     public List<Report> listReports() {
-        return em.createQuery("select u from Report u").getResultList();
+        return em.createQuery("select u from Report u ORDER BY u.id DESC ").getResultList();
+    }
+
+    @Override
+    public Report find(int idReport) {
+        return em.find(Report.class,idReport);
+    }
+
+    @Override
+    public Report update(Report report) {
+        return em.merge(report);
     }
 
 }

@@ -126,6 +126,34 @@ public class QuestionController {
 
     }
 
+    @RequestMapping(value = "/createQuestion1", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    Object createQuestion2(@RequestParam(value = "question") String question, @RequestParam(value = "topic") String topic, Principal principal) {
+        String email = principal.getName();
+        System.out.println(topic);
+        List<String> listtopic = topicService.cut(topic);
+        User user = userService.findByEmail(email);
+        System.out.println("Inside File upload " + question);
+        ObjectMapper mapper = new ObjectMapper();
+        Question question1 = new Question();
+
+        try {
+            question1 = mapper.readValue(question, Question.class);
+
+        } catch (JsonParseException e) {
+            e.printStackTrace();
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        question1 = questionService.add(question1, user);
+        topic_questionService.add(listtopic, question1);
+        return question1;
+
+    }
+
     //hien thi chi tiet cau hoi va vote cho cau hoi
     @RequestMapping(value = "/question/{id}", method = RequestMethod.GET)
     public String answer(@PathVariable(value = "id") int idQuestion, Model model, Principal principal) {
@@ -183,12 +211,42 @@ public class QuestionController {
         } else return null;
     }
 
+    @RequestMapping(value = "/countanswerquestionsearch/{string}", method = RequestMethod.GET, headers = "Accept=Application/json")
+
+    @ResponseBody
+
+    public Map<Integer,Long> countAnswerQuestionSearch(@PathVariable("string") String string) {
+        return questionService.countanswerquestionsearch(string);
+    }
+
+    @RequestMapping(value = "/topicquestionsearch/{string}", method = RequestMethod.GET, headers = "Accept=Application/json")
+
+    @ResponseBody
+
+    public Map<Integer,List> topicQuestionSearch(@PathVariable("string") String string) {
+        return questionService.topicquestionsearch(string);
+    }
+
+    @RequestMapping(value = "/countupvotequestionsearch/{string}", method = RequestMethod.GET, headers = "Accept=Application/json")
+
+    @ResponseBody
+
+    public Map<Integer,Long> countUpvoteQuestionSearch(@PathVariable("string") String string) {
+        return questionService.countUpvotequestionsearch(string);
+    }
     //lay ra tat ca question theo topic tuong ung
     @RequestMapping(value = "/getAllQuestionByidTopic/{id}", method = RequestMethod.GET, headers = "Accept=Application/json")
     @ResponseBody
     public List<Question> getnametopic(@PathVariable("id") int id) {
 
         return topic_questionService.findQuestionByTopic(id);
+    }
+
+    @RequestMapping(value = "/gettopicbytopic/{id}", method = RequestMethod.GET, headers = "Accept=Application/json")
+    @ResponseBody
+    public Map<Integer,List> getnametopic1(@PathVariable("id") int id) {
+
+        return questionService.listtopicbytopic(id);
     }
 
     @RequestMapping(value = "/getcountanswerAllQuestionByidTopic/{id}", method = RequestMethod.GET, headers = "Accept=Application/json")
@@ -212,6 +270,22 @@ public class QuestionController {
         return q;
     }
 
+    @RequestMapping(value = "/countanswerquestionbyuser/{id}", method = RequestMethod.GET, headers = "Accept=Application/json")
+    @ResponseBody
+    public Map<Integer,Long> countAnswerQuestionByUser(@PathVariable("id") int id) {
+        return questionService.countanswerquestionbyuser(id);
+    }
+
+    @RequestMapping(value = "/getlisttopicquestionbyuser/{id}", method = RequestMethod.GET, headers = "Accept=Application/json")
+    @ResponseBody
+    public Map<Integer,List> getlisttopicquestionbyuser(@PathVariable("id") int id) {
+        return questionService.topicQuestionbyuser(id);
+    }
+    @RequestMapping(value = "/countupvotetopicquestionbyuser/{id}", method = RequestMethod.GET, headers = "Accept=Application/json")
+    @ResponseBody
+    public Map<Integer,Long> countupvotetopicquestionbyuser(@PathVariable("id") int id) {
+        return questionService.countUpVoteQuestionUser(id);
+    }
     // lay ra tat ca topic theo question
     @RequestMapping(value = "/getAllTopicByQuestion/{id}", method = RequestMethod.GET, headers = "Accept=Application/json")
     @ResponseBody
@@ -308,5 +382,35 @@ public class QuestionController {
     @ResponseBody
     public  Map<Integer, List> topicQuestionHotMonth(){
         return questionService.topicQuestionHotMonth();
+    }
+
+    @RequestMapping(value = "/countlistquestion",method = RequestMethod.GET)
+    @ResponseBody
+    public  Integer countlistquestion(){
+        return questionService.countquestion();
+    }
+
+    @RequestMapping(value = "/listsortuserbyquestion",method = RequestMethod.GET)
+    @ResponseBody
+    public  List<User> listsortuserbyquestion(){
+        return questionService.listSortUserQuetions();
+    }
+
+    @RequestMapping(value = "/listsortquestionbyuser",method = RequestMethod.GET)
+    @ResponseBody
+    public  Map<Integer,Long> listsortquestionbyuser(){
+        return questionService.countquestionUser();
+    }
+
+    @RequestMapping(value = "/listsortuserbyanswer",method = RequestMethod.GET)
+    @ResponseBody
+    public  List<User> listSortUserByAnswer(){
+        return questionService.listSortUserAnswers();
+    }
+
+    @RequestMapping(value = "/listsortanswerbyuser",method = RequestMethod.GET)
+    @ResponseBody
+    public  Map<Integer,Long> listsortanswerbyuser(){
+        return questionService.countAnswerUser();
     }
 }

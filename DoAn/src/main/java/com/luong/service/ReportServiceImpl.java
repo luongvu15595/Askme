@@ -36,4 +36,15 @@ public class ReportServiceImpl implements ReportService {
     public List<Report> listReports() {
         return  reportDAO.listReports();
     }
+
+    @Override
+    public Report find(int id) {
+        return reportDAO.find(id);
+    }
+
+    @Override
+    public void update(Report report) {
+        report.setStatus(1);
+        reportDAO.update(report);
+    }
 }

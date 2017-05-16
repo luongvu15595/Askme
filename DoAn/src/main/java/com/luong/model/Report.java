@@ -17,6 +17,9 @@ public class Report {
     @Column(name = "content")
     private String content;
 
+    @Column(name = "status")
+    private int status;
+
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false, foreignKey = @ForeignKey(name = "report_1"))
     private User user;
@@ -43,6 +46,14 @@ public class Report {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public User getUser() {

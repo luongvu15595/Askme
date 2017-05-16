@@ -43,4 +43,18 @@ public class FollowedDAOImpl implements FollowedDAO {
         em.createQuery("DELETE FROM Followed f WHERE f.id_followed= :id ").setParameter("id",id).executeUpdate();
     }
 
+    @Override
+    public Long countfollow(int id) {
+        System.out.println("8");
+        try {
+            Long t = (Long) em.createQuery("select count(a) from Followed a where a.user_followed.id = :id").setParameter("id", id).getSingleResult();
+            System.out.println("9");
+            return t;
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
 }

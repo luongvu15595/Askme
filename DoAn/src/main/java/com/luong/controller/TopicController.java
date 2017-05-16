@@ -33,7 +33,12 @@ public class TopicController {
     @RequestMapping(value = "/listoftopic")
     public String getListOfQuestion() {
         return "listoftopic";
+    }
 
+    @RequestMapping(value = "/listtopichot",method = RequestMethod.GET,headers = "Accept=Application/json")
+    @ResponseBody
+    public List<Topic> gettopichot(){
+        return topicService.listTopic().subList(0,7);
     }
     // tra ve so cau hoi trong tags
     @RequestMapping(value = "/countquestionbytopic",method = RequestMethod.GET,headers = "Accept=Application/json")
@@ -46,5 +51,10 @@ public class TopicController {
     public String getnametopic(@PathVariable("id") int id, Model model){
         model.addAttribute("topic",topicService.findById(id));
         return "listquestionbytopic";
+    }
+
+    @RequestMapping(value = "/deletetopic/{id}",method = RequestMethod.DELETE)
+    public void deltopic(@PathVariable("id") int id){
+        topicService.del(id);
     }
 }

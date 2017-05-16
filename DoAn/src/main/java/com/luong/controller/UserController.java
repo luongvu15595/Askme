@@ -22,7 +22,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.attribute.UserPrincipal;
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -76,22 +78,43 @@ public class UserController {
     @RequestMapping(value =  "/listUser", method = RequestMethod.GET)
     @ResponseBody
     public List<User> listUser() {
-        List<User> list = userService.listUser();
-        System.out.println(list.size());
+        List<User> list = userService.sortUserbyfollow();
+        System.out.println("abc");
         return list;
+    }
+
+    @RequestMapping(value =  "/countfollower", method = RequestMethod.GET)
+    @ResponseBody
+    public Map<Integer,Long> countFollower() {
+        return userService.countfollower();
     }
 
 
     // tra ve 1 trang chua list user
     @RequestMapping(value = "/listofuser")
-    public String getListOfQuestion() {
-
+    public String getListOfQuestion(Principal principal,Model model) {
+        User userlogin = new User();
+        userlogin.setEmail("x");
+        userlogin.setName("x");
+        if (principal != null) {
+            String email = principal.getName();
+            userlogin = userService.findByEmail(email);
+        }
+        model.addAttribute("userlogin", userlogin);
         return "listUser";
     }
 
     //hien thi profile cua user tuong ung
     @RequestMapping(value = "/{id}")
-    public String getUserDetail(@PathVariable("id") int id, Model model) {
+    public String getUserDetail(@PathVariable("id") int id, Model model, Principal principal) {
+        User userlogin = new User();
+        userlogin.setEmail("x");
+        userlogin.setName("x");
+        if (principal != null) {
+            String email = principal.getName();
+            userlogin = userService.findByEmail(email);
+        }
+        model.addAttribute("userlogin", userlogin);
         User user = userService.findById(id);
         model.addAttribute("user",user);
         int question = user.getQuestions().size();
@@ -208,5 +231,23 @@ public class UserController {
     @ResponseBody
     public void deluser(@PathVariable(value="id") int  idUser) {
         userService.del(idUser);
+    }
+
+    @RequestMapping(value = "/manageruser")
+    public String managerUser() {
+        return "managerUser";
+    }
+
+    @RequestMapping(value = "/edituser",method = RequestMethod.PUT,headers = "Accept=Application/json")
+    @ResponseBody
+    public void updateNameUser(@RequestBody User user) {
+        userService.updateName(user);
+
+    }
+
+    @RequestMapping(value = "/countlistuser")
+    @ResponseBody
+    public Integer countListUser() {
+        return userService.countListUser();
     }
 }

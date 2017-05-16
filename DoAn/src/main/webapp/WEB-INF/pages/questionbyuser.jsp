@@ -10,6 +10,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
     <link rel="stylesheet" href="http://mbenford.github.io/ngTagsInput/css/ng-tags-input.min.css" />
     <script src="http://mbenford.github.io/ngTagsInput/js/ng-tags-input.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.11.0/ui-bootstrap-tpls.js"></script>
+    <script src="/js/dirPagination.js"></script>
     <script src="/js/app.js"></script>
 
 </head>
@@ -30,5 +32,6 @@
         </tbody>
     </table>
 </div>
+<jsp:include page="footer.jsp"/>
 </body>
 </html>

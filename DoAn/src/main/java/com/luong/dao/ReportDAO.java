@@ -11,4 +11,6 @@ public interface ReportDAO {
     public void add(Report report);
     public Report find(int idUser, int idQuestion);
     public List<Report> listReports();
+    public Report find(int idReport);
+    public Report update(Report report);
 }

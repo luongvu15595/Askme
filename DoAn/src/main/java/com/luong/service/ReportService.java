@@ -11,4 +11,6 @@ import java.util.List;
 public interface ReportService {
     public void add(User user, int idQuestion, String content);
     public List<Report> listReports();
+    public Report find(int id);
+    public void update(Report report);
 }

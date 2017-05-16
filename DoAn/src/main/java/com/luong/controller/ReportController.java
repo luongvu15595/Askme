@@ -10,7 +10,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by HP on 4/24/2017.
@@ -65,5 +67,23 @@ public class ReportController {
             if (userService.isAdmin(user) ==1) return reportService.listReports().size();
         }
         return 0;
+    }
+    @RequestMapping(value = "/mapstatus", method = RequestMethod.GET, headers = "Accept=Application/json")
+    @ResponseBody
+    public Map<Integer,Integer> ireport(){
+            List<Report> list = reportService.listReports();
+        Map<Integer,Integer> map = new HashMap<>();
+            for(Report report : list){
+                map.put(report.getId(),report.getStatus());
+            }
+
+        return map;
+    }
+
+    @RequestMapping(value = "/updatestatus/{id}", method = RequestMethod.POST, headers = "Accept=Application/json")
+    @ResponseBody
+    public void updatestatus(@PathVariable("id") int id){
+        Report report = reportService.find(id);
+        reportService.update(report);
     }
 }

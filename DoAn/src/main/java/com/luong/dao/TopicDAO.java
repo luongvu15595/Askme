@@ -11,4 +11,5 @@ public interface TopicDAO {
 
     public List<Topic> listTopic();
     public Topic findTopic(int id);
+    public void del(int idTopic);
 }

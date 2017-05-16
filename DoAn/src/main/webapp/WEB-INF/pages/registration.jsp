@@ -5,7 +5,7 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="utf-8">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
@@ -14,8 +14,10 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="http://mbenford.github.io/ngTagsInput/css/ng-tags-input.min.css" />
     <script src="http://mbenford.github.io/ngTagsInput/js/ng-tags-input.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.11.0/ui-bootstrap-tpls.js"></script>
+    <script src="/js/dirPagination.js"></script>
     <script src="/js/app.js"></script>
-    <title>Create an account</title>
+    <title>Đăng kí </title>
     <style type="text/css">
         h2{
 
@@ -37,7 +39,7 @@
     <div class="row " >
 
     <form:form method="POST" modelAttribute="userForm" class="form-signin">
-        <h2 class="form-signin-heading">Create your account</h2>
+        <h2 class="form-signin-heading">Đăng kí tài khoản</h2>
         <div class="col-md-4">&nbsp;</div>
         <div class="form-group col-md-4">
         <spring:bind path="email">
@@ -47,12 +49,16 @@
                 <form:errors path="email"></form:errors>
             </div>
         </spring:bind>
-        <div class="formrow">
+
         <spring:bind path="name">
-                <form:input type="text" path="name" class="form-control" placeholder="Name"
+            <div class="formrow ${status.error ? 'has-error' : ''} ">
+                <form:input type="text" path="name" class="form-control" placeholder="Họ và tên"
                             autofocus="true"></form:input>
+                <form:errors path="name"></form:errors>
             </div>
+
         </spring:bind>
+
 
         <spring:bind path="password">
             <div  class="formrow ${status.error ? 'has-error' : ''} ">
@@ -64,16 +70,17 @@
         <spring:bind path="passwordConfirm">
             <div class="formrow ${status.error ? 'has-error' : ''} ">
                 <form:input type="password" path="passwordConfirm" class="form-control"
-                            placeholder="Confirm your password"></form:input>
+                            placeholder="Nhập lại password"></form:input>
                 <form:errors path="passwordConfirm"></form:errors>
             </div>
         </spring:bind>
 
-        <button class="btn btn-lg btn-primary btn-block formrow" type="submit">Submit</button>
+        <button class="btn btn-lg btn-primary btn-block formrow" type="submit">Đăng kí</button>
         </div>
     </form:form>
 
 </div>
 </div>
+<jsp:include page="footer.jsp"/>
 </body>
 </html>

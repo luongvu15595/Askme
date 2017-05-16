@@ -115,4 +115,9 @@ public class TopicServiceImpl implements TopicService {
         topicDAO.create(topic);
         return topic;
     }
+
+    @Override
+    public void del(int id) {
+        topicDAO.del(id);
+    }
 }
