@@ -1,6 +1,7 @@
 package com.luong.dao;
 
 import com.luong.model.Following;
+import com.luong.model.User;
 import com.luong.model.Vote_Answer;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,6 +52,17 @@ public class FollowingDAOImpl implements FollowingDAO {
     public void Destroy(Following following) {
         int id = following.getId_following();
         em.createQuery("DELETE FROM Following f WHERE f.id_following= :id ").setParameter("id",id).executeUpdate();
+
+    }
+
+    @Override
+    public List<User> findfollowing(int id) {
+        try {
+            List<User> users = em.createQuery("select f.user_following from Following f WHERE f.user_followed.id= :id").setParameter("id",id).getResultList();
+            return users;
+        }catch (Exception e){
+            return null;
+        }
 
     }
 

@@ -106,6 +106,15 @@
         display: inline-block;
         text-align: -webkit-match-parent;
     }
+
+    .heighta{
+        margin-top: 30px;
+        height: 200px;
+    }
+    .heightq1{
+        margin-top: 30px;
+        height: 300px;
+    }
     .q-tag{
         margin-top: 10px;
         color: #6f7d95;
@@ -166,7 +175,7 @@
     }
 
     .p {
-        width: 70px;
+        width: 116px;
         font-size: 16px;
         color: #7a838e;
         padding-left: 7px;
@@ -285,7 +294,7 @@
             border-radius: 3px;
             background-color: #3397db;"><i class="fa fa-plus"></i>  ĐẶT CÂU HỎI
                     </button></a></div>
-                    <div ng-if="kiemtra == 1"><a href="/createQuestion"><button style="background: #3498db;color: #fff;width: 100%;
+                    <div ng-if="kiemtra == 1||kiemtra == 3"><a href="/createQuestion"><button style="background: #3498db;color: #fff;width: 100%;
             height: 45px;
             border: none;
             color: #fff;
@@ -305,9 +314,9 @@
             <!-- Accordion -->
             <div class="w3-card-2 w3-round">
                 <div class="w3-white">
-                    <button  class="w3-button w3-block w3-left-align"><i class="fa fa-question-circle fa-fw w3-margin-right"></i> Question</button>
-                    <button  class="w3-button w3-block w3-left-align"><i class="fa fa-tags  fa-fw w3-margin-right"></i> Tags</button>
-                    <button  class="w3-button w3-block w3-left-align"><i class="fa fa-users fa-fw w3-margin-right"></i> User</button>
+                    <a href="/"><button type="button" class="w3-button w3-block w3-left-align"><i class="fa fa-question-circle fa-fw w3-margin-right"></i> Tất cả câu hỏi</button></a>
+                    <a href="/listoftag"><button type="button" class="w3-button w3-block w3-left-align"><i class="fa fa-tags  fa-fw w3-margin-right"></i> Tags</button></a>
+                    <a href="/listofuser"><button  type="button" class="w3-button w3-block w3-left-align"><i class="fa fa-users fa-fw w3-margin-right"></i> User</button></a>
                 </div>
             </div>
 
@@ -316,7 +325,7 @@
                 <div class="w3-container">
                     <div style="text-align: center; margin-top: 20px"><H4>TOP TAGS</H4></div>
                     <hr class="w3-clear">
-                    <div style="margin-bottom: 20px;"ng-repeat="topic in topichots" ><label class="q-tag">{{topic.name}}</label> x {{countquestionbytopics[topic.id]}}</div>
+                    <div style="margin-bottom: 20px;"ng-repeat="tag in taghots" ><label class="q-tag"><a href="/tag/{{tag.id}}">{{tag.name}}</a></label> x {{countquestionbytags[topic.id]}}</div>
                 </div>
             </div>
             <!-- End Left Column -->
@@ -333,7 +342,7 @@
                                 <label class="w3-col m3 home ">
                                     <label><i class="fa fa-angle-double-left"></i>
                                     </label>
-                                    <a href="/" class="home">Home</a>
+                                    <a href="/" class="home">Trang chủ</a>
                                 </label>
                                 <label class="w3-col m9 ">
                                     <h2 itemprop="name"><a itemprop="url" style="word-wrap: break-word" href="/question/{{question.id_question}}" class="question-title">{{question.title}}</a>
@@ -379,7 +388,7 @@
                                     <div class="question-content">{{question.content}}</div>
                                     <div class="image" ng-if="isImage == 1"><img src="/image/${question.id_question}" width="700px" height="400px"/></div>
                                     <div>
-                                        <label class="q-tag" ng-repeat=" topic in topics">{{topic.name}}</label>
+                                        <label class="q-tag" ng-repeat=" tag in tags"><a href="/tag/{{tag.id}}">{{tag.name}}</a></label>
                                     </div>
                                     <hr class="w3-clear w3-col m12">
                                     <div class="info">
@@ -390,13 +399,13 @@
 
                                             <label ng-if="question.user.id != ${userlogin.id} && ${isAdmin} != 1">
                                                 <a href="/report/{{question.id_question}}">
-                                                    report
+                                                    Báo cáo
                                                 </a>
                                             </label>
                                             <!-- Modal 28-4-->
                                             <lable ng-if="question.user.id == ${userlogin.id} || ${isAdmin} == 1">
                         <a  class="btn" data-toggle="modal" data-target="#delModalQuestion">
-                            Xoa
+                            Xóa
                         </a>
                     </lable>
 
@@ -408,14 +417,14 @@
                                                             <h3 class="modal-title"> {{question.title}}</h3>
                                                         </div>
                                                         <div class="modal-body">
-                                                            <h4>Xoa bo bai dang ??</h4>
+                                                            <h4>Bạn có muốn xóa bài đăng này không?</h4>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn btn-default" data-dismiss="modal">&nbsp;Giu
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">&nbsp;Giữ
                                                             </button>
                                                             <a href="/">
                                                                 <button type="button" class="btn btn-default"
-                                                                        ng-click="delQuestion()">Xoa
+                                                                        ng-click="delQuestion()">Xóa
                                                                 </button>
                                                             </a>
                                                         </div>
@@ -426,14 +435,14 @@
                                             <!-- Modal 28-4-->
                                             <label ng-if="question.user.id == ${userlogin.id} ">
                         <a  class="btn" data-toggle="modal" data-target="#editModalQuestion"
-                           ng-click="questionmodal()">Sua
+                           ng-click="questionmodal()">Sửa
                         </a>
                     </label>
                                             <div class="modal fade" id="editModalQuestion" role="dialog">
                                                 <div class="modal-dialog ">
                                                     <!-- Modal content-->
                                                     <div class="modal-content">
-                                                        <div class="modal-body heightq">
+                                                        <div class="modal-body heightq1">
                                                             <form name="myForm">
                                                                 <div class="input col-sm-12">
                                                                     <div class="col-sm-1"></div>
@@ -475,12 +484,12 @@
                                                                 </div>
                                                             </form>
                                                         </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-default" data-dismiss="modal">&nbsp;Giu
+                                                        <div class="modal-footer" style="margin-top: 20px">
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">&nbsp;Giữ
                                                             </button>
                                                             <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="editQuestion()"
                                                                     ng-disabled="myForm.xtitle.$error.minlength || myForm.xtitle.$error.maxlength
-                                            || myForm.xcontent.$error.minlength || myForm.xcontent.$error.maxlength" >Sua
+                                            || myForm.xcontent.$error.minlength || myForm.xcontent.$error.maxlength" >Sửa
                                                             </button>
                                                         </div>
                                                     </div>
@@ -493,7 +502,7 @@
                                 </div>
                             </div>
                             <hr class="w3-clear w3-col m12">
-                            <label class="answers-count">Answers:</label>
+                            <label class="answers-count">Trả lời:</label>
                             <hr class="w3-clear w3-col m12">
                             <div class="w3-col m12 " ng-repeat=" answer in answers">
                                 <div class="w3-col m3 ">
@@ -540,7 +549,7 @@
                                         <label class="createby" ng-if="answer.user.email == '${userlogin.email}' || ${isAdmin} == 1">
 
                                             <a class="btn" data-toggle="modal" data-target="#delModalAnswer"
-                                               ng-click="answermodal(answer)">Xoa
+                                               ng-click="answermodal(answer)">Xóa
                                             </a>
                                             <!-- Modal -->
 
@@ -552,13 +561,13 @@
                                                             <h3 class="modal-title"> {{answerx.content}}</h3>
                                                         </div>
                                                         <div class="modal-body">
-                                                            <h4>Xoa bo cau tra loi ??</h4>
+                                                            <h4>Bạn có muốn xóa câu trả lời này không?</h4>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn btn-default" data-dismiss="modal">&nbsp;Giu
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">&nbsp;Giữ
                                                             </button>
                                                             <button type="button" class="btn btn-default" data-dismiss="modal"
-                                                                    ng-click="delAnswer()">Xoa
+                                                                    ng-click="delAnswer()">Xóa
                                                             </button>
                                                         </div>
                                                     </div>
@@ -567,14 +576,14 @@
 
                                             <!--25/4 user co the ua va xoa cau tra loi cua minh-->
                                             <a class="btn" data-toggle="modal" data-target="#editModalAnswer"
-                                               ng-click="answermodal(answer)">Sua
+                                               ng-click="answermodal(answer)">Sửa
                                             </a>
 
                                             <div class="modal fade" id="editModalAnswer" role="dialog">
                                                 <div class="modal-dialog">
 
                                                     <!-- Modal content-->
-                                                    <div class="modal-content">
+                                                    <div class="modal-content ">
                                                         <div class="modal-body heighta">
                                                             <form name="myForm">
                                                                 <div class="input col-sm-12">
@@ -588,25 +597,25 @@
                                                                 <div class=" col-sm-12">
                                                                     <div class="col-sm-1"></div>
                                                                     <div class="col-sm-10">
-                                              <label class="error" ng-show="myForm.aswcontentedit.$error.minlength">
-                                                <h4>Tiêu đề quá ngắn !! </h4>
-                                              </label>
-                                                                        <label class="error" ng-show="myForm.aswcontentedit.$error.maxlength">
-                                                  <h4>Tiêu đề quá dài !! </h4>
-                                              </label>
+                                                                          <label class="error" ng-show="myForm.aswcontentedit.$error.minlength">
+                                                                            <h4>Tiêu đề quá ngắn !! </h4>
+                                                                          </label>
+                                                                                                    <label class="error" ng-show="myForm.aswcontentedit.$error.maxlength">
+                                                                              <h4>Tiêu đề quá dài !! </h4>
+                                                                          </label>
                                                                     </div>
                                                                 </div>
 
                                                             </form>
                                                         </div>
 
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-default" data-dismiss="modal">&nbsp;Giu
+                                                        <div class="modal-footer" style="margin-top: 20px">
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">&nbsp;Giữ
                                                             </button>
                                                             <button type="button" class="btn btn-default" data-dismiss="modal"
                                                                     ng-click="editAnswer(answer)"
                                                                     ng-disabled="myForm.aswcontentedit.$error.minlength || myForm.aswcontentedit.$error.maxlength">
-                                                                Sua
+                                                                Sửa
                                                             </button>
                                                         </div>
                                                     </div>
@@ -632,7 +641,7 @@
                                 </form>
                             </div>
                             <div ng-if="kiemtra == 2">
-                                <div class="col-sm-12 input"><a href="/login">Moi ban dang nhap</a></div>
+                                <div class="col-sm-12 input"><a style="margin-top: 20px; font-size: 20px;" href="/login">Bạn cần đăng nhập để tham gia bình luận</a></div>
                             </div>
                         </div>
                     </div>

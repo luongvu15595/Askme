@@ -2,7 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Report question</title>
+    <title>Báo cáo câu hỏi</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-blue-grey.css">
@@ -20,16 +20,21 @@
     <script src="/js/ng-infinite-scroll.js"></script>
     <script src="/js/app.js"></script>
     <link rel="shortcut icon" href="http://example.com/favicon.ico">
+    <style type="text/css">
+        .bottom{
+            margin-bottom: 319px;
+        }
+    </style>
 </head>
-<body ng-app="Askme" >
-<jsp:include page="header.jsp"/>
+<body class="w3-theme-l5" ng-app="Askme" >
+<jsp:include  page="header.jsp"/>
 <script>
     function myFunction() {
         document.getElementById("SelectReport").disabled = true;
         document.getElementById("textinput").disabled = false;
     }
 </script>
-<div class="container" style="margin-top: 100px" ng-controller="ReportController" ng-init=" selected ='0';
+<div class="container bottom"  ng-controller="ReportController" ng-init=" selected ='0';
                                                                 reports =['bài đăng có nội dung không lành mạnh',
                                                                           'bài đăng không đúng với mục đích của trang web ',
                                                                           'bài đăng có nội dung chống phá nhà nươc',
@@ -53,7 +58,7 @@
                     </select>
                 </div>
                 <div>
-                    <a class="btn btn-info" style="margin-bottom: 30px" ng-click="selected = '1'">Khac : </a>
+                    <a style="margin-bottom: 30px" ng-click="selected = '1'">Khác : </a>
                 </div >
                 <div ng-if="selected == '1'">
                     <textarea type="text" rows="4" id="textinput" class="form-control" ng-model="formreport.content"

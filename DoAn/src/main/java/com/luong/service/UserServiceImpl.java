@@ -31,6 +31,7 @@ public class UserServiceImpl implements UserService {
        List<Role> roles = new ArrayList<Role>();
        roles.add(roleRepository.findByName("ROLE_USER"));
        user.setRoles(roles);
+       user.setImage("1.png");
        userRepository.save(user);
 
 

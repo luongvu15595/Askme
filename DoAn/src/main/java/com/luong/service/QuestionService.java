@@ -2,7 +2,7 @@ package com.luong.service;
 
 import com.luong.model.DTO.QuestionDTO;
 import com.luong.model.Question;
-import com.luong.model.Topic;
+import com.luong.model.Tag;
 import com.luong.model.User;
 
 import javax.jws.soap.SOAPBinding;
@@ -16,23 +16,23 @@ public interface QuestionService {
     public Question add(Question question, User user);
     public List<Question> search(String string);
     public Map<Integer,Long> countanswerquestionsearch(String string);
-    public Map<Integer,List> topicquestionsearch(String string);
+    public Map<Integer,List> tagquestionsearch(String string);
     public Map<Integer,Long> countUpvotequestionsearch(String string);
     public void update(Question question);
     public void del(int id);
     //6/5
-    public Map<Integer,Long> countanswerquestionbytopic(int id);
-    public Map<Integer,Long> countUpVotequestionbytopic(int id);
-    public Map<Integer,List> listtopicbytopic(int id);
+    public Map<Integer,Long> countanswerquestionbytag(int id);
+    public Map<Integer,Long> countUpVotequestionbytag(int id);
+    public Map<Integer,List> listtagbytag(int id);
     public Map<Integer,Long> countUpVote();
     public Map<Integer,Long> countUpVoteHotWeek();
     public Map<Integer,Long> countAnswerHotWeek();
     public List<Question> sortHotWeek();
-    public Map<Integer,List> topicQuestionHotWeek();
+    public Map<Integer,List> tagQuestionHotWeek();
     public Map<Integer,Long> countUpVoteHotMonth();
     public Map<Integer,Long> countAnswerHotMonth();
     public List<Question> sortHotMonth();
-    public Map<Integer,List> topicQuestionHotMonth();
+    public Map<Integer,List> tagQuestionHotMonth();
     //15/5
     public Integer countquestion();
 
@@ -42,6 +42,11 @@ public interface QuestionService {
     public List<User> listSortUserAnswers();
 
     public Map<Integer,Long> countanswerquestionbyuser(int id);
-    public Map<Integer,List> topicQuestionbyuser(int id);
+    public Map<Integer,List> tagQuestionbyuser(int id);
     public Map<Integer,Long> countUpVoteQuestionUser(int id );
+    //18/5
+    public List<Question> listquestionfollowing(int id);
+    public Map<Integer,Long> countanswerquestionfollowingbyuser(int id);
+    public Map<Integer,List> tagQuestionbyfollowinguser(int id);
+    public Map<Integer,Long> countUpVoteQuestionfollowingUser(int id );
 }

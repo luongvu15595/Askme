@@ -19,4 +19,5 @@ public interface AnswerService {
     public void del(int id);
     public List<Answer> listAnswerOfQuestion(int id);
     public void updateAnswer(Answer answer);
+
 }

@@ -1,6 +1,7 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-<title>W3.CSS Template</title>
+<title>Tất cả tags</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -47,7 +48,7 @@
         border-radius: 50%;
     }
     .left{
-        margin-left: 20px;
+        margin-left: 14px;
     }
     .answer{
         margin-left: 40px;
@@ -153,7 +154,7 @@
     }
 
     .p {
-        width: 70px;
+        width: 116px;
         font-size: 16px;
         color: #7a838e;
         padding-left: 7px;
@@ -205,8 +206,11 @@
         margin-bottom: 20px;
     }
     .left{margin-left: 14px;}
+    .top1{
+        margin-top: 15px;
+    }
 </style>
-<body class="w3-theme-l5" ng-app="Askme" ng-controller="listOfTopicController">
+<body class="w3-theme-l5" ng-app="Askme" ng-controller="listOfTagController">
 
 <!-- Navbar -->
 <jsp:include page="header.jsp"/>
@@ -244,7 +248,7 @@
             border-radius: 3px;
             background-color: #3397db;"><i class="fa fa-plus"></i>  ĐẶT CÂU HỎI
                     </button></a></div>
-                    <div ng-if="kiemtra == 1"><a href="/createQuestion"><button style="background: #3498db;color: #fff;width: 100%;
+                    <div ng-if="kiemtra == 1||kiemtra == 3"><a href="/createQuestion"><button style="background: #3498db;color: #fff;width: 100%;
             height: 45px;
             border: none;
             color: #fff;
@@ -264,9 +268,9 @@
             <!-- Accordion -->
             <div class="w3-card-2 w3-round">
                 <div class="w3-white">
-                    <button  class="w3-button w3-block w3-left-align"><i class="fa fa-question-circle fa-fw w3-margin-right"></i> Question</button>
-                    <button  class="w3-button w3-block w3-left-align"><i class="fa fa-tags  fa-fw w3-margin-right"></i> Tags</button>
-                    <button  class="w3-button w3-block w3-left-align"><i class="fa fa-users fa-fw w3-margin-right"></i> User</button>
+                    <a href="/"><button type="button" class="w3-button w3-block w3-left-align"><i class="fa fa-question-circle fa-fw w3-margin-right"></i>Tất cả câu hỏi</button></a>
+                    <a href="/listoftag"><button type="button" class="w3-button w3-block w3-left-align"><i class="fa fa-tags  fa-fw w3-margin-right"></i> Tags</button></a>
+                    <a href="/listofuser"><button  type="button" class="w3-button w3-block w3-left-align"><i class="fa fa-users fa-fw w3-margin-right"></i> User</button></a>
                 </div>
             </div>
 
@@ -275,7 +279,7 @@
                 <div class="w3-container">
                     <div style="text-align: center; margin-top: 20px"><H4>TOP TAGS</H4></div>
                     <hr class="w3-clear">
-                    <div style="margin-bottom: 20px;"ng-repeat="topic in topichots" ><label class="q-tag">{{topic.name}}</label> x{{countquestionbytopics[topic.id]}}</div>
+                    <div style="margin-bottom: 20px;"ng-repeat="tag in taghots" ><label class="q-tag"><a href="/tag/{{tag.id}}">{{tag.name}}</a></label> x{{countquestionbytags[tag.id]}}</div>
                 </div>
             </div>
             <!-- End Left Column -->
@@ -289,8 +293,8 @@
                     <div class="w3-card-2 w3-round w3-white">
                         <div class="w3-container w3-padding">
                             <div class="w3-col m12 col-xs-6 "><label class="w3-col m9 labletag" >Tags</label>
-                                <form class="form-inline w3-col m3 inputtag">
-                                    <input type="text" ng-model="search" class="form-control" placeholder="Search">
+                                <form class="form-inline w3-col m3 inputtag top1">
+                                    <input type="text" ng-model="search" class="form-control" placeholder="tìm kiếm tags">
                                 </form>
                             </div>
                         </div>
@@ -304,22 +308,22 @@
                 <div class="w3-col m12">
 
 
-                    <label class="w3-col m3" dir-paginate="topic in topics|filter:search|itemsPerPage:24">
-                        <label class="q-tag "><a ng-href="/topic/{{topic.id}}">{{topic.name}}</a></label>x {{countquestionbytopics[topic.id]}}</label>
+                    <label class="w3-col m3" dir-paginate="tag in tags|filter:search|itemsPerPage: 48">
+                        <label class="q-tag" style="margin-bottom: 20px"><a ng-href="/tag/{{tag.id}}">{{tag.name}}</a></label>x {{countquestionbytags[tag.id]}}</label>
 
-                    <div class="left"><dir-pagination-controls
-                            min-size="1"
-                            max-size="5"
-                            direction-links="true"
-                            boundary-links="true" >
-                    </dir-pagination-controls></div>
+
 
 
                 </div>
 
             </div>
 
-
+            <div class="left"><dir-pagination-controls
+                    min-size="1"
+                    max-size="5"
+                    direction-links="true"
+                    boundary-links="true" >
+            </dir-pagination-controls></div>
             <!-- End Middle Column -->
         </div>
 
@@ -328,10 +332,10 @@
             <div class="w3-card-2 w3-round w3-white w3-center ">
                 <div class="w3-container">
                     <div class="questions-count">
-                        <p class="p">Questions</p>
+                        <p class="p">Tổng Câu Hỏi</p>
                         <p class="number">{{countlistquestion}}</p>
                     </div>
-                    <div class="members-count"><p class="p">Members</p>
+                    <div class="members-count"><p class="p">Số Thành Viên</p>
                         <p class="number">{{countlistuser}}</p>
                     </div>
                 </div>

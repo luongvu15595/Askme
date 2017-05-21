@@ -1,6 +1,7 @@
 package com.luong.dao;
 
 import com.luong.model.Following;
+import com.luong.model.User;
 
 import java.util.List;
 
@@ -12,4 +13,5 @@ public interface FollowingDAO {
    public void add(Following following);
     public Following find(int user_followed,int user_following);
     public void Destroy(Following following);
+    public List<User> findfollowing(int id);
 }

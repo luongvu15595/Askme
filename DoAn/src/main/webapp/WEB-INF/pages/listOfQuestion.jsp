@@ -1,7 +1,9 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html>
-<title>Home</title>
-<meta charset="UTF-8">
+<title>Trang chủ</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-blue-grey.css">
@@ -153,7 +155,7 @@
     }
 
     .p {
-        width: 70px;
+        width: 116px;
         font-size: 16px;
         color: #7a838e;
         padding-left: 7px;
@@ -232,7 +234,7 @@
             border-radius: 3px;
             background-color: #3397db;"><i class="fa fa-plus"></i>  ĐẶT CÂU HỎI
                 </button></a></div>
-                    <div ng-if="kiemtra == 1"><a href="/createQuestion"><button style="background: #3498db;color: #fff;width: 100%;
+                    <div ng-if="kiemtra == 1||kiemtra == 3"><a href="/createQuestion"><button style="background: #3498db;color: #fff;width: 100%;
             height: 45px;
             border: none;
             color: #fff;
@@ -252,9 +254,9 @@
             <!-- Accordion -->
             <div class="w3-card-2 w3-round">
                 <div class="w3-white">
-                    <button  class="w3-button w3-block w3-left-align"><i class="fa fa-question-circle fa-fw w3-margin-right"></i> CÂU HỎI</button>
-                    <button  class="w3-button w3-block w3-left-align"><i class="fa fa-tags  fa-fw w3-margin-right"></i> Tags</button>
-                    <button  class="w3-button w3-block w3-left-align"><i class="fa fa-users fa-fw w3-margin-right"></i> User</button>
+                    <a href="/"><button type="button" class="w3-button w3-block w3-left-align"><i class="fa fa-question-circle fa-fw w3-margin-right"></i>Tất cả câu hỏi</button></a>
+                    <a href="/listoftag"><button type="button" class="w3-button w3-block w3-left-align"><i class="fa fa-tags  fa-fw w3-margin-right"></i> Tags</button></a>
+                    <a href="/listofuser"><button  type="button" class="w3-button w3-block w3-left-align"><i class="fa fa-users fa-fw w3-margin-right"></i> User</button></a>
                 </div>
             </div>
 
@@ -263,7 +265,7 @@
                 <div class="w3-container">
                     <div style="text-align: center; margin-top: 20px"><H4>TOP TAGS</H4></div>
                     <hr class="w3-clear">
-                    <div style="margin-bottom: 20px;"ng-repeat="topic in topichots" ><label class="q-tag">{{topic.name}}</label> x {{countquestionbytopics[topic.id]}}</div>
+                    <div style="margin-bottom: 20px;"ng-repeat="tag in taghots" ><label class="q-tag"><a href="/tag/{{tag.id}}">{{tag.name}}</a></label> x {{countquestionbytags[tag.id]}}</div>
                 </div>
             </div>
             <!-- End Left Column -->
@@ -276,7 +278,7 @@
                 <div class="w3-col m12">
                     <div class="w3-card-2 w3-round w3-white">
                         <div class="w3-container w3-padding">
-                            <h3>Tat ca cau hoi</h3>
+                            <h3>Tất cả câu hỏi</h3>
                         </div>
                     </div>
                 </div>
@@ -298,8 +300,8 @@
                     <div><h2 itemprop="name"><a itemprop="url" style="word-wrap: break-word"  ng-href="/question/{{question.id_question}}" class="question-title">{{question.title}}</a></h2></div>
                     <div>
 
-                        <label ng-repeat="i in topics[question.id_question]" class="q-tag">
-                            <a ng-href="/topic/{{i.id}}" class="tagtext">{{i.name}}</a>
+                        <label ng-repeat="i in tags[question.id_question]" class="q-tag">
+                            <a ng-href="/tag/{{i.id}}" class="tagtext">{{i.name}}</a>
                         </label>
 
                     </div>
@@ -328,10 +330,10 @@
             <div class="w3-card-2 w3-round w3-white w3-center ">
                 <div class="w3-container">
                     <div class="questions-count">
-                        <p class="p">Questions</p>
+                        <p class="p">Tổng Câu Hỏi</p>
                         <p class="number">{{countlistquestion}}</p>
                     </div>
-                    <div class="members-count"><p class="p">Members</p>
+                    <div class="members-count"><p class="p">Số Thành Viên</p>
                         <p class="number">{{countlistuser}}</p>
                     </div>
                 </div>

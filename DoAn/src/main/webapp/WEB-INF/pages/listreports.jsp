@@ -47,7 +47,7 @@
     </form>
     <table class="table table-bordered">
         <thead>
-        <tr class="color">
+        <tr>
             <th class="id">Người report</th>
             <th class="id">Người đăng bài </th>
             <th>Nội dung bài đăng</th>
@@ -57,10 +57,10 @@
         </thead>
         <tbody>
         <tr dir-paginate="report in reports|filter:search|itemsPerPage:5">
-            <td>{{report.user.name}}</td>
-            <td>{{report.question.user.name}}</td>
-            <td><a ng-href="/question/{{report.question.id_question}}">{{report.question.title}}</a></td>
-            <td>{{report.content}}</td>
+            <td style="word-wrap: break-word">{{report.user.name}}</td>
+            <td style="word-wrap: break-word">{{report.question.user.name}}</td>
+            <td style="word-wrap: break-word" ><a ng-href="/question/{{report.question.id_question}}">{{report.question.title}}</a></td>
+            <td style="word-wrap: break-word">{{report.content}}</td>
             <td ng-if="statusreports[report.id] == 0">
                 <button type="button" class="btn btn-warning" ng-click="cancel(report.id)">cancel</button>
             </td>
@@ -76,6 +76,5 @@
     </dir-pagination-controls>
 </div>
 
-<jsp:include page="footer.jsp"/>
 </body>
 </html>

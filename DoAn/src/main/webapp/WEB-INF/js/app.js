@@ -42,6 +42,7 @@ Askme.controller("headerController", function ($scope, $http) {
     };
     $scope.submitSearch = function () {
         var str = $scope.headerForm.search;
+
         str = str.toLowerCase();
         str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
         str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
@@ -50,8 +51,11 @@ Askme.controller("headerController", function ($scope, $http) {
         str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u");
         str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y");
         str = str.replace(/đ/g, "d");
-        var name = "/search/" + str;
-        location.href = name;
+        if(str.length == 0){
+            location.href="/";
+        }
+        else {var name = "/search/" + str;
+        location.href = name;}
     };
 
 
@@ -61,10 +65,10 @@ Askme.controller("QuestionController", function ($scope, $http) {
     $scope.questions = [];
     $scope.questionsHotWeeks=[];
     $scope.questionsHotMonths=[];
-    $scope.topichots =[];
+    $scope.taghots =[];
     _refreshQuestionData();
     _refreshQuestionHotWeekData();
-    _refreshtopichotData();
+    _refreshtaghotData();
     $scope.kiemtra = 0;
 
     checkdangnhap();
@@ -80,22 +84,22 @@ Askme.controller("QuestionController", function ($scope, $http) {
         }
     };
 
-    function _refreshtopichotData(){
+    function _refreshtaghotData(){
         $http({
             method: 'GET',
-            url: 'http://localhost:8080/listtopichot'
+            url: 'http://localhost:8080/listtaghot'
         }).then(function successCallback(response) {
-            $scope.topichots = response.data;
+            $scope.taghots = response.data;
         })
     };
 
-    var countquestionbytopic = {
+    var countquestionbytag = {
         method: 'GET',
-        url: 'http://localhost:8080/countquestionbytopic'
+        url: 'http://localhost:8080/countquestionbytag'
     };
-    $http(countquestionbytopic).success(
+    $http(countquestionbytag).success(
         function (data) {
-            $scope.countquestionbytopics = data;
+            $scope.countquestionbytags = data;
         }
     );
     function _refreshQuestionData() {
@@ -135,13 +139,13 @@ Askme.controller("QuestionController", function ($scope, $http) {
         }
     );
 
-    var topic = {
+    var tag = {
         method: 'GET',
-        url: 'http://localhost:8080/getAllTopicByQuestion'
+        url: 'http://localhost:8080/getAllTagByQuestion'
     };
-    $http(topic).success(
+    $http(tag).success(
         function (data) {
-            $scope.topics = data;
+            $scope.tags = data;
         }
     );
 
@@ -174,13 +178,13 @@ Askme.controller("QuestionController", function ($scope, $http) {
         }
     );
 
-    var topicHotWeek = {
+    var tagHotWeek = {
         method: 'GET',
-        url: 'http://localhost:8080/topicQuestionHotWeek'
+        url: 'http://localhost:8080/tagQuestionHotWeek'
     };
-    $http(topicHotWeek).success(
+    $http(tagHotWeek).success(
         function (data) {
-            $scope.topicHotWeeks = data;
+            $scope.tagHotWeeks = data;
         }
     );
 
@@ -213,54 +217,54 @@ Askme.controller("QuestionController", function ($scope, $http) {
         }
     );
 
-    var topicHotMonth = {
+    var tagHotMonth = {
         method: 'GET',
-        url: 'http://localhost:8080/topicQuestionHotmonth'
+        url: 'http://localhost:8080/tagQuestionHotmonth'
     };
-    $http(topicHotMonth).success(
+    $http(tagHotMonth).success(
         function (data) {
-            $scope.topicHotMonths = data;
+            $scope.tagHotMonths = data;
         }
     );
 });
-// page listoftopic
-Askme.controller("listOfTopicController", function ($scope, $http) {
-    $scope.topichots =[];
-    _refreshtopichotData();
-    function _refreshtopichotData(){
+// page listoftag
+Askme.controller("listOfTagController", function ($scope, $http) {
+    $scope.taghots =[];
+    _refreshtaghotData();
+    function _refreshtaghotData(){
         $http({
             method: 'GET',
-            url: 'http://localhost:8080/listtopichot'
+            url: 'http://localhost:8080/listtaghot'
         }).then(function successCallback(response) {
-            $scope.topichots = response.data;
+            $scope.taghots = response.data;
         })
     };
 
-    var countquestionbytopic = {
+    var countquestionbytag = {
         method: 'GET',
-        url: 'http://localhost:8080/countquestionbytopic'
+        url: 'http://localhost:8080/countquestionbytag'
     };
-    $http(countquestionbytopic).success(
+    $http(countquestionbytag).success(
         function (data) {
-            $scope.countquestionbytopics = data;
+            $scope.countquestionbytags = data;
         }
     );
     $scope.kiemtra = 0;
-    $scope.topics = [];
-    $scope.topic1 = {
+    $scope.tags = [];
+    $scope.tag1 = {
        name:""
     };
     checkdangnhap();
-    _refreshTopicData();
+    _refreshTagData();
     $scope.updateTopicModal = {
         name: "",
     };
-    function _refreshTopicData() {
+    function _refreshTagData() {
         $http({
             method: 'GET',
-            url: 'http://localhost:8080/listtopic'
+            url: 'http://localhost:8080/listtag'
         }).then(function successCallback(response) {
-            $scope.topics = response.data;
+            $scope.tags = response.data;
         }), function errorCallback(response) {
             console.log(response.statusText);
         }
@@ -276,36 +280,15 @@ Askme.controller("listOfTopicController", function ($scope, $http) {
             console.log(response.statusText);
         }
     };
-    var countquestionbytopic = {
+    var countquestionbytag = {
         method: 'GET',
-        url: 'http://localhost:8080/countquestionbytopic'
+        url: 'http://localhost:8080/countquestionbytag'
     };
-    $http(countquestionbytopic).success(
+    $http(countquestionbytag).success(
         function (data) {
-            $scope.countquestionbytopics = data;
+            $scope.countquestionbytags = data;
         }
     );
-
-    $scope.delTopicModal = function (topic) {
-        $scope.topic = topic;
-        $scope.delTopic= function () {
-            var urlstr = 'http://localhost:8080/deletetopic/' + topic.id;
-            $http({
-                method: 'Delete',
-                url: urlstr
-            })
-            $scope.topics.splice($scope.topics.indexOf(topic), 1);
-        }
-    }
-    $scope.updateTopicModal = function (topic) {
-        $scope.topicx = topic;
-        $scope.topic1.name = topic.name;
-    }
-    $scope.updateTopic = function () {
-        console.log($scope.topicx.id);
-        $scope.topicx.name = $scope.topic1.name;
-    }
-
 });
 //pages answerByUser
 Askme.controller("answerByUserController",function ($scope,$http) {
@@ -355,11 +338,11 @@ Askme.controller("CreateQuestionController", function ($scope, $http) {
     $scope.loadTags = function($query) {
         return $http({
             method: 'GET',
-            url: 'http://localhost:8080/listtopic'
+            url: 'http://localhost:8080/listtag'
         }).then(function successCallback(response) {
-           var topics = response.data;
-            return topics.filter(function(topic) {
-                return topic.name.toLowerCase().indexOf($query.toLowerCase()) != -1;
+           var tags = response.data;
+            return tags.filter(function(tag) {
+                return tag.name.toLowerCase().indexOf($query.toLowerCase()) != -1;
             });
          })
     };
@@ -390,7 +373,7 @@ Askme.controller("CreateQuestionController", function ($scope, $http) {
                 if (typeof  file === "undefined")
                 {
                     fd.append('question', angular.toJson($scope.questionForm, true));
-                    fd.append('topic', angular.toJson($scope.tags, true));
+                    fd.append('tag', angular.toJson($scope.tags, true));
                     $http({
                         method: "POST",
                         url: name1,
@@ -409,7 +392,7 @@ Askme.controller("CreateQuestionController", function ($scope, $http) {
                 else {
                     fd.append('file', file);
                     fd.append('question', angular.toJson($scope.questionForm, true));
-                    fd.append('topic', angular.toJson($scope.tags, true));
+                    fd.append('tag', angular.toJson($scope.tags, true));
                     $http({
                         method: "POST",
                         url: name,
@@ -439,8 +422,8 @@ Askme.controller("CreateQuestionController", function ($scope, $http) {
 
 });
 
-//page listquestionbytopic
-Askme.controller("listquestionbytopicController", function ($scope, $http) {
+//page listquestionbytag
+Askme.controller("listquestionbytagController", function ($scope, $http) {
     $scope.kiemtra = 0;
     checkdangnhap();
     function checkdangnhap() {
@@ -454,68 +437,68 @@ Askme.controller("listquestionbytopicController", function ($scope, $http) {
         })
 
     }
-    $scope.topichots =[];
-    _refreshtopichotData();
-    function _refreshtopichotData(){
+    $scope.taghots =[];
+    _refreshtaghotData();
+    function _refreshtaghotData(){
         $http({
             method: 'GET',
-            url: 'http://localhost:8080/listtopichot'
+            url: 'http://localhost:8080/listtaghot'
         }).then(function successCallback(response) {
-            $scope.topichots = response.data;
+            $scope.taghots = response.data;
         })
     };
 
-    var countquestionbytopic = {
+    var countquestionbytag = {
         method: 'GET',
-        url: 'http://localhost:8080/countquestionbytopic'
+        url: 'http://localhost:8080/countquestionbytag'
     };
-    $http(countquestionbytopic).success(
+    $http(countquestionbytag).success(
         function (data) {
-            $scope.countquestionbytopics = data;
+            $scope.countquestionbytags = data;
         }
     );
-    $scope.questionbytopics = [];
-    $scope.getQuestionByTopicData = function(id) {
-        urlstr = 'http://localhost:8080/getAllQuestionByidTopic/' + id;
-        url =  'http://localhost:8080/getcountanswerAllQuestionByidTopic/'+id;
-        url1 = 'http://localhost:8080/mapcountupvotebyquestionfortopic/'+id;
-        url2= 'http://localhost:8080/gettopicbytopic/'+id;
+    $scope.questionbytags = [];
+    $scope.getQuestionByTagData = function(id) {
+        urlstr = 'http://localhost:8080/getAllQuestionByidTag/' + id;
+        url =  'http://localhost:8080/getcountanswerAllQuestionByidTag/'+id;
+        url1 = 'http://localhost:8080/mapcountupvotebyquestionfortag/'+id;
+        url2= 'http://localhost:8080/gettagbytag/'+id;
         $http({
             method: 'GET',
             url: urlstr
         }).then(function successCallback(response) {
-            $scope.questionbytopics = response.data;
-            console.log($scope.questionbytopics);
+            $scope.questionbytags = response.data;
+            console.log($scope.questionbytags);
         }), function errorCallback(response) {
             console.log(response.statusText);
         }
-        var countAswerQuestionByTopicData = {
+        var countAswerQuestionByTagData = {
             method: 'GET',
             url: url
         };
-        $http(countAswerQuestionByTopicData).success(
+        $http(countAswerQuestionByTagData).success(
             function (data) {
-                $scope.countanswerquestionbytopics = data;
+                $scope.countanswerquestionbytags = data;
             }
         );
 
-        var topicByTopicData = {
+        var tagByTagData = {
             method: 'GET',
             url: url2
         };
-        $http(topicByTopicData).success(
+        $http(tagByTagData).success(
             function (data) {
-                $scope.topics2 = data;
+                $scope.tags2 = data;
             }
         );
 
-        var countVoteUpQuestionByTopicData = {
+        var countVoteUpQuestionByTagData = {
             method: 'GET',
             url: url
         };
-        $http(countVoteUpQuestionByTopicData).success(
+        $http(countVoteUpQuestionByTagData).success(
             function (data) {
-                $scope.countvoteupquestionbytopicdatas = data;
+                $scope.countvoteupquestionbytagdatas = data;
             }
         );
 
@@ -524,24 +507,24 @@ Askme.controller("listquestionbytopicController", function ($scope, $http) {
 });
 //listUser
 Askme.controller("listUser", function ($scope, $http) {
-    $scope.topichots =[];
-    _refreshtopichotData();
-    function _refreshtopichotData(){
+    $scope.taghots =[];
+    _refreshtaghotData();
+    function _refreshtaghotData(){
         $http({
             method: 'GET',
-            url: 'http://localhost:8080/listtopichot'
+            url: 'http://localhost:8080/listtaghot'
         }).then(function successCallback(response) {
-            $scope.topichots = response.data;
+            $scope.taghots = response.data;
         })
     };
 
-    var countquestionbytopic = {
+    var countquestionbytag = {
         method: 'GET',
-        url: 'http://localhost:8080/countquestionbytopic'
+        url: 'http://localhost:8080/countquestionbytag'
     };
-    $http(countquestionbytopic).success(
+    $http(countquestionbytag).success(
         function (data) {
-            $scope.countquestionbytopics = data;
+            $scope.countquestionbytags = data;
         }
     );
     $scope.kiemtra = 0;
@@ -769,24 +752,24 @@ Askme.controller("profile",function ($scope,$http) {
         });
         $scope.user.name = $scope.userx.name;
     }
-    $scope.topichots =[];
-    _refreshtopichotData();
-    function _refreshtopichotData(){
+    $scope.taghots =[];
+    _refreshtaghotData();
+    function _refreshtaghotData(){
         $http({
             method: 'GET',
-            url: 'http://localhost:8080/listtopichot'
+            url: 'http://localhost:8080/listtaghot'
         }).then(function successCallback(response) {
-            $scope.topichots = response.data;
+            $scope.taghots = response.data;
         })
     };
 
-    var countquestionbytopic = {
+    var countquestionbytag = {
         method: 'GET',
-        url: 'http://localhost:8080/countquestionbytopic'
+        url: 'http://localhost:8080/countquestionbytag'
     };
-    $http(countquestionbytopic).success(
+    $http(countquestionbytag).success(
         function (data) {
-            $scope.countquestionbytopics = data;
+            $scope.countquestionbytags = data;
         }
     );
     $scope.questions=[];
@@ -795,9 +778,45 @@ Askme.controller("profile",function ($scope,$http) {
         _getQuestionByUser( $scope.id);
         _countanswerquestionbyuser( $scope.id);
         _countupvotequestionbyuser( $scope.id);
-        _listtopicbyuser($scope.id);
+        _listtagbyuser($scope.id);
 
     }
+    $scope.check1=0;
+        $scope.checkfollowing =function(id) {
+            urlstr = 'http://localhost:8080/listquestionfollowingbyuser/' +id;
+            urlstr1 = 'http://localhost:8080/countanswerfollowingbyuser/' +id;
+            urlstr2 = 'http://localhost:8080/countvoteupfollowingbyuser/' +id;
+            urlstr3 = 'http://localhost:8080/listtagfollowingbyuser/' +id;
+            $http({
+                method: 'GET',
+                url: urlstr
+            }).then(function successCallback(response) {
+                $scope.questions1 = response.data;
+            })
+            $http({
+                method: 'GET',
+                url: urlstr1
+            }).then(function successCallback(response) {
+                $scope.answers1 = response.data;
+            })
+            $http({
+                method: 'GET',
+                url: urlstr2
+            }).then(function successCallback(response) {
+                $scope.upvotes1 = response.data;
+            })
+            $http({
+                method: 'GET',
+                url: urlstr3
+            }).then(function successCallback(response) {
+                $scope.tags1 = response.data;
+            })
+            $scope.check1=1;
+        }
+    $scope.checkfollowing1 =function() {
+        $scope.check1=0;
+    }
+
     function _getQuestionByUser(id) {
         urlstr = 'http://localhost:8080/getAllQuestionByUser/' +id;
         $http({
@@ -812,7 +831,7 @@ Askme.controller("profile",function ($scope,$http) {
     }
 
     function _countupvotequestionbyuser(id) {
-        urlstr = 'http://localhost:8080/countupvotetopicquestionbyuser/' +id;
+        urlstr = 'http://localhost:8080/countupvotetagquestionbyuser/' +id;
         $http({
             method: 'GET',
             url: urlstr
@@ -837,13 +856,13 @@ Askme.controller("profile",function ($scope,$http) {
 
     }
 
-    function _listtopicbyuser(id) {
-        urlstr = 'http://localhost:8080/getlisttopicquestionbyuser/' +id;
+    function _listtagbyuser(id) {
+        urlstr = 'http://localhost:8080/getlisttagquestionbyuser/' +id;
         $http({
             method: 'GET',
             url: urlstr
         }).then(function successCallback(response) {
-            $scope.topics = response.data;
+            $scope.tags = response.data;
         }), function errorCallback(response) {
             console.log(response.statusText);
         }
@@ -856,22 +875,7 @@ Askme.controller("RegisterController",function () {
 });
 
 
-//questionByUserController
-Askme.controller("questionByUserController",function ($scope,$http) {
-    $scope.questions=[];
-    $scope.getQuestionByUser =function(id)  {
-        urlstr = 'http://localhost:8080/getAllQuestionByUser/' +id;
-        $http({
-            method: 'GET',
-            url: urlstr
-        }).then(function successCallback(response) {
-            $scope.questions = response.data;
-        }), function errorCallback(response) {
-            console.log(response.statusText);
-        }
 
-    }
-});
 //search
 Askme.controller("searchquestionController",function ($scope,$http) {
     $scope.kiemtra = 0;
@@ -887,24 +891,24 @@ Askme.controller("searchquestionController",function ($scope,$http) {
         })
 
     }
-    $scope.topichots =[];
-    _refreshtopichotData();
-    function _refreshtopichotData(){
+    $scope.taghots =[];
+    _refreshtaghotData();
+    function _refreshtaghotData(){
         $http({
             method: 'GET',
-            url: 'http://localhost:8080/listtopichot'
+            url: 'http://localhost:8080/listtaghot'
         }).then(function successCallback(response) {
-            $scope.topichots = response.data;
+            $scope.taghots = response.data;
         })
     };
 
-    var countquestionbytopic = {
+    var countquestionbytag = {
         method: 'GET',
-        url: 'http://localhost:8080/countquestionbytopic'
+        url: 'http://localhost:8080/countquestionbytag'
     };
-    $http(countquestionbytopic).success(
+    $http(countquestionbytag).success(
         function (data) {
-            $scope.countquestionbytopics = data;
+            $scope.countquestionbytags = data;
         }
     );
     $scope.nginit = function (string) {
@@ -913,7 +917,7 @@ Askme.controller("searchquestionController",function ($scope,$http) {
         _getQuestionByUser( $scope.string);
         checkquestion1( $scope.string);
         _countanswer($scope.string);
-        _listtopic($scope.string);
+        _listtag($scope.string);
         _countUpvote($scope.string);
     }
 
@@ -935,14 +939,14 @@ Askme.controller("searchquestionController",function ($scope,$http) {
 
     }
 
-    function _listtopic(string) {
+    function _listtag(string) {
 
-        urlstr = 'http://localhost:8080/topicquestionsearch/' + string;
+        urlstr = 'http://localhost:8080/tagquestionsearch/' + string;
         $http({
             method: 'GET',
             url: urlstr
         }).then(function successCallback(response) {
-            $scope.topics1 = response.data;
+            $scope.tags1 = response.data;
         }), function errorCallback(response) {
             console.log(response.statusText);
         }
@@ -989,29 +993,29 @@ Askme.controller("searchquestionController",function ($scope,$http) {
 });
 //AnswerController
 Askme.controller("AnswerController", function ($scope, $http) {
-    $scope.topichots =[];
-    _refreshtopichotData();
-    function _refreshtopichotData(){
+    $scope.taghots =[];
+    _refreshtaghotData();
+    function _refreshtaghotData(){
         $http({
             method: 'GET',
-            url: 'http://localhost:8080/listtopichot'
+            url: 'http://localhost:8080/listtaghot'
         }).then(function successCallback(response) {
-            $scope.topichots = response.data;
+            $scope.taghots = response.data;
         })
     };
 
-    var countquestionbytopic = {
+    var countquestionbytag = {
         method: 'GET',
-        url: 'http://localhost:8080/countquestionbytopic'
+        url: 'http://localhost:8080/countquestionbytag'
     };
-    $http(countquestionbytopic).success(
+    $http(countquestionbytag).success(
         function (data) {
-            $scope.countquestionbytopics = data;
+            $scope.countquestionbytags = data;
         }
     );
     $scope.kiemtra = 0;
     checkdangnhap();
-    $scope.topics =[];
+    $scope.tags =[];
 
     $scope.nginit = function (idquestion,image) {
         if (image.length == 0 ) $scope.isImage = 0;
@@ -1019,7 +1023,7 @@ Askme.controller("AnswerController", function ($scope, $http) {
         $scope.question.id_question = idquestion;
         refreshAnswerData($scope.question.id_question);
         refreshVoteAnswerData($scope.question.id_question);
-        _refreshtopicData($scope.question.id_question);
+        _refreshtagData($scope.question.id_question);
     }
     $scope.share = function(){
         // FB.ui(
@@ -1069,13 +1073,13 @@ Askme.controller("AnswerController", function ($scope, $http) {
 
     }
 
-    function  _refreshtopicData(id) {
-        urlstr = 'http://localhost:8080/getAllTopicByQuestion/' + id;
+    function  _refreshtagData(id) {
+        urlstr = 'http://localhost:8080/getAllTagByQuestion/' + id;
         $http({
             method: 'GET',
             url: urlstr
         }).then(function successCallback(response) {
-            $scope.topics = response.data;
+            $scope.tags = response.data;
         }), function errorCallback(response) {
             console.log(response.statusText);
         }
@@ -1335,13 +1339,19 @@ Askme.controller("ChangePasswordController", function ($scope, $http) {
                             method: "POST",
                             url: name,
                         });
+                        $scope.message2="";
+                        $scope.message3="";
                         $scope.message1= "Đổi mật khẩu thành công";
                     }
                     else {
+                        $scope.message3="";
+                        $scope.message1= "";
                         $scope.message2= "mật khẩu mới và nhập lại mật khẩu không trùng ";
                     }
                 }
                 else {
+                    $scope.message1= "";
+                    $scope.message2= "";
                     $scope.message3 ="mật khẩu cũ không đúng";
                 }
             })
@@ -1431,3 +1441,51 @@ Askme.controller('rightController',function ($scope, $http){
 
 
 })
+
+Askme.controller('managertag',function ($scope, $http){
+    $scope.tags = [];
+    $scope.tag1 = {
+        name:""
+    };
+    _refreshTagData();
+    $scope.updateTagModal = {
+        name: "",
+    };
+    function _refreshTagData() {
+        $http({
+            method: 'GET',
+            url: 'http://localhost:8080/listtag'
+        }).then(function successCallback(response) {
+            $scope.tags = response.data;
+        }), function errorCallback(response) {
+            console.log(response.statusText);
+        }
+    };
+
+    var countquestionbytag = {
+        method: 'GET',
+        url: 'http://localhost:8080/countquestionbytag'
+    };
+    $http(countquestionbytag).success(
+        function (data) {
+            $scope.countquestionbytags = data;
+        }
+    );
+
+    $scope.delTagModal = function (tag) {
+        $scope.tag = tag;
+        $scope.delTag= function () {
+            var urlstr = 'http://localhost:8080/deletetag/' + tag.id;
+            $http({
+                method: 'Delete',
+                url: urlstr
+            })
+            $scope.tags.splice($scope.tags.indexOf(tag), 1);
+        }
+    }
+
+
+})
+
+
+

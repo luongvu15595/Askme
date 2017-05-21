@@ -5,16 +5,16 @@ import com.sun.javafx.beans.IDProperty;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "topic_question")
-public class Topic_Qestion {
+@Table(name = "tag_question")
+public class Tag_Question {
 
     @Id
-    @Column(name = "id_topic_question")
+    @Column(name = "id_tag_question")
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "id_topic", nullable = false, foreignKey = @ForeignKey(name = "topic_question_ibfk_2"))
-    private Topic topic;
+    @JoinColumn(name = "id_tag", nullable = false, foreignKey = @ForeignKey(name = "topic_question_ibfk_2"))
+    private Tag tag;
 
     @ManyToOne
     @JoinColumn(name = "id_question", nullable = false, foreignKey = @ForeignKey(name = "topic_question_ibfk_1"))
@@ -28,12 +28,12 @@ public class Topic_Qestion {
         this.id = id;
     }
 
-    public Topic getTopic() {
-        return topic;
+    public Tag getTag() {
+        return tag;
     }
 
-    public void setTopic(Topic topic) {
-        this.topic = topic;
+    public void setTag(Tag tag) {
+        this.tag = tag;
     }
 
     public Question getQuestion() {

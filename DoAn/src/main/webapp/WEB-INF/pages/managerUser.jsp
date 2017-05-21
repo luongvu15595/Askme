@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Bootstrap Example</title>
+    <title>quản lý user</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -65,16 +65,16 @@
                         <!-- Modal content-->
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h3 class="modal-title"> {{user.name}}</h3>
+                                <h3 class="modal-title">{{user.name}}</h3>
                             </div>
                             <div class="modal-body">
                                 <h4>Bạn Muốn xóa bỏ {{user.name}} </h4>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">&nbsp;Giu
+                                <button type="button" class="btn btn-default" data-dismiss="modal">&nbsp;Giữ
                                 </button>
                                 <button type="button" class="btn btn-default" data-dismiss="modal"
-                                        ng-click="delUser()">Xoa
+                                        ng-click="delUser()">Xóa
                                 </button>
                             </div>
                         </div>
@@ -91,7 +91,6 @@
             boundary-links="true" >
     </dir-pagination-controls>
 </div>
-<jsp:include page="footer.jsp"/>
 </body>
 </html>
 

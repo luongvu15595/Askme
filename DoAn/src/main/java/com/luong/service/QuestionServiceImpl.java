@@ -3,9 +3,8 @@ package com.luong.service;
 import com.luong.dao.*;
 import com.luong.model.DTO.QuestionDTO;
 import com.luong.model.Question;
-import com.luong.model.Topic;
+import com.luong.model.Tag;
 import com.luong.model.User;
-import com.luong.model.Vote_Question;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +29,9 @@ public class QuestionServiceImpl implements QuestionService {
     @Autowired
     Vote_QuestionDAO vote_questionDAO;
     @Autowired
-    Topic_QuestionService topic_questionService;
+    Tag_QuestionService tag_questionService;
+    @Autowired
+    FollowingDAO followingDAO;
 
     @Override
     public QuestionDTO findById(int id) {
@@ -217,13 +218,13 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public Map<Integer, List> topicquestionsearch(String string) {
+    public Map<Integer, List> tagquestionsearch(String string) {
         List<Question> list = search(string);
-        List<Topic> topicList = new ArrayList<>();
+        List<Tag> tagList = new ArrayList<>();
         Map<Integer,List> map = new HashMap<>();
         for (int i=0;i<list.size();i++){
-            topicList = topic_questionService.findTopicByQuestion(list.get(i).getId_question());
-            map.put(list.get(i).getId_question(),topicList);
+            tagList = tag_questionService.findTagByQuestion(list.get(i).getId_question());
+            map.put(list.get(i).getId_question(),tagList);
         }
         return map;
     }
@@ -283,8 +284,8 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public Map<Integer, Long> countanswerquestionbytopic(int id) {
-        List<Question> questions = topic_questionService.findQuestionByTopic(id);
+    public Map<Integer, Long> countanswerquestionbytag(int id) {
+        List<Question> questions = tag_questionService.findQuestionByTag(id);
         Map<Integer,Long> map = new HashMap<>();
         Long count ;
         for(int i =0;i<questions.size();i++){
@@ -296,8 +297,8 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public Map<Integer, Long> countUpVotequestionbytopic(int id) {
-        List<Question> questions = topic_questionService.findQuestionByTopic(id);
+    public Map<Integer, Long> countUpVotequestionbytag(int id) {
+        List<Question> questions = tag_questionService.findQuestionByTag(id);
         Long voteup;
         Map<Integer,Long> map = new HashMap<>();
         for (int i=0;i<questions.size();i++){
@@ -308,13 +309,13 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public Map<Integer, List> listtopicbytopic(int id) {
-        List<Question> list = topic_questionService.findQuestionByTopic(id);
-        List<Topic> topicList = new ArrayList<>();
+    public Map<Integer, List> listtagbytag(int id) {
+        List<Question> list = tag_questionService.findQuestionByTag(id);
+        List<Tag> tagList = new ArrayList<>();
         Map<Integer,List> map = new HashMap<>();
         for (int i=0;i<list.size();i++){
-            topicList = topic_questionService.findTopicByQuestion(list.get(i).getId_question());
-            map.put(list.get(i).getId_question(),topicList);
+            tagList = tag_questionService.findTagByQuestion(list.get(i).getId_question());
+            map.put(list.get(i).getId_question(),tagList);
         }
         return map;
     }
@@ -383,13 +384,13 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public Map<Integer, List> topicQuestionHotWeek() {
+    public Map<Integer, List> tagQuestionHotWeek() {
         List<Question> list = dao.hotweek();
-        List<Topic> topicList = new ArrayList<>();
+        List<Tag> tagList = new ArrayList<>();
         Map<Integer,List> map = new HashMap<>();
         for (int i=0;i<list.size();i++){
-            topicList = topic_questionService.findTopicByQuestion(list.get(i).getId_question());
-            map.put(list.get(i).getId_question(),topicList);
+            tagList = tag_questionService.findTagByQuestion(list.get(i).getId_question());
+            map.put(list.get(i).getId_question(),tagList);
         }
         return map;
     }
@@ -446,13 +447,13 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public Map<Integer, List> topicQuestionHotMonth() {
+    public Map<Integer, List> tagQuestionHotMonth() {
         List<Question> list = dao.hotmonth();
-        List<Topic> topicList = new ArrayList<>();
+        List<Tag> tagList = new ArrayList<>();
         Map<Integer,List> map = new HashMap<>();
         for (int i=0;i<list.size();i++){
-            topicList = topic_questionService.findTopicByQuestion(list.get(i).getId_question());
-            map.put(list.get(i).getId_question(),topicList);
+            tagList = tag_questionService.findTagByQuestion(list.get(i).getId_question());
+            map.put(list.get(i).getId_question(),tagList);
         }
         return map;
     }
@@ -534,14 +535,14 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public Map<Integer, List> topicQuestionbyuser(int id) {
+    public Map<Integer, List> tagQuestionbyuser(int id) {
         User user = userDAO.findById(id);
         List<Question> list = new ArrayList<>(user.getQuestions()) ;
-        List<Topic> topicList = new ArrayList<>();
+        List<Tag> tagList = new ArrayList<>();
         Map<Integer,List> map = new HashMap<>();
         for (int i=0;i<list.size();i++){
-            topicList = topic_questionService.findTopicByQuestion(list.get(i).getId_question());
-            map.put(list.get(i).getId_question(),topicList);
+            tagList = tag_questionService.findTagByQuestion(list.get(i).getId_question());
+            map.put(list.get(i).getId_question(),tagList);
         }
         return map;
     }
@@ -550,6 +551,78 @@ public class QuestionServiceImpl implements QuestionService {
     public Map<Integer, Long> countUpVoteQuestionUser(int id) {
         User user = userDAO.findById(id);
         List<Question> list = new ArrayList<>(user.getQuestions());
+        Long voteup;
+        Map<Integer,Long> map = new HashMap<>();
+        for (int i=0;i<list.size();i++){
+            voteup = vote_questionDAO.countUp(list.get(i).getId_question());
+            map.put(list.get(i).getId_question(),voteup);
+        }
+        return map;
+    }
+
+    @Override
+    public List<Question> listquestionfollowing(int id) {
+        List<User> users = followingDAO.findfollowing(id);
+        List<Question> questions = new ArrayList<>();
+        Map<Integer,Question> map = new HashMap<>();
+        for (int i= 0 ; i<users.size(); i++){
+            List<Question> questions1 = new ArrayList<>(users.get(i).getQuestions());
+            questions.addAll(questions1);
+        }
+        for(int j=0;j<questions.size();j++){
+            map.put(questions.get(j).getId_question(),questions.get(j));
+        }
+        Map<Integer, Question> treeMap = new TreeMap<Integer, Question>(
+                new Comparator<Integer>() {
+
+                    @Override
+                    public int compare(Integer o1, Integer o2) {
+                        return o2.compareTo(o1);
+                    }
+
+                });
+        treeMap.putAll(map);
+        Set set = treeMap.entrySet();
+        List<Question> questions2 = new ArrayList<>();
+        Iterator iterator = set.iterator();
+        while (iterator.hasNext()) {
+            Map.Entry mentry = (Map.Entry) iterator.next();
+            questions2.add((Question) mentry.getValue());
+        }
+
+        return questions2;
+    }
+
+    @Override
+    public Map<Integer, Long> countanswerquestionfollowingbyuser(int id) {
+        Map<Integer, Long> mapCountAnswer = new TreeMap(Collections.reverseOrder());
+        long c;
+        Question question = new Question();
+        List<Question> lq =listquestionfollowing(id); ;
+        for (int i = 0; i < lq.size(); i++){
+            question = lq.get(i);
+            c = (answerDAO.count(question.getId_question()));
+            mapCountAnswer.put(question.getId_question(),c);
+        }
+
+        return mapCountAnswer;
+    }
+
+    @Override
+    public Map<Integer, List> tagQuestionbyfollowinguser(int id) {
+        List<Question> list = listquestionfollowing(id);
+        List<Tag> tagList = new ArrayList<>();
+        Map<Integer,List> map = new HashMap<>();
+        for (int i=0;i<list.size();i++){
+            tagList = tag_questionService.findTagByQuestion(list.get(i).getId_question());
+            map.put(list.get(i).getId_question(),tagList);
+        }
+        return map;
+    }
+
+    @Override
+    public Map<Integer, Long> countUpVoteQuestionfollowingUser(int id) {
+        List<Question> list = listquestionfollowing(id);
         Long voteup;
         Map<Integer,Long> map = new HashMap<>();
         for (int i=0;i<list.size();i++){

@@ -9,30 +9,30 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "topics")
-public class Topic {
+@Table(name = "tags")
+public class Tag {
 
     @Id
-    @Column(name = "id_topic")
+    @Column(name = "id_tag")
     private int id;
 
     @Column(name = "name")
     private String name;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "topic")
+    @OneToMany(mappedBy = "tag")
     @Cascade(CascadeType.ALL)
-    private Set<Topic_Qestion> topic_qestions = new HashSet<Topic_Qestion>();
+    private Set<Tag_Question> tagQuestions = new HashSet<Tag_Question>();
 
-    public Topic() {
+    public Tag() {
         super();
     }
 
-    public Topic(int i) {
+    public Tag(int i) {
         super();
     }
 
-    public Topic(int id, String name) {
+    public Tag(int id, String name) {
         super();
         this.id = id;
         this.name = name;
@@ -54,12 +54,12 @@ public class Topic {
         this.name = name;
     }
 
-    public Set<Topic_Qestion> getTopic_qestions() {
-        return topic_qestions;
+    public Set<Tag_Question> getTagQuestions() {
+        return tagQuestions;
     }
 
-    public void setTopic_qestions(Set<Topic_Qestion> topic_qestions) {
-        this.topic_qestions = topic_qestions;
+    public void setTagQuestions(Set<Tag_Question> tagQuestions) {
+        this.tagQuestions = tagQuestions;
     }
 
 

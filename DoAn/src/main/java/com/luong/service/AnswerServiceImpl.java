@@ -46,10 +46,7 @@ public class AnswerServiceImpl implements AnswerService {
         answerDAO.del(id);
     }
 
-    @Override
-    public List<Answer> listAnswerOfQuestion(int id) {
-        return answerDAO.listAnswerOfQuestion(id);
-    }
+
 
     @Override
     public void updateAnswer(Answer answer) {
@@ -134,5 +131,48 @@ public class AnswerServiceImpl implements AnswerService {
     @Override
     public List<Answer> la() {
         return answerDAO.la();
+    }
+
+    @Override
+    public List<Answer> listAnswerOfQuestion(int id) {
+        Map<Integer,Long> map = countVoteUpAnswers(id);
+        Map<Integer,Long> sortByvoteup = sortByAnswerByQuestion(map,false);
+        List<Answer> listanswer = new ArrayList<>();
+        Answer answer = new Answer();
+        Set set = sortByvoteup.entrySet();
+        Iterator iterator = set.iterator();
+        while (iterator.hasNext()) {
+            Map.Entry mentry = (Map.Entry) iterator.next();
+            answer = answerDAO.findById((Integer) mentry.getKey());
+            listanswer.add(answer);
+        }
+
+        return listanswer;
+    }
+
+    private static Map<Integer, Long> sortByAnswerByQuestion(Map<Integer, Long> unsortMap, final boolean order) {
+
+        List<Map.Entry<Integer, Long>> list = new LinkedList<Map.Entry<Integer, Long>>(unsortMap.entrySet());
+
+        // Sorting the list based on values
+        Collections.sort(list, new Comparator<Map.Entry<Integer, Long>>() {
+            public int compare(Map.Entry<Integer, Long> o1,
+                               Map.Entry<Integer, Long> o2) {
+                if (order) {
+                    return o1.getValue().compareTo(o2.getValue());
+                } else {
+                    return o2.getValue().compareTo(o1.getValue());
+
+                }
+            }
+        });
+
+        // Maintaining insertion order with the help of LinkedList
+        Map<Integer, Long> sortedMap = new LinkedHashMap<Integer, Long>();
+        for (Map.Entry<Integer, Long> entry : list) {
+            sortedMap.put(entry.getKey(), entry.getValue());
+        }
+
+        return sortedMap;
     }
 }

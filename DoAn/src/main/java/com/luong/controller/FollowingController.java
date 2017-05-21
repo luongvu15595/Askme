@@ -1,15 +1,11 @@
 package com.luong.controller;
 
 import com.luong.model.Following;
-import com.luong.model.Topic;
 import com.luong.model.User;
 import com.luong.service.FollowingService;
-import com.luong.service.TopicService;
-import com.luong.service.Topic_QuestionService;
 import com.luong.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,10 +29,10 @@ public class FollowingController {
     @Autowired
     UserService userService;
 
-    //lay ra 1 list topic
+    //lay ra 1 list tag
     @RequestMapping(value = "/listfolling",method = RequestMethod.GET,headers = "Accept=Application/json")
     @ResponseBody
-    public List<Following> gettopic(){
+    public List<Following> gettag(){
         return followingService.getAll();
     }
 

@@ -4,12 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.*;
 import org.hibernate.annotations.CascadeType;
 
-import javax.jws.soap.SOAPBinding;
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
 import javax.persistence.Table;
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -53,7 +51,7 @@ public class Question {
     @JsonIgnore
     @OneToMany(mappedBy = "question")
     @Cascade(CascadeType.ALL)
-    private Set<Topic_Qestion> topic_qestions = new HashSet<Topic_Qestion>();
+    private Set<Tag_Question> tagQuestions = new HashSet<Tag_Question>();
 
     @JsonIgnore
     @OneToMany(mappedBy = "question")
@@ -134,12 +132,12 @@ public class Question {
     }
 
 
-    public Set<Topic_Qestion> getTopic_qestions() {
-        return topic_qestions;
+    public Set<Tag_Question> getTagQuestions() {
+        return tagQuestions;
     }
 
-    public void setTopic_qestions(Set<Topic_Qestion> topic_qestions) {
-        this.topic_qestions = topic_qestions;
+    public void setTagQuestions(Set<Tag_Question> tagQuestions) {
+        this.tagQuestions = tagQuestions;
     }
 
 

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<title>W3.CSS Template</title>
+<title>Profile</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -179,7 +179,7 @@
     }
 
     .p {
-        width: 70px;
+        width: 116px;
         font-size: 16px;
         color: #7a838e;
         padding-left: 7px;
@@ -217,6 +217,15 @@
         margin-right: 4px;
         /* font-size: 12px; */
     }
+    .labletag{
+        font-size: 30px;
+        margin-top: 7px;
+        margin-bottom: 20px;
+    }
+    .top1{
+        margin-top: 15px;
+    }
+    .left{margin-left: 14px;}
 </style>
 <body class="w3-theme-l5" ng-app="Askme" ng-controller="profile" ng-init="getquestionbyuser('${user.id}');
                                                                     user = {id :'${user.id}',
@@ -247,13 +256,15 @@
             <!-- Accordion -->
             <div class="w3-card-2 w3-round">
                 <div class="w3-white">
-                    <a href="/"><button type="button" class="w3-button w3-block w3-left-align"><i class="fa fa-question-circle fa-fw w3-margin-right"></i> Question</button></a>
-                    <a href="/listoftopic"><button type="button" class="w3-button w3-block w3-left-align"><i class="fa fa-tags  fa-fw w3-margin-right"></i> Tags</button></a>
+                    <a href="/"><button type="button" class="w3-button w3-block w3-left-align"><i class="fa fa-question-circle fa-fw w3-margin-right"></i>Tất cả câu hỏi</button></a>
+                    <a href="/listoftag"><button type="button" class="w3-button w3-block w3-left-align"><i class="fa fa-tags  fa-fw w3-margin-right"></i> Tags</button></a>
                     <a href="/listofuser"><button  type="button" class="w3-button w3-block w3-left-align"><i class="fa fa-users fa-fw w3-margin-right"></i> User</button></a>
+                    <a><button type="button"  class="w3-button w3-block w3-left-align" ng-click="checkfollowing1()"><i class="fa fa-question-circle fa-fw w3-margin-right"></i>Câu hỏi của ${user.name}</button></a>
                     <div class="top" ng-if="user.id == ${userlogin.id}">
-                        <a href="/changepass"><button type="button"  class="w3-button w3-block w3-left-align"><i class="fa fa-pencil fa-fw w3-margin-right"></i> ĐỔi mật khẩu</button></a>
-                        <button type="button" class="w3-button w3-block w3-left-align" data-toggle="modal" data-target="#editUserModal"
-                           ng-click="userModal()"><i class="fa fa-pencil fa-fw w3-margin-right"></i>sửa thông tin</button>
+                        <a><button type="button"  class="w3-button w3-block w3-left-align" ng-click="checkfollowing(${user.id})"><i class="fa fa-question-circle fa-fw w3-margin-right"></i>Following</button></a>
+                        <a href="/changepass"><button type="button"  class="w3-button w3-block w3-left-align"><i class="fa fa-pencil fa-fw w3-margin-right"></i> Đổi mật khẩu</button></a>
+                        <a class="w3-button w3-block w3-left-align" data-toggle="modal" data-target="#editUserModal"
+                           ng-click="userModal()"><i class="fa fa-pencil fa-fw w3-margin-right"></i>sửa thông tin</a>
                         <div class="modal fade" id="editUserModal" role="dialog">
                             <div class="modal-dialog">
                                 <!-- Modal content-->
@@ -275,21 +286,21 @@
                                                 <div class="col-sm-1"></div>
                                                 <div class="col-sm-10">
                                                     <div class="error" ng-show="myForm.xname.$error.minlength">
-                                                        <h4>Ten quá ngắn !! </h4>
+                                                        <h4>Tên quá ngắn !! </h4>
                                                     </div>
                                                     <div class="error" ng-show="myForm.xname.$error.maxlength">
-                                                        <h4>Ten quá dài !! </h4>
+                                                        <h4>Tên quá dài !! </h4>
                                                     </div>
                                                 </div>
                                             </div>
                                         </form>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">&nbsp;Giu
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">&nbsp;Giữ
                                         </button>
                                         <a href="/{{userx.id}}"><button type="button" class="btn btn-default"
                                                 ng-click="editUser()"  ng-disabled="myForm.xname.$error.minlength
-                                                        || myForm.xname.$error.maxlength || userx.name.length == 0 ">Sua
+                                                        || myForm.xname.$error.maxlength || userx.name.length == 0 ">Sửa
                                         </button></a>
                                     </div>
                                 </div>
@@ -304,7 +315,7 @@
                 <div class="w3-container">
                     <div style="text-align: center; margin-top: 20px"><H4>TOP TAGS</H4></div>
                     <hr class="w3-clear">
-                    <div style="margin-bottom: 20px;"ng-repeat="topic in topichots" ><label class="q-tag">{{topic.name}}</label> x {{countquestionbytopics[topic.id]}}</div>
+                    <div style="margin-bottom: 20px;"ng-repeat="tag in taghots" ><label class="q-tag"><a href="/tag/{{tag.id}}">{{tag.name}}</a></label> x {{countquestionbytags[tag.id]}}</div>
                 </div>
             </div>
             <br>
@@ -315,19 +326,21 @@
         </div>
 
         <!-- Middle Column -->
-        <div class="w3-col m8">
+        <div class="w3-col m8" ng-if="check1==0">
 
             <div class="w3-row-padding">
                 <div class="w3-col m12">
                     <div class="w3-card-2 w3-round w3-white">
                         <div class="w3-container w3-padding">
-                            <h2>CÂU HỎI CỦA USER</h2>
+                            <div class="w3-col m12 col-xs-6 "><label class="w3-col m9 labletag" >Câu hỏi của ${user.name}</label>
+                                <form class="w3-col m3 inputtag form-inlineb top1"><input type="text" ng-model="search" class="form-control" placeholder="Search"></form>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="w3-container w3-card-2 w3-white w3-round w3-margin" ng-repeat="question in questions" ><br>
+            <div class="w3-container w3-card-2 w3-white w3-round w3-margin" dir-paginate="question in questions|filter:search|itemsPerPage:8"><br>
                 <div class="w3-col m3 ">
                     <div>
                         <span class="li">{{answers[question.id_question]}}</span>
@@ -341,7 +354,7 @@
                 <div class="w3-col m9">
                     <div><h2 itemprop="name"><a itemprop="url" style="word-wrap: break-word"  ng-href="/question/{{question.id_question}}" class="question-title">{{question.title}}</a></h2></div>
                     <div>
-                        <label class="q-tag" ng-repeat="topic in topics[question.id_question]">{{topic.name}}</label>
+                        <label class="q-tag" ng-repeat="tag in tags[question.id_question]"><a href="/tag/{{tag.id}}">{{tag.name}}</a></label>
                     </div>
 
                     <div class="info">
@@ -353,7 +366,61 @@
                 </div>
 
             </div>
+            <label class="left"><dir-pagination-controls
+                    min-size="1"
+                    max-size="5"
+                    direction-links="true"
+                    boundary-links="true" >
+            </dir-pagination-controls></label>
 
+            <!-- End Middle Column -->
+        </div>
+        <div class="w3-col m8" ng-if="check1==1">
+
+            <div class="w3-row-padding">
+                <div class="w3-col m12">
+                    <div class="w3-card-2 w3-round w3-white">
+                        <div class="w3-container w3-padding">
+                            <div class="w3-col m12 col-xs-6 "><label class="w3-col m9 labletag" >Câu hỏi của các User đã theo dõi</label>
+                                <form class="w3-col m3 inputtag form-inlineb top1"><input type="text" ng-model="search" class="form-control" placeholder="Search"></form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="w3-container w3-card-2 w3-white w3-round w3-margin" dir-paginate="question in questions1|filter:search|itemsPerPage:8"><br>
+                <div class="w3-col m3 ">
+                    <div>
+                        <span class="li">{{answers1[question.id_question]}}</span>
+                        <span class="li">{{upvotes1[question.id_question]}}</span>
+                    </div>
+                    <div >
+                        <label class="answer">answer</label>
+                        <label class="answer">upvote</label>
+                    </div>
+                </div>
+                <div class="w3-col m9">
+                    <div><h2 itemprop="name"><a itemprop="url" style="word-wrap: break-word"  ng-href="/question/{{question.id_question}}" class="question-title">{{question.title}}</a></h2></div>
+                    <div>
+                        <label class="q-tag" ng-repeat="tag in tags1[question.id_question]"><a href="/tag/{{tag.id}}">{{tag.name}}</a></label>
+                    </div>
+
+                    <div class="info">
+                        <img src="/imageuser/{{question.user.id}}" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:30px; margin-right:20px;">
+                        <label><a href="/{{question.user.id}}">{{question.user.name}}</a></label>
+                        <label>, {{question.time | date : 'hh:mm dd/MM/yyyy' }}</label>
+                    </div>
+
+                </div>
+
+            </div>
+            <label class="left"><dir-pagination-controls
+                    min-size="1"
+                    max-size="5"
+                    direction-links="true"
+                    boundary-links="true" >
+            </dir-pagination-controls></label>
 
             <!-- End Middle Column -->
         </div>
@@ -363,10 +430,10 @@
             <div class="w3-card-2 w3-round w3-white w3-center ">
                 <div class="w3-container">
                     <div class="questions-count">
-                        <p class="p">Questions</p>
+                        <p class="p">Tổng Câu Hỏi</p>
                         <p class="number">{{countlistquestion}}</p>
                     </div>
-                    <div class="members-count"><p class="p">Members</p>
+                    <div class="members-count"><p class="p">Số Thành Viên</p>
                         <p class="number">{{countlistuser}}</p>
                     </div>
                 </div>

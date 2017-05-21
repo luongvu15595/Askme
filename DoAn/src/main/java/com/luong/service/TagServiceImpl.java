@@ -1,58 +1,58 @@
 package com.luong.service;
 
-import com.luong.dao.TopicDAO;
-import com.luong.dao.Topic_QuestionDAO;
-import com.luong.model.Topic;
+import com.luong.dao.TagDAO;
+import com.luong.dao.Tag_QuestionDAO;
+import com.luong.model.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 @Service
-public class TopicServiceImpl implements TopicService {
+public class TagServiceImpl implements TagService {
     @Autowired
-    TopicDAO topicDAO;
+    TagDAO tagDAO;
     @Autowired
-    Topic_QuestionDAO topic_questionDAO;
+    Tag_QuestionDAO tag_questionDAO;
 
     @Override
-    public Topic find(String name) {
-        return topicDAO.found(name);
+    public Tag find(String name) {
+        return tagDAO.found(name);
     }
 
     @Override
-    public List<Topic> listTopic() {
+    public List<Tag> listTag() {
         Map<Integer,Integer> map = new HashMap<>();
         int count =0;
-        List<Topic> list = topicDAO.listTopic();
+        List<Tag> list = tagDAO.listTag();
         for (int i = 0; i<list.size();i++){
-            Topic topic = list.get(i);
-            count = topic_questionDAO.findlistTQ(topic.getId()).size();
-            map.put(topic.getId(),count);
+            Tag tag = list.get(i);
+            count = tag_questionDAO.findlistTQ(tag.getId()).size();
+            map.put(tag.getId(),count);
         }
-        Map<Integer,Integer> sortByQuestioninTopic = sortByQuestion(map,false);
-        List<Topic> listtopic = new ArrayList<>();
-        Topic topic = new Topic();
-        Set set = sortByQuestioninTopic.entrySet();
+        Map<Integer,Integer> sortByQuestioninTag = sortByQuestion(map,false);
+        List<Tag> listtag = new ArrayList<>();
+        Tag tag = new Tag();
+        Set set = sortByQuestioninTag.entrySet();
         Iterator iterator = set.iterator();
         while (iterator.hasNext()) {
             Map.Entry mentry = (Map.Entry) iterator.next();
-            topic = topicDAO.findTopic((Integer) mentry.getKey());
-            listtopic.add(topic);
+            tag = tagDAO.findTag((Integer) mentry.getKey());
+            listtag.add(tag);
         }
 
-        return listtopic;
+        return listtag;
     }
 
     @Override
-    public Map<Integer, Integer> countQuestionByTopic() {
+    public Map<Integer, Integer> countQuestionByTag() {
         Map<Integer,Integer> map = new HashMap<>();
         int count =0;
-        List<Topic> list = topicDAO.listTopic();
+        List<Tag> list = tagDAO.listTag();
         for (int i = 0; i<list.size();i++){
-            Topic topic = list.get(i);
-            count = topic_questionDAO.findlistTQ(topic.getId()).size();
-            map.put(topic.getId(),count);
+            Tag tag = list.get(i);
+            count = tag_questionDAO.findlistTQ(tag.getId()).size();
+            map.put(tag.getId(),count);
         }
         return map;
     }
@@ -85,39 +85,39 @@ public class TopicServiceImpl implements TopicService {
 
 
     @Override
-    public Topic findById(int id) {
-        return topicDAO.findTopic(id);
+    public Tag findById(int id) {
+        return tagDAO.findTag(id);
     }
 
     @Override
-    public List<String> cut(String topic) {
-        topic = topic.replace("[","");
-        topic = topic.replace("]","");
-        topic = topic.replace("{","");
-        topic = topic.replace("}","");
-        topic = topic.replace(":","");
-        topic = topic.replace(",","");
-        topic = topic.trim();
-        topic = topic.replaceAll("\\s+", "");
+    public List<String> cut(String tag) {
+        tag = tag.replace("[","");
+        tag = tag.replace("]","");
+        tag = tag.replace("{","");
+        tag = tag.replace("}","");
+        tag = tag.replace(":","");
+        tag = tag.replace(",","");
+        tag = tag.trim();
+        tag = tag.replaceAll("\\s+", "");
 
-        String[] test = topic.split("\"");
-        List<String> listtopic = new ArrayList<String>();
+        String[] test = tag.split("\"");
+        List<String> listtag = new ArrayList<String>();
         for(int i=0;i<test.length;i++) {
             if (test[i].equals("name")) {
-                listtopic.add(test[i + 2]);
+                listtag.add(test[i + 2]);
             }
         }
-        return listtopic;
+        return listtag;
     }
 
     @Override
-    public Topic add(Topic topic) {
-        topicDAO.create(topic);
-        return topic;
+    public Tag add(Tag tag) {
+        tagDAO.create(tag);
+        return tag;
     }
 
     @Override
     public void del(int id) {
-        topicDAO.del(id);
+        tagDAO.del(id);
     }
 }
