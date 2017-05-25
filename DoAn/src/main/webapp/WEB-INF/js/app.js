@@ -1,3 +1,4 @@
+
 var Askme = angular.module("Askme", ['ngTagsInput','angularUtils.directives.dirPagination']);
 //page header
 Askme.controller("headerController", function ($scope, $http) {
@@ -55,7 +56,7 @@ Askme.controller("headerController", function ($scope, $http) {
             location.href="/";
         }
         else {var name = "/search/" + str;
-        location.href = name;}
+            location.href = name;}
     };
 
 
@@ -252,7 +253,7 @@ Askme.controller("listOfTagController", function ($scope, $http) {
     $scope.kiemtra = 0;
     $scope.tags = [];
     $scope.tag1 = {
-       name:""
+        name:""
     };
     checkdangnhap();
     _refreshTagData();
@@ -340,11 +341,11 @@ Askme.controller("CreateQuestionController", function ($scope, $http) {
             method: 'GET',
             url: 'http://localhost:8080/listtag'
         }).then(function successCallback(response) {
-           var tags = response.data;
+            var tags = response.data;
             return tags.filter(function(tag) {
                 return tag.name.toLowerCase().indexOf($query.toLowerCase()) != -1;
             });
-         })
+        })
     };
     $scope.reset = function () {
         $scope.questionForm.title = "";
@@ -749,8 +750,12 @@ Askme.controller("profile",function ($scope,$http) {
             headers: {
                 'Content-Type': 'application/json'
             }
+
+        }).then(function reload(response) {
+            window.location.reload();
         });
         $scope.user.name = $scope.userx.name;
+
     }
     $scope.taghots =[];
     _refreshtaghotData();
@@ -782,37 +787,37 @@ Askme.controller("profile",function ($scope,$http) {
 
     }
     $scope.check1=0;
-        $scope.checkfollowing =function(id) {
-            urlstr = 'http://localhost:8080/listquestionfollowingbyuser/' +id;
-            urlstr1 = 'http://localhost:8080/countanswerfollowingbyuser/' +id;
-            urlstr2 = 'http://localhost:8080/countvoteupfollowingbyuser/' +id;
-            urlstr3 = 'http://localhost:8080/listtagfollowingbyuser/' +id;
-            $http({
-                method: 'GET',
-                url: urlstr
-            }).then(function successCallback(response) {
-                $scope.questions1 = response.data;
-            })
-            $http({
-                method: 'GET',
-                url: urlstr1
-            }).then(function successCallback(response) {
-                $scope.answers1 = response.data;
-            })
-            $http({
-                method: 'GET',
-                url: urlstr2
-            }).then(function successCallback(response) {
-                $scope.upvotes1 = response.data;
-            })
-            $http({
-                method: 'GET',
-                url: urlstr3
-            }).then(function successCallback(response) {
-                $scope.tags1 = response.data;
-            })
-            $scope.check1=1;
-        }
+    $scope.checkfollowing =function(id) {
+        urlstr = 'http://localhost:8080/listquestionfollowingbyuser/' +id;
+        urlstr1 = 'http://localhost:8080/countanswerfollowingbyuser/' +id;
+        urlstr2 = 'http://localhost:8080/countvoteupfollowingbyuser/' +id;
+        urlstr3 = 'http://localhost:8080/listtagfollowingbyuser/' +id;
+        $http({
+            method: 'GET',
+            url: urlstr
+        }).then(function successCallback(response) {
+            $scope.questions1 = response.data;
+        })
+        $http({
+            method: 'GET',
+            url: urlstr1
+        }).then(function successCallback(response) {
+            $scope.answers1 = response.data;
+        })
+        $http({
+            method: 'GET',
+            url: urlstr2
+        }).then(function successCallback(response) {
+            $scope.upvotes1 = response.data;
+        })
+        $http({
+            method: 'GET',
+            url: urlstr3
+        }).then(function successCallback(response) {
+            $scope.tags1 = response.data;
+        })
+        $scope.check1=1;
+    }
     $scope.checkfollowing1 =function() {
         $scope.check1=0;
     }
@@ -1229,6 +1234,7 @@ Askme.controller("AnswerController", function ($scope, $http) {
             url: urlstr
         })
         $scope.answers.splice($scope.answers.indexOf($scope.answerx), 1);
+        window.location.reload();
     }
 
     //26-4 sua noi dung cau tra loi

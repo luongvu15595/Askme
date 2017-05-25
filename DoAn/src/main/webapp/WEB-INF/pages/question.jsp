@@ -386,7 +386,7 @@
                                 <div class="w3-col m9">
 
                                     <div class="question-content">{{question.content}}</div>
-                                    <div class="image" ng-if="isImage == 1"><img src="/image/${question.id_question}" width="700px" height="400px"/></div>
+                                    <div class="image" ng-if="isImage == 1"><img src="/image/${question.id_question}" width="690px" height="400px"/></div>
                                     <div>
                                         <label class="q-tag" ng-repeat=" tag in tags"><a href="/tag/{{tag.id}}">{{tag.name}}</a></label>
                                     </div>
@@ -566,7 +566,7 @@
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-default" data-dismiss="modal">&nbsp;Giữ
                                                             </button>
-                                                            <button type="button" class="btn btn-default" data-dismiss="modal"
+                                                            <button type="button" class="btn btn-default"
                                                                     ng-click="delAnswer()">Xóa
                                                             </button>
                                                         </div>
@@ -591,7 +591,7 @@
                                                                     <div class="col-sm-10"><textarea type="text" rows="5" class="form-control" name="aswcontentedit"
                                                                                                      ng-model="AnswereditForm.content"
                                                                                                      ng-minlength="10" ng-maxlength="500"
-                                                                                                     required></textarea></div>
+                                                                                                     ></textarea></div>
                                                                     <div class="col-sm-1"></div>
                                                                 </div>
                                                                 <div class=" col-sm-12">
@@ -614,7 +614,7 @@
                                                             </button>
                                                             <button type="button" class="btn btn-default" data-dismiss="modal"
                                                                     ng-click="editAnswer(answer)"
-                                                                    ng-disabled="myForm.aswcontentedit.$error.minlength || myForm.aswcontentedit.$error.maxlength">
+                                                                    ng-disabled="myForm.aswcontentedit.$error.minlength || myForm.aswcontentedit.$error.maxlength|| AnswereditForm.content.length == 0">
                                                                 Sửa
                                                             </button>
                                                         </div>

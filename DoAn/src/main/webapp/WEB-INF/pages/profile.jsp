@@ -18,6 +18,7 @@
 <script src="/js/dirPagination.js"></script>
 <script src="/js/ng-infinite-scroll.js"></script>
 <script src="/js/app.js"></script>
+<link rel="shortcut icon" href="https://lh6.googleusercontent.com/9WRCFpdVEGT_Xb-8EwLba1ywpsVHlSy7yxNaFJYfhXuz8u18n9C5noV8ovNrg0wc7uLDD46k4KxoeS4=w1366-h638">
 <style>
     html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
     span{
@@ -245,10 +246,10 @@
             <div class="w3-card-2 w3-round w3-white">
                 <div class="w3-container">
                     <h4 class="w3-center">Profile</h4>
-                    <p class="w3-center"><img src="/imageuser/${user.id}" class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
+                    <p class="w3-center"><img src="/imageuser/{{user.id}}" class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
                     <hr>
-                    <p><i class="fa fa-pencil fa-fw w3-margin-right w3-text-theme"></i> ${user.name}</p>
-                    <p><i class="fa fa-home fa-fw w3-margin-right w3-text-theme"></i> ${user.email}</p>
+                    <p><i class="fa fa-pencil fa-fw w3-margin-right w3-text-theme"></i> {{user.name}}</p>
+                    <p><i class="fa fa-home fa-fw w3-margin-right w3-text-theme"></i> {{user.email}}</p>
                 </div>
             </div>
             <br>
@@ -259,9 +260,9 @@
                     <a href="/"><button type="button" class="w3-button w3-block w3-left-align"><i class="fa fa-question-circle fa-fw w3-margin-right"></i>Tất cả câu hỏi</button></a>
                     <a href="/listoftag"><button type="button" class="w3-button w3-block w3-left-align"><i class="fa fa-tags  fa-fw w3-margin-right"></i> Tags</button></a>
                     <a href="/listofuser"><button  type="button" class="w3-button w3-block w3-left-align"><i class="fa fa-users fa-fw w3-margin-right"></i> User</button></a>
-                    <a><button type="button"  class="w3-button w3-block w3-left-align" ng-click="checkfollowing1()"><i class="fa fa-question-circle fa-fw w3-margin-right"></i>Câu hỏi của ${user.name}</button></a>
+                    <a><button type="button"  class="w3-button w3-block w3-left-align" ng-click="checkfollowing1()"><i class="fa fa-question-circle fa-fw w3-margin-right"></i>Câu hỏi của {{user.name}}</button></a>
                     <div class="top" ng-if="user.id == ${userlogin.id}">
-                        <a><button type="button"  class="w3-button w3-block w3-left-align" ng-click="checkfollowing(${user.id})"><i class="fa fa-question-circle fa-fw w3-margin-right"></i>Following</button></a>
+                        <a><button type="button"  class="w3-button w3-block w3-left-align" ng-click="checkfollowing({{user.id}})"><i class="fa fa-question-circle fa-fw w3-margin-right"></i>Following</button></a>
                         <a href="/changepass"><button type="button"  class="w3-button w3-block w3-left-align"><i class="fa fa-pencil fa-fw w3-margin-right"></i> Đổi mật khẩu</button></a>
                         <a class="w3-button w3-block w3-left-align" data-toggle="modal" data-target="#editUserModal"
                            ng-click="userModal()"><i class="fa fa-pencil fa-fw w3-margin-right"></i>sửa thông tin</a>
@@ -298,10 +299,10 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-default" data-dismiss="modal">&nbsp;Giữ
                                         </button>
-                                        <a href="/{{userx.id}}"><button type="button" class="btn btn-default"
+                                        <button type="button" class="btn btn-default"
                                                 ng-click="editUser()"  ng-disabled="myForm.xname.$error.minlength
                                                         || myForm.xname.$error.maxlength || userx.name.length == 0 ">Sửa
-                                        </button></a>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -332,7 +333,7 @@
                 <div class="w3-col m12">
                     <div class="w3-card-2 w3-round w3-white">
                         <div class="w3-container w3-padding">
-                            <div class="w3-col m12 col-xs-6 "><label class="w3-col m9 labletag" >Câu hỏi của ${user.name}</label>
+                            <div class="w3-col m12 col-xs-6 "><label class="w3-col m9 labletag" >Câu hỏi của {{user.name}}</label>
                                 <form class="w3-col m3 inputtag form-inlineb top1"><input type="text" ng-model="search" class="form-control" placeholder="Search"></form>
                             </div>
                         </div>
@@ -456,12 +457,12 @@
                 <div class="w3-container">
                     <div style="text-align: center;"><H4>TOP USER(QUESTIONS)</H4></div>
                     <hr class="w3-clear">
-                    <div style="margin-bottom: 25px;" ng-repeat="user in usermanyquestions">
+                    <div style="margin-bottom: 25px;" ng-repeat="userr in usermanyquestions">
                         <label class="number1">{{$index+1}}</label>
-                        <label class="name"><a href="/{{user.id}}">{{user.name}}</a></label>
+                        <label class="name"><a href="/{{userr.id}}">{{userr.name}}</a></label>
                         <label class="questions-count-hotuser"><i class="fa fa-question-circle"></i><label style="   margin-left: 3px; min-width: 24px;
               font-size: 14px;
-              display: inline-block;">{{listcountquestionbyusers[user.id]}}</label></label>
+              display: inline-block;">{{listcountquestionbyusers[userr.id]}}</label></label>
                     </div>
                 </div>
             </div>
@@ -471,12 +472,12 @@
                 <div class="w3-container">
                     <div style="text-align: center;"><H4>TOP USER(ANSWERS)</H4></div>
                     <hr class="w3-clear">
-                    <div style="margin-bottom: 25px;" ng-repeat="user in usermanyanswers">
+                    <div style="margin-bottom: 25px;" ng-repeat="userr in usermanyanswers">
                         <label class="number1">{{$index+1}}</label>
-                        <label class="name"><a href="/{{user.id}}">{{user.name}}</a></label>
+                        <label class="name"><a href="/{{userr.id}}">{{userr.name}}</a></label>
                         <label class="questions-count-hotuser"><i class="fa fa-comments"></i><label style="   margin-left: 3px; min-width: 24px;
               font-size: 14px;
-              display: inline-block;">{{listcountanswerbyusers[user.id]}}</label></label>
+              display: inline-block;">{{listcountanswerbyusers[userr.id]}}</label></label>
                     </div>
                 </div>
             </div>
@@ -494,31 +495,5 @@
 
 <!-- Footer -->
 <jsp:include page="footer.jsp"/>
-
-<script>
-    // Accordion
-    function myFunction(id) {
-        var x = document.getElementById(id);
-        if (x.className.indexOf("w3-show") == -1) {
-            x.className += " w3-show";
-            x.previousElementSibling.className += " w3-theme-d1";
-        } else {
-            x.className = x.className.replace("w3-show", "");
-            x.previousElementSibling.className =
-                x.previousElementSibling.className.replace(" w3-theme-d1", "");
-        }
-    }
-
-    // Used to toggle the menu on smaller screens when clicking on the menu button
-    function openNav() {
-        var x = document.getElementById("navDemo");
-        if (x.className.indexOf("w3-show") == -1) {
-            x.className += " w3-show";
-        } else {
-            x.className = x.className.replace(" w3-show", "");
-        }
-    }
-</script>
-
 </body>
 </html>

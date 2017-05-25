@@ -97,7 +97,7 @@
                 <span class="col-sm-3"><input type="submit" class="btn btn-lg btn-primary btn-block" value="Submit"/></span>
             </div>
             <div class="form-group col-sm-10">
-                <p style="margin-left: 5px">{{statussubmit}}</p>
+                <label style="margin-left: 5px; color: green">{{statussubmit}}</label>
                 <p style="margin-left: 5px">{{message}}</p></div>
         </div>
     </form>

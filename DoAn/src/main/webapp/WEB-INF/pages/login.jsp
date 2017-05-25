@@ -42,9 +42,9 @@
 
 </head>
 
-<bodyn  class="w3-theme-l5" ng-app="Askme" ng-controller="LoginController">
+<body  class="w3-theme-l5" ng-app="Askme" ng-controller="LoginController">
 <jsp:include page="header.jsp"/>
-<h2>LOGIN</h2>
+<h2>Đăng nhập</h2>
 <div class="container bottom">
     <div class="row">
         <form method="POST" action="/j_spring_security_check" class="form-signin">
@@ -55,12 +55,12 @@
                     autofocus="true"/></div>
                 <div class="top"><input name="password" type="password" class="form-control" placeholder="Password"/></div>
                 <span>${error}</span>
-                <div class="top"><button class="btn btn-lg btn-primary btn-block" type="submit">Log In</button></div>
+                <div class="top"><button class="btn btn-lg btn-primary btn-block" type="submit">Đăng nhập</button></div>
             </div>
         </form>
     </div>
 </div>
 <jsp:include page="footer.jsp"/>
-</bodyn>
+</body>
 </html>
 

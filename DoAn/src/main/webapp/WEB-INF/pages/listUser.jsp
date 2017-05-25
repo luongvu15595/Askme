@@ -296,7 +296,7 @@
 
             <div class="w3-container w3-card-2 w3-white w3-round w3-margin"><br>
                 <div class="w3-col m12">
-                    <div style="margin-bottom: 30px" class="w3-col m4" dir-paginate="user in users|filter:search|itemsPerPage:24">
+                    <div style="margin-bottom: 30px; height: 89.2px;" class="w3-col m4" dir-paginate="user in users|filter:search|itemsPerPage:24">
 
                         <div class="w3-col m3"><img src="/imageuser/{{user.id}}" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px"></div>
                         <div class="w3-col m6"><div><a href="/{{user.id}}">{{user.name}}</a></div>
